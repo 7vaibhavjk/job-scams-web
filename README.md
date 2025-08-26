@@ -1,7 +1,4 @@
 
-  # Job Scam Protection Website
-
-  This is a code bundle for Job Scam Protection Website. 
 
   # 🔍 Job Scams Detection Website  
 
