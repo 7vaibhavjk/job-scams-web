@@ -1,6 +1,6 @@
 
   {
-      "name": "Job Scam Protection Website",
+      "name": "job-scams-web",
       "version": "0.1.0",
       "private": true,
       "dependencies": {
