@@ -68,7 +68,7 @@ export function Footer() {
             <div className="space-y-2 text-sm text-gray-400">
               <p>If you believe you've been scammed:</p>
               <div className="space-y-1">
-                <p>📞 Scamwatch: 1300 795 995</p>
+                <p>Phone: Scamwatch: 1300 795 995</p>
                 <div className="flex items-center space-x-1">
                   <Mail className="h-3 w-3" />
                   <span>report-cybercrime@afp.gov.au</span>

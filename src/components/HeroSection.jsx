@@ -1,7 +1,7 @@
 import { AlertTriangle, Users, TrendingUp } from 'lucide-react'
-import { Button } from './ui/button'
-import { Card, CardContent } from './ui/card'
-import { ImageWithFallback } from './figma/ImageWithFallback'
+import { Button } from './ui/button.jsx'
+import { Card, CardContent } from './ui/card.jsx'
+import { ImageWithFallback } from './figma/ImageWithFallback.jsx'
 
 export function HeroSection() {
   const scrollToTools = () => {
@@ -9,11 +9,11 @@ export function HeroSection() {
   }
 
   return (
-    <section className="relative py-16 overflow-hidden">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1652739758426-56a564265f9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHNlY3VyaXR5JTIwc2hpZWxkJTIwcHJvdGVjdGlvbnxlbnwxfHx8fDE3NTU3NjkzNDN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+          src="https://images.unsplash.com/photo-1652739758426-56a564265f9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNlYSUyMHNlY3VyaXR5JTIwc2hpZWxkJTIwcHJvdGVjdGlvbnxlbnwxfHx8fDE3NTU3NjkzNDN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
           alt="Business security and protection"
           className="w-full h-full object-cover"
         />
@@ -24,7 +24,7 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4">
+      <div className="relative z-10 container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
             <div className="bg-white/10 backdrop-blur-sm rounded-full p-4">

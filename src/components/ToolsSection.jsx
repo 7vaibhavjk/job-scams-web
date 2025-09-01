@@ -1,5 +1,5 @@
-import { EmployerVerification } from './EmployerVerification'
-import { JobAdChecker } from './JobAdChecker'
+import { EmployerVerification } from './EmployerVerification.jsx'
+import { JobAdChecker } from './JobAdChecker.jsx'
 
 export function ToolsSection() {
   return (

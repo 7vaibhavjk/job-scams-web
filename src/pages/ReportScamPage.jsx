@@ -1,17 +1,29 @@
-import { Shield, Users, TrendingUp, ExternalLink, Phone, Mail } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Button } from './ui/button'
-import { Alert, AlertDescription } from './ui/alert'
+import { Shield, Users, TrendingUp, ExternalLink, Phone, Mail, AlertTriangle } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card.jsx'
+import { Button } from '../components/ui/button.jsx'
+import { Alert, AlertDescription } from '../components/ui/alert.jsx'
+import { Link } from 'react-router-dom'
 
-export function AboutSection() {
+export function ReportScamPage() {
   return (
-    <section id="about" className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl mb-4">About Job Scams in Australia</h2>
+          <h1 className="text-4xl mb-4">Report Scam</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Learn about the growing threat of employment scams and how to protect yourself
           </p>
+          <div className="mt-6">
+            <Link to="/submit-report">
+              <Button 
+                size="lg"
+                className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                <AlertTriangle className="h-4 w-4 mr-2" />
+                Submit a Scam Report
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="max-w-6xl mx-auto space-y-8">
@@ -26,9 +38,9 @@ export function AboutSection() {
               <CardContent className="space-y-3">
                 <p>Employment scams are now among the fastest-growing scam types in Australia, with losses reaching millions of dollars annually.</p>
                 <ul className="text-sm space-y-1 text-gray-600">
-                  <li>• 40% increase in job scam reports in 2024</li>
-                  <li>• Average loss of $3,500 per victim</li>
-                  <li>• 70% of victims are under 35 years old</li>
+                  <li>- 40% increase in job scam reports in 2024</li>
+                  <li>- Average loss of $3,500 per victim</li>
+                  <li>- 70% of victims are under 35 years old</li>
                 </ul>
               </CardContent>
             </Card>
@@ -43,10 +55,10 @@ export function AboutSection() {
               <CardContent className="space-y-3">
                 <p>Scammers particularly target vulnerable populations seeking employment opportunities.</p>
                 <ul className="text-sm space-y-1 text-gray-600">
-                  <li>• International students</li>
-                  <li>• Recent graduates</li>
-                  <li>• Job seekers in financial distress</li>
-                  <li>• People seeking work-from-home opportunities</li>
+                  <li>- International students</li>
+                  <li>- Recent graduates</li>
+                  <li>- Job seekers in financial distress</li>
+                  <li>- People seeking work-from-home opportunities</li>
                 </ul>
               </CardContent>
             </Card>
@@ -61,10 +73,10 @@ export function AboutSection() {
               <CardContent className="space-y-3">
                 <p>Learn to identify common warning signs of job scams before it's too late.</p>
                 <ul className="text-sm space-y-1 text-gray-600">
-                  <li>• Requests for upfront payments</li>
-                  <li>• "Too good to be true" salary offers</li>
-                  <li>• Immediate job offers without interviews</li>
-                  <li>• Requests for personal documents early</li>
+                  <li>- Requests for upfront payments</li>
+                  <li>- "Too good to be true" salary offers</li>
+                  <li>- Immediate job offers without interviews</li>
+                  <li>- Requests for personal documents early</li>
                 </ul>
               </CardContent>
             </Card>
@@ -171,6 +183,6 @@ export function AboutSection() {
           </Card>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

@@ -1,41 +1,24 @@
 import { useState } from 'react'
 import { Link, Shield, AlertTriangle, CheckCircle, XCircle, ExternalLink } from 'lucide-react'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
-import { Alert, AlertDescription } from './ui/alert'
-import { Progress } from './ui/progress'
-
-interface LinkAnalysis {
-  url: string
-  riskScore: number
-  status: 'safe' | 'moderate' | 'high' | 'dangerous'
-  issues: Array<{
-    type: 'warning' | 'error' | 'info'
-    message: string
-  }>
-  details: {
-    domain: string
-    isSecure: boolean
-    domainAge?: string
-    redirects: number
-    jobBoardType?: string
-  }
-}
+import { Button } from './ui/button.jsx'
+import { Input } from './ui/input.jsx'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card.jsx'
+import { Badge } from './ui/badge.jsx'
+import { Alert, AlertDescription } from './ui/alert.jsx'
+import { Progress } from './ui/progress.jsx'
 
 export function JobAdChecker() {
   const [url, setUrl] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [analysis, setAnalysis] = useState<LinkAnalysis | null>(null)
+  const [analysis, setAnalysis] = useState(null)
 
-  const mockAnalyze = async (inputUrl: string): Promise<LinkAnalysis> => {
+  const mockAnalyze = async (inputUrl) => {
     const domain = new URL(inputUrl.startsWith('http') ? inputUrl : `https://${inputUrl}`).hostname.toLowerCase()
     
     // Mock analysis logic
     let riskScore = 0
-    let status: LinkAnalysis['status'] = 'safe'
-    const issues: LinkAnalysis['issues'] = []
+    let status = 'safe'
+    const issues = []
     
     // Check for suspicious domains
     if (domain.includes('scam') || domain.includes('fake') || domain.includes('suspicious')) {
@@ -108,7 +91,7 @@ export function JobAdChecker() {
     }
   }
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case 'safe': return 'bg-green-100 text-green-800 border-green-200'
       case 'moderate': return 'bg-blue-100 text-blue-800 border-blue-200'
@@ -118,7 +101,7 @@ export function JobAdChecker() {
     }
   }
 
-  const getProgressColor = (score: number) => {
+  const getProgressColor = (score) => {
     if (score < 20) return 'bg-green-500'
     if (score < 40) return 'bg-blue-500'
     if (score < 70) return 'bg-yellow-500'
@@ -189,7 +172,7 @@ export function JobAdChecker() {
                 <h4 className="font-medium">Link Details</h4>
                 <div className="text-sm space-y-1">
                   <div><strong>Domain:</strong> {analysis.details.domain}</div>
-                  <div><strong>Security:</strong> {analysis.details.isSecure ? '✓ HTTPS' : '✗ Not Secure'}</div>
+                  <div><strong>Security:</strong> {analysis.details.isSecure ? 'HTTPS' : 'Not Secure'}</div>
                   <div><strong>Domain Age:</strong> {analysis.details.domainAge}</div>
                   <div><strong>Redirects:</strong> {analysis.details.redirects}</div>
                 </div>

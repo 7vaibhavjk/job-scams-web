@@ -1,27 +1,16 @@
 import { useState } from 'react'
 import { AlertTriangle, Send, Eye, Shield, Calendar, MapPin } from 'lucide-react'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { Textarea } from './ui/textarea'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
-import { Alert, AlertDescription } from './ui/alert'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { Separator } from './ui/separator'
+import { Button } from './ui/button.jsx'
+import { Input } from './ui/input.jsx'
+import { Textarea } from './ui/textarea.jsx'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card.jsx'
+import { Badge } from './ui/badge.jsx'
+import { Alert, AlertDescription } from './ui/alert.jsx'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs.jsx'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select.jsx'
+import { Separator } from './ui/separator.jsx'
 
-interface ScamReport {
-  id: string
-  type: 'fake-job' | 'payment-scam' | 'identity-theft' | 'pyramid-scheme' | 'other'
-  companyName: string
-  description: string
-  dateReported: string
-  location: string
-  status: 'new' | 'investigating' | 'verified' | 'resolved'
-  reportCount: number
-}
-
-const mockReports: ScamReport[] = [
+const mockReports = [
   {
     id: '1',
     type: 'fake-job',
@@ -83,17 +72,17 @@ export function ReportingPortal() {
     }, 3000)
   }
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status) => {
     const colors = {
       new: 'bg-blue-100 text-blue-800 border-blue-200',
       investigating: 'bg-yellow-100 text-yellow-800 border-yellow-200',
       verified: 'bg-red-100 text-red-800 border-red-200',
       resolved: 'bg-green-100 text-green-800 border-green-200'
     }
-    return <Badge className={colors[status as keyof typeof colors]}>{status.toUpperCase()}</Badge>
+    return <Badge className={colors[status]}>{status.toUpperCase()}</Badge>
   }
 
-  const getTypeBadge = (type: string) => {
+  const getTypeBadge = (type) => {
     const labels = {
       'fake-job': 'Fake Job',
       'payment-scam': 'Payment Scam',
@@ -101,7 +90,7 @@ export function ReportingPortal() {
       'pyramid-scheme': 'Pyramid Scheme',
       'other': 'Other'
     }
-    return <Badge variant="outline">{labels[type as keyof typeof labels]}</Badge>
+    return <Badge variant="outline">{labels[type]}</Badge>
   }
 
   return (

@@ -1,4 +1,4 @@
-import { ReportingPortal } from './ReportingPortal'
+import { ReportingPortal } from './ReportingPortal.jsx'
 
 export function ReportingSection() {
   return (

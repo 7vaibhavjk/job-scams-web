@@ -1,27 +1,17 @@
 import { useState } from 'react'
 import { Search, CheckCircle, XCircle, AlertTriangle, ExternalLink } from 'lucide-react'
-import { Button } from './ui/button'
-import { Input } from './ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { Badge } from './ui/badge'
-import { Alert, AlertDescription } from './ui/alert'
-
-interface VerificationResult {
-  companyName: string
-  status: 'verified' | 'suspicious' | 'unknown' | 'dangerous'
-  abn?: string
-  website?: string
-  address?: string
-  warnings: string[]
-  tips: string[]
-}
+import { Button } from './ui/button.jsx'
+import { Input } from './ui/input.jsx'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card.jsx'
+import { Badge } from './ui/badge.jsx'
+import { Alert, AlertDescription } from './ui/alert.jsx'
 
 export function EmployerVerification() {
   const [companyName, setCompanyName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<VerificationResult | null>(null)
+  const [result, setResult] = useState(null)
 
-  const mockVerify = async (name: string): Promise<VerificationResult> => {
+  const mockVerify = async (name) => {
     // Mock verification logic - in real app this would call an API
     const lowercaseName = name.toLowerCase()
     
@@ -88,20 +78,20 @@ export function EmployerVerification() {
     }
   }
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status) => {
     switch (status) {
       case 'verified':
-        return <Badge className="bg-green-100 text-green-800 border-green-200">✓ Verified</Badge>
+        return <Badge className="bg-green-100 text-green-800 border-green-200">Verified</Badge>
       case 'suspicious':
-        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">⚠ Suspicious</Badge>
+        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">Suspicious</Badge>
       case 'dangerous':
-        return <Badge className="bg-red-100 text-red-800 border-red-200">✗ Dangerous</Badge>
+        return <Badge className="bg-red-100 text-red-800 border-red-200">Dangerous</Badge>
       default:
         return <Badge className="bg-gray-100 text-gray-800 border-gray-200">? Unknown</Badge>
     }
   }
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status) => {
     switch (status) {
       case 'verified':
         return <CheckCircle className="h-6 w-6 text-green-600" />
@@ -180,7 +170,7 @@ export function EmployerVerification() {
                   <ul className="mt-2 space-y-1">
                     {result.warnings.map((warning, index) => (
                       <li key={index} className="flex items-start space-x-2">
-                        <span className="text-red-500 mt-1">•</span>
+                        <span className="text-red-500 mt-1">-</span>
                         <span>{warning}</span>
                       </li>
                     ))}
@@ -196,7 +186,7 @@ export function EmployerVerification() {
                 <ul className="mt-2 space-y-1">
                   {result.tips.map((tip, index) => (
                     <li key={index} className="flex items-start space-x-2">
-                      <span className="text-blue-500 mt-1">•</span>
+                      <span className="text-blue-500 mt-1">-</span>
                       <span>{tip}</span>
                     </li>
                   ))}

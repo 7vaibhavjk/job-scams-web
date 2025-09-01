@@ -3,13 +3,13 @@
 import * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress@1.1.2";
 
-import { cn } from "./utils";
+import { cn } from "./utils.js";
 
 function Progress({
   className,
   value,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
+}) {
   return (
     <ProgressPrimitive.Root
       data-slot="progress"
