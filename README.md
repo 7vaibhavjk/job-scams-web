@@ -2,7 +2,7 @@
 
   # 🔍 Job Scams Detection Website  
 
-A modern web application built with **React**, **TypeScript**, and **Vite** that helps users identify and avoid fraudulent job postings. The platform provides insights, awareness, and tools to detect scam job advertisements and stay safe in the job market.
+A modern web application built with **React**, **JavaScript**, and **Vite** that helps users identify and avoid fraudulent job postings. The platform provides insights, awareness, and tools to detect scam job advertisements and stay safe in the job market.
 
 ---
 
@@ -27,7 +27,7 @@ A modern web application built with **React**, **TypeScript**, and **Vite** that
 
 ## 📂 Tech Stack  
 
-- **Frontend:** React + TypeScript  
+- **Frontend:** React + JavaScript  
 - **Build Tool:** Vite  
 - **Styling:** Tailwind CSS (or your styling framework)  
 - **Icons:** Lucide React   
