@@ -50,6 +50,6 @@ npm start
 
 ## Connection Testing
 
-1. Ensure the backend service is running on `http://localhost:8003`
+1. Ensure the backend service is running on `http://13.211.253.6:8003`
 2. Frontend will automatically connect to the backend API
 3. You can view API request logs in the browser developer tools
