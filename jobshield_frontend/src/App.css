@@ -910,3 +910,25 @@ footer {
     font-size: 13px;
   }
 }
+
+
+.chart-container,
+.echarts-for-react {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.card {
+  border-radius: 12px;
+}
+
+button {
+  border-radius: 10px;
+  padding: 8px 14px;
+}
+
+select {
+  border-radius: 8px;
+}
+

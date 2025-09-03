@@ -1,606 +1,404 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from 'chart.js';
-import { Chart, Doughnut } from 'react-chartjs-2';
+// src/components/TrendsPage.jsx
+import React, { useEffect, useMemo, useState } from "react";
+import ReactECharts from "echarts-for-react";
+import { loadRecords, groupBy, sum, currency } from "../services/data";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement,
-  PointElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
-);
+// below other imports
+const COLORS = {
+  primary:   "#012169", // AUS blue
+  dark:      "#001A44",
+  gold:      "#FFCD00",
+  red:       "#E4002B",
+  green:     "#2e7d32",
+  teal:      "#00A3A1",
+  violet:    "#6C63FF",
+  slate:     "#67758d",
+  sky:       "#7AB8F5",
+  coral:     "#FF7F50",
+  pink:      "#F06292",
+  orange:    "#F57F17",
+};
 
-function TrendsPage({ onNavigate }) {
-  const [activeTab, setActiveTab] = useState('states');
-  const [selectedYear, setSelectedYear] = useState('2025');
+// helper to build a soft vertical gradient bar
+const barGradient = (top, bottom=COLORS.primary) => ({
+  type: "linear",
+  x: 0, y: 0, x2: 0, y2: 1,
+  colorStops: [
+    { offset: 0, color: top },
+    { offset: 1, color: bottom }
+  ]
+});
 
-  // 2025 state data (real data from Vue version)
-  const stateData2025 = [
+
+
+export default function TrendsPage() {
+  const [raw, setRaw] = useState([]);
+  const [filters, setFilters] = useState({
+    year: "All",
+    state: "All",
+    contact: "All",
+    gender: "All",
+    age: "All",
+    scamType: "All",
+  });
+
+  useEffect(() => { (async () => setRaw(await loadRecords()))(); }, []);
+
+  // build select options from the data
+  const years   = useMemo(() => ["All", ...new Set(raw.map(r => String(r.year)))].sort(), [raw]);
+  const states  = useMemo(() => ["All", ...new Set(raw.map(r => r.state_code))].sort(), [raw]);
+  const contacts= useMemo(() => ["All", ...new Set(raw.map(r => r.contact_method))].sort(), [raw]);
+  const genders = useMemo(() => ["All", ...new Set(raw.map(r => r.gender))].sort(), [raw]);
+  const ages    = useMemo(() => ["All", ...new Set(raw.map(r => r.age_band))].sort(), [raw]);
+  const scamTypes = useMemo(() => ["All", ...new Set(raw.map(r => r.scam_type))].sort(), [raw]);
+
+  // apply filters
+  const data = useMemo(() => raw.filter(r =>
+    (filters.year    === "All" || String(r.year)        === filters.year) &&
+    (filters.state   === "All" || r.state_code          === filters.state) &&
+    (filters.contact === "All" || r.contact_method      === filters.contact) &&
+    (filters.gender  === "All" || r.gender              === filters.gender) &&
+    (filters.age     === "All" || r.age_band            === filters.age) &&
+    (filters.scamType=== "All" || r.scam_type           === filters.scamType)
+  ), [raw, filters]);
+
+  // KPI
+  const totalLoss   = currency(sum(data, r => r.amount_lost_aud));
+  const totalReports= sum(data, r => r.report_count).toLocaleString();
+
+  // series
+  const monthly = useMemo(() =>
+    groupBy(data, r => r.month)
+      .map(([month, rows]) => ({
+        month,
+        loss: sum(rows, r => r.amount_lost_aud),
+        count: sum(rows, r => r.report_count),
+      }))
+      .sort((a,b)=> a.month.localeCompare(b.month))
+  , [data]);
+
+  const topScams = useMemo(() =>
+    groupBy(data, r => r.scam_type)
+      .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
+      .sort((a,b)=> b.loss - a.loss).slice(0,10)
+  , [data]);
+
+  const contactMethods = useMemo(() =>
+    groupBy(data, r => r.contact_method)
+      .map(([name, rows]) => ({ name, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
+      .sort((a,b)=> b.reports - a.reports)
+  , [data]);
+
+  const byState = useMemo(() =>
+    groupBy(data, r => r.state_code)
+      .map(([code, rows]) => ({ code, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
+      .sort((a,b)=> b.reports - a.reports)
+  , [data]);
+
+  const byGender = useMemo(() =>
+    groupBy(data, r => r.gender)
+      .map(([name, rows]) => ({ name, value: sum(rows, r => r.amount_lost_aud) }))
+  , [data]);
+
+  const byAge = useMemo(() =>
+    groupBy(data, r => r.age_band)
+      .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
+      .sort((a,b)=> b.loss - a.loss)
+  , [data]);
+
+  // chart options
+  const monthlyOpt = {
+  tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
+  legend: { data: ["Loss (AUD)", "Reports"] },
+  grid: { left: 50, right: 40, bottom: 40, top: 30 },
+  xAxis: { type: "category", data: monthly.map(x => x.month) },
+  yAxis: [
+    { type: "value", name: "Loss (AUD)", axisLabel: { formatter: v => currency(v) } },
+    { type: "value", name: "Reports", position: "right" }
+  ],
+  series: [
     {
-      state: 'Australian Capital Territory',
-      reports: '2,607',
-      amount: '$1,205,562.07'
+      name: "Loss (AUD)",
+      type: "bar",
+      itemStyle: { color: barGradient("#415aD5", COLORS.primary) },
+      emphasis: { itemStyle: { color: barGradient("#5C7CFF", COLORS.dark) }},
+      data: monthly.map(x => x.loss)
     },
     {
-      state: 'New South Wales',
-      reports: '25,379',
-      amount: '$48,672,876.72'
-    },
-    {
-      state: 'Northern Territory',
-      reports: '545',
-      amount: '$850,187.09'
-    },
-    {
-      state: 'Queensland',
-      reports: '17,070',
-      amount: '$27,882,590.77'
-    },
-    {
-      state: 'South Australia',
-      reports: '6,027',
-      amount: '$5,990,647.16'
-    },
-    {
-      state: 'Tasmania',
-      reports: '1,771',
-      amount: '$1,328,174.66'
-    },
-    {
-      state: 'Victoria',
-      reports: '20,115',
-      amount: '$28,029,645.94'
-    },
-    {
-      state: 'Western Australia',
-      reports: '8,791',
-      amount: '$20,726,006.97'
+      name: "Reports",
+      type: "scatter",
+      symbolSize: 10,
+      itemStyle: { color: COLORS.green },
+      yAxisIndex: 1,
+      data: monthly.map(x => x.count)
     }
-  ];
-
-  // 2024 state data (realistic data based on 2025 trends)
-  const stateData2024 = [
-    {
-      state: 'Australian Capital Territory',
-      reports: '2,450',
-      amount: '$1,150,000.00'
-    },
-    {
-      state: 'New South Wales',
-      reports: '23,800',
-      amount: '$45,500,000.00'
-    },
-    {
-      state: 'Northern Territory',
-      reports: '520',
-      amount: '$800,000.00'
-    },
-    {
-      state: 'Queensland',
-      reports: '16,200',
-      amount: '$26,500,000.00'
-    },
-    {
-      state: 'South Australia',
-      reports: '5,800',
-      amount: '$5,600,000.00'
-    },
-    {
-      state: 'Tasmania',
-      reports: '1,650',
-      amount: '$1,250,000.00'
-    },
-    {
-      state: 'Victoria',
-      reports: '19,100',
-      amount: '$26,800,000.00'
-    },
-    {
-      state: 'Western Australia',
-      reports: '8,300',
-      amount: '$19,500,000.00'
-    }
-  ];
-
-  // 2023 state data (realistic data based on 2024 trends)
-  const stateData2023 = [
-    {
-      state: 'Australian Capital Territory',
-      reports: '2,300',
-      amount: '$1,100,000.00'
-    },
-    {
-      state: 'New South Wales',
-      reports: '22,500',
-      amount: '$43,000,000.00'
-    },
-    {
-      state: 'Northern Territory',
-      reports: '490',
-      amount: '$750,000.00'
-    },
-    {
-      state: 'Queensland',
-      reports: '15,400',
-      amount: '$25,200,000.00'
-    },
-    {
-      state: 'South Australia',
-      reports: '5,500',
-      amount: '$5,300,000.00'
-    },
-    {
-      state: 'Tasmania',
-      reports: '1,580',
-      amount: '$1,180,000.00'
-    },
-    {
-      state: 'Victoria',
-      reports: '18,200',
-      amount: '$25,500,000.00'
-    },
-    {
-      state: 'Western Australia',
-      reports: '7,900',
-      amount: '$18,500,000.00'
-    }
-  ];
-
-  // Monthly trend data (real data from Vue version + extended)
-  const monthlyData2025 = [
-    { month: 'Jan 25', reports: 19137, amount: 36595249.46 },
-    { month: 'Feb 25', reports: 17394, amount: 28772516.71 },
-    { month: 'Mar 25', reports: 19225, amount: 27058640.58 },
-    { month: 'Apr 25', reports: 16474, amount: 26453182.45 },
-    { month: 'May 25', reports: 17878, amount: 28366511.02 },
-    { month: 'Jun 25', reports: 18500, amount: 29500000.00 },
-    { month: 'Jul 25', reports: 19200, amount: 31000000.00 },
-    { month: 'Aug 25', reports: 19800, amount: 32500000.00 },
-    { month: 'Sep 25', reports: 20500, amount: 34000000.00 },
-    { month: 'Oct 25', reports: 21200, amount: 35500000.00 },
-    { month: 'Nov 25', reports: 21800, amount: 37000000.00 },
-    { month: 'Dec 25', reports: 22500, amount: 38500000.00 }
-  ];
-
-  const monthlyData2024 = [
-    { month: 'Jan 24', reports: 18200, amount: 34500000.00 },
-    { month: 'Feb 24', reports: 17500, amount: 32000000.00 },
-    { month: 'Mar 24', reports: 18300, amount: 33500000.00 },
-    { month: 'Apr 24', reports: 16800, amount: 31000000.00 },
-    { month: 'May 24', reports: 17200, amount: 32500000.00 },
-    { month: 'Jun 24', reports: 17800, amount: 34000000.00 },
-    { month: 'Jul 24', reports: 18500, amount: 35500000.00 },
-    { month: 'Aug 24', reports: 19200, amount: 37000000.00 },
-    { month: 'Sep 24', reports: 19800, amount: 38500000.00 },
-    { month: 'Oct 24', reports: 20500, amount: 40000000.00 },
-    { month: 'Nov 24', reports: 21200, amount: 41500000.00 },
-    { month: 'Dec 24', reports: 21800, amount: 43000000.00 }
-  ];
-
-  const monthlyData2023 = [
-    { month: 'Jan 23', reports: 17500, amount: 33000000.00 },
-    { month: 'Feb 23', reports: 16800, amount: 31500000.00 },
-    { month: 'Mar 23', reports: 17600, amount: 33000000.00 },
-    { month: 'Apr 23', reports: 16200, amount: 30500000.00 },
-    { month: 'May 23', reports: 16600, amount: 32000000.00 },
-    { month: 'Jun 23', reports: 17200, amount: 33500000.00 },
-    { month: 'Jul 23', reports: 17800, amount: 35000000.00 },
-    { month: 'Aug 23', reports: 18500, amount: 36500000.00 },
-    { month: 'Sep 23', reports: 19200, amount: 38000000.00 },
-    { month: 'Oct 23', reports: 19800, amount: 39500000.00 },
-    { month: 'Nov 23', reports: 20500, amount: 41000000.00 },
-    { month: 'Dec 23', reports: 21200, amount: 42500000.00 }
-  ];
-
-  // Annual comparison data
-  const yearlyComparison = [
-    { year: '2023', totalReports: 218000, totalAmount: 456000000.00 },
-    { year: '2024', totalReports: 225000, totalAmount: 472000000.00 },
-    { year: '2025', totalReports: 232000, totalAmount: 488000000.00 }
-  ];
-
-  // Scam type distribution data
-  const scamTypeData = {
-    labels: ['Phishing Scams', 'Advance Fee Scams', 'Identity Theft', 'Work-from-Home Scams', 'Fake Job Offers', 'Equipment Purchase Scams'],
-    datasets: [{
-      data: [35, 25, 20, 12, 5, 3],
-      backgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        '#FFCE56',
-        '#4BC0C0',
-        '#9966FF',
-        '#FF9F40'
-      ],
-      borderWidth: 2,
-      borderColor: '#fff'
-    }]
+  ]
   };
 
-  // Get current year's data
-  const getCurrentStateData = () => {
-    switch (selectedYear) {
-      case '2023': return stateData2023;
-      case '2024': return stateData2024;
-      case '2025': return stateData2025;
-      default: return stateData2025;
-    }
-  };
 
-  // Get current year's monthly data
-  const getCurrentMonthlyData = () => {
-    switch (selectedYear) {
-      case '2023': return monthlyData2023;
-      case '2024': return monthlyData2024;
-      case '2025': return monthlyData2025;
-      default: return monthlyData2025;
-    }
-  };
+  const topScamsOpt = {
+  tooltip: { trigger: "item", valueFormatter: v => currency(v) },
+  grid: { left: 120, right: 40, bottom: 90, top: 20 },
+  xAxis: { type: "category", data: topScams.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+  yAxis: { type: "value", axisLabel: { formatter: v => currency(v) } },
+  series: [{
+    type: "bar",
+    itemStyle: { color: barGradient("#9A8CFF", "#6C63FF") },
+    emphasis: { itemStyle: { color: barGradient("#B3A8FF", "#7B71FF") }},
+    data: topScams.map(x => x.loss)
+  }]
+ };
 
-  // Monthly trend chart data
-  const chartData = {
-    labels: getCurrentMonthlyData().map(item => item.month),
-    datasets: [
-      {
-        type: 'bar',
-        label: 'Number of Reports',
-        data: getCurrentMonthlyData().map(item => item.reports),
-        backgroundColor: '#012169',
-        yAxisID: 'y',
-        order: 2
-      },
-      {
-        type: 'line',
-        label: 'Amount Lost (Million AUD)',
-        data: getCurrentMonthlyData().map(item => item.amount / 1000000),
-        borderColor: '#E4002B',
-        backgroundColor: 'rgba(228, 0, 43, 0.1)',
-        fill: true,
-        yAxisID: 'y1',
-        order: 1,
-        tension: 0.3
-      }
-    ]
-  };
 
-  // Annual comparison chart data
-  const yearlyChartData = {
-    labels: yearlyComparison.map(item => item.year),
-    datasets: [
-      {
-        label: 'Total Reports (Thousands)',
-        data: yearlyComparison.map(item => item.totalReports / 1000),
-        backgroundColor: '#012169',
-        yAxisID: 'y'
-      },
-      {
-        label: 'Total Amount Lost (Million AUD)',
-        data: yearlyComparison.map(item => item.totalAmount / 1000000),
-        backgroundColor: '#E4002B',
-        yAxisID: 'y1'
-      }
-    ]
-  };
+  const contactOpt = {
+  tooltip: { trigger: "item" },
+  grid: { left: 120, right: 40, bottom: 60, top: 20 },
+  xAxis: { type: "category", data: contactMethods.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+  yAxis: [{ type: "value", name: "Reports" }],
+  series: [{
+    type: "bar",
+    itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
+    emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") }},
+    data: contactMethods.map(x => x.reports)
+  }]
+ };
 
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: `Monthly Job Scam Reports and Loss Trends ${selectedYear}`,
-        font: {
-          size: 16
-        }
-      },
-      tooltip: {
-        callbacks: {
-          label: function(context) {
-            let label = context.dataset.label || '';
-            if (label) {
-              label += ': ';
-            }
-            if (context.dataset.yAxisID === 'y1') {
-              label += `$${(context.raw * 1000000 / 1000000).toFixed(1)}M`;
-            } else {
-              label += context.raw.toLocaleString();
-            }
-            return label;
-          }
-        }
-      }
+
+  const stateOpt = {
+  tooltip: { trigger: "item" },
+  grid: { left: 70, right: 40, bottom: 40, top: 20 },
+  xAxis: { type: "category", data: byState.map(x => x.code) },
+  yAxis: [{ type: "value", name: "Reports" }],
+  series: [{
+    type: "bar",
+    itemStyle: { color: barGradient("#FFE26B", COLORS.gold) },
+    emphasis: { itemStyle: { color: barGradient("#FFE891", "#FFB300") }},
+    data: byState.map(x => x.reports)
+  }]
+ };
+
+
+  const genderOpt = {
+  tooltip: { trigger: "item", valueFormatter: v => currency(v) },
+  legend: { top: 0 },
+  color: [COLORS.primary, COLORS.pink, COLORS.orange, COLORS.slate],
+  series: [{
+    type: "pie",
+    radius: ["50%","70%"],
+    data: byGender,
+    label: { formatter: "{b}: {d}%"}
+  }]
+ };
+
+
+  const ageOpt = {
+  tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
+  grid: { left: 120, right: 40, bottom: 80, top: 20 },
+  xAxis: { type: "category", data: byAge.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+  yAxis: [{ type: "value", axisLabel: { formatter: v => currency(v) } }],
+  series: [{
+    type: "bar",
+    itemStyle: { color: barGradient("#FF9A7A", COLORS.coral) },
+    emphasis: { itemStyle: { color: barGradient("#FFB199", "#FF6A3D") }},
+    data: byAge.map(x => x.loss)
+  }]
+ };
+
+  // fixed grid positions for each state/territory
+// fixed grid positions for each state/territory
+// --- tile layout stays the same ---
+const TILE = {
+  WA:  [0,1],
+  NT:  [1,0],
+  QLD: [2,0],
+  SA:  [1,1],
+  NSW: [2,1],
+  ACT: [3,1],
+  TAS: [1,2],
+  VIC: [2,2],
+};
+
+const stateReports = new Map(byState.map(s => [s.code, s.reports]));
+
+// Build data as objects with value:[x,y,v] + state label
+const heatData = Object.entries(TILE).map(([code, [x, y]]) => ({
+  value: [x, y, stateReports.get(code) || 0],
+  state: code
+}));
+
+// Category labels derived from TILE extents
+const maxX = Math.max(...Object.values(TILE).map(([x]) => x));
+const maxY = Math.max(...Object.values(TILE).map(([, y]) => y));
+const xCats = Array.from({ length: maxX + 1 }, (_, i) => String(i));
+const yCats = Array.from({ length: maxY + 1 }, (_, i) => String(i));
+
+const ausHeatmapOpt = {
+  tooltip: {
+    formatter: p =>
+      `${p.data.state}: ${p.value[2].toLocaleString()} reports`
+  },
+  grid: { left: 20, right: 20, top: 10, bottom: 30 },
+
+  // Two category axes with boundaryGap and visible split areas
+  xAxis: {
+    type: "category",
+    data: xCats,
+    boundaryGap: true,
+    axisLine: { show: false },
+    axisTick: { show: false },
+    axisLabel: { show: false },
+    splitArea: { show: true }     // helps you see the tiles
+  },
+  yAxis: {
+    type: "category",
+    data: yCats,
+    boundaryGap: true,
+    inverse: true,
+    axisLine: { show: false },
+    axisTick: { show: false },
+    axisLabel: { show: false },
+    splitArea: { show: true }
+  },
+
+  visualMap: {
+    min: 0,
+    max: Math.max(...heatData.map(d => d.value[2])) || 1,
+    calculable: true,
+    orient: "horizontal",
+    left: "center",
+    bottom: 0,
+    inRange: { color: ["#E6F0FF", COLORS.primary] }
+  },
+
+  series: [{
+    type: "heatmap",
+    coordinateSystem: "cartesian2d",
+    data: heatData,
+    encode: { x: 0, y: 1, value: 2 },  // 👈 make mapping explicit
+    itemStyle: { borderColor: "#fff", borderWidth: 2 },
+    label: {
+      show: true,
+      formatter: p => p.data.state,
+      color: "#fff",
+      fontWeight: 700
     },
-    scales: {
-      y: {
-        type: 'linear',
-        display: true,
-        position: 'left',
-        title: {
-          display: true,
-          text: 'Number of Reports'
-        }
-      },
-      y1: {
-        type: 'linear',
-        display: true,
-        position: 'right',
-        title: {
-          display: true,
-          text: 'Amount Lost (Million AUD)'
-        },
-        grid: {
-          drawOnChartArea: false
-        }
-      }
+    emphasis: {
+      itemStyle: { shadowBlur: 8, shadowColor: "rgba(0,0,0,0.25)" }
     }
-  };
+  }]
+};
 
-  const yearlyChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Annual Job Scam Trends Comparison (2023-2025)',
-        font: {
-          size: 16
-        }
-      }
-    },
-    scales: {
-      y: {
-        type: 'linear',
-        display: true,
-        position: 'left',
-        title: {
-          display: true,
-          text: 'Total Reports (Thousands)'
-        }
-      },
-      y1: {
-        type: 'linear',
-        display: true,
-        position: 'right',
-        title: {
-          display: true,
-          text: 'Total Amount Lost (Million AUD)'
-        },
-        grid: {
-          drawOnChartArea: false
-        }
-      }
-    }
-  };
 
-  const doughnutOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Job Scam Types Distribution',
-        font: {
-          size: 16
-        }
-      },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  };
+
+
+
+  // linked interactions: click → apply filter
+  const onTopScamClick = p => setFilters(f => ({ ...f, scamType: p.name }));
+  const onGenderClick  = p => setFilters(f => ({ ...f, gender: p.name }));
+  const onContactClick = p => setFilters(f => ({ ...f, contact: p.name }));
+  const onStateClick   = p => setFilters(f => ({ ...f, state: p.name }));
+
+  // export filtered rows as CSV
+  function exportCSV() {
+    const headers = ["date","year","month","state_code","state_name","contact_method","age_band","gender","scam_group","scam_type","amount_lost_aud","report_count"];
+    const lines = [headers.join(",")].concat(
+      data.map(r => headers.map(h => (""+ (r[h]?.valueOf?.() ?? r[h] ?? "")).replaceAll('"','""')).map(x=>`"${x}"`).join(","))
+    );
+    const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = "jobshield_filtered.csv"; a.click(); URL.revokeObjectURL(a.href);
+  }
 
   return (
-    <div id="trends-page" className="page active">
-      <section className="section">
-        <div className="container">
-          <a 
-            href="#" 
-            className="back-btn" 
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate('home');
-            }}
-          >
-            <i className="fas fa-arrow-left"></i> Back to Home
-          </a>
+    <div style={{ padding: 24 }}>
+      <h2 style={{ marginBottom: 12 }}>Scam Trends & Insights</h2>
 
-          <h2 className="section-title">Australian Job Scam Trends Analysis</h2>
-          <p className="section-subtitle">Based on official data from the Australian Competition and Consumer Commission (ACCC) and Scamwatch</p>
+      {/* Filters */}
+      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 16 }}>
+        <Select label="Scam Type" value={filters.scamType} onChange={v => setFilters(f => ({...f, scamType: v}))} options={scamTypes}/>
+        <Select label="State"     value={filters.state}    onChange={v => setFilters(f => ({...f, state: v}))} options={states}/>
+        <Select label="Year"      value={filters.year}     onChange={v => setFilters(f => ({...f, year: v}))} options={years}/>
+        <Select label="Contact"   value={filters.contact}  onChange={v => setFilters(f => ({...f, contact: v}))} options={contacts}/>
+        <Select label="Gender"    value={filters.gender}   onChange={v => setFilters(f => ({...f, gender: v}))} options={genders}/>
+        <Select label="Age"       value={filters.age}      onChange={v => setFilters(f => ({...f, age: v}))} options={ages}/>
+        <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All",age:"All",scamType:"All" })}>Clear All</button>
+        <button onClick={exportCSV}>Export</button>
+      </div>
 
-          <div className="tab-container">
-            <div 
-              className={`tab ${activeTab === 'states' ? 'active' : ''}`}
-              onClick={() => setActiveTab('states')}
-            >
-              State Data
-            </div>
-            <div 
-              className={`tab ${activeTab === 'monthly' ? 'active' : ''}`}
-              onClick={() => setActiveTab('monthly')}
-            >
-              Monthly Trends
-            </div>
-            <div 
-              className={`tab ${activeTab === 'yearly' ? 'active' : ''}`}
-              onClick={() => setActiveTab('yearly')}
-            >
-              Yearly Comparison
-            </div>
-            <div 
-              className={`tab ${activeTab === 'types' ? 'active' : ''}`}
-              onClick={() => setActiveTab('types')}
-            >
-              Scam Types
-            </div>
-          </div>
+      {/* KPIs */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
+        <KPI title="Reported losses" value={totalLoss}/>
+        <KPI title="Reported scams"  value={totalReports}/>
+        <KPI title="Top scam by loss" value={topScams[0]?.name ?? "—"}/>
+        <KPI title="Top contact method" value={contactMethods[0]?.name ?? "—"}/>
+      </div>
 
-          {activeTab === 'states' && (
-            <div className="tab-content active">
-              <div className="card">
-                <div className="year-selector">
-                  <label htmlFor="year-select">Select Year: </label>
-                  <select 
-                    id="year-select" 
-                    value={selectedYear} 
-                    onChange={(e) => setSelectedYear(e.target.value)}
-                  >
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                  </select>
-                </div>
-                
-                <h3 className="card-title">
-                  <i className="fas fa-map-marked-alt"></i> 
-                  Job Scam Reports and Losses by State ({selectedYear} Data)
-                </h3>
-                <p>The following data shows the distribution of job scam reports and financial losses across Australian states in {selectedYear}</p>
+      {/* Charts */}
+      <Card title="Amount lost and number of reports">
+        <ReactECharts style={{ height: 340 }} option={monthlyOpt}/>
+      </Card>
 
-                <div className="state-cards">
-                  {getCurrentStateData().map((state, index) => (
-                    <div key={index} className="state-card">
-                      <div className="state-name">{state.state}</div>
-                      <div className="state-data">
-                        <div className="data-item">
-                          <div className="data-value">{state.reports}</div>
-                          <div className="data-label">Reports</div>
-                        </div>
-                        <div className="data-item">
-                          <div className="data-value">{state.amount}</div>
-                          <div className="data-label">Amount Lost</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+      <Card title="Top ten scams by loss (click bar to filter)">
+        <ReactECharts style={{ height: 360 }} option={topScamsOpt} onEvents={{ click: onTopScamClick }}/>
+      </Card>
 
-                <p className="data-source">Data source: Scamwatch.gov.au | Filters: Address State not equal to Outside of Australia or Unspecified, MonthName equal to {selectedYear}</p>
-              </div>
-            </div>
-          )}
+      <Card title="Top contact methods (click bar to filter)">
+        <ReactECharts style={{ height: 300 }} option={contactOpt} onEvents={{ click: onContactClick }}/>
+      </Card>
 
-          {activeTab === 'monthly' && (
-            <div className="tab-content active">
-              <div className="card">
-                <div className="year-selector">
-                  <label htmlFor="year-select-monthly">Select Year: </label>
-                  <select 
-                    id="year-select-monthly" 
-                    value={selectedYear} 
-                    onChange={(e) => setSelectedYear(e.target.value)}
-                  >
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                  </select>
-                </div>
+      <Card title="State reported scams (click bar to filter)">
+        <ReactECharts style={{ height: 300 }} option={stateOpt} onEvents={{ click: onStateClick }}/>
+      </Card>
 
-                <h3 className="card-title"><i className="fas fa-chart-line"></i> Monthly Job Scam Trends {selectedYear}</h3>
-                <p>The following data shows the monthly trends of job scam reports and financial losses in {selectedYear}</p>
+      <Card title="State heatmap (click tile to filter)">
+        <ReactECharts
+          style={{ height: 260 }}
+          option={ausHeatmapOpt}
+          onEvents={{
+            click: (p) => setFilters(f => ({ ...f, state: p.data?.state || f.state }))
+          }}
+        />
 
-                <div className="chart-container">
-                  <Chart type="bar" data={chartData} options={chartOptions} />
-                </div>
+      </Card>
 
-                <p className="data-source">Data source: Scamwatch.gov.au | Filters: MonthName equal to {selectedYear}</p>
-              </div>
-            </div>
-          )}
 
-          {activeTab === 'yearly' && (
-            <div className="tab-content active">
-              <div className="card">
-                <h3 className="card-title"><i className="fas fa-chart-bar"></i> Annual Job Scam Trends Comparison</h3>
-                <p>The following data shows the annual comparison of job scam reports and financial losses from 2023 to 2025</p>
-
-                <div className="chart-container">
-                  <Chart type="bar" data={yearlyChartData} options={yearlyChartOptions} />
-                </div>
-
-                <div className="yearly-summary">
-                  <h4>Key Insights:</h4>
-                  <ul>
-                    <li><strong>2023:</strong> {yearlyComparison[0].totalReports.toLocaleString()} reports, ${(yearlyComparison[0].totalAmount / 1000000).toFixed(1)}M lost</li>
-                    <li><strong>2024:</strong> {yearlyComparison[1].totalReports.toLocaleString()} reports, ${(yearlyComparison[1].totalAmount / 1000000).toFixed(1)}M lost</li>
-                    <li><strong>2025:</strong> {yearlyComparison[2].totalReports.toLocaleString()} reports, ${(yearlyComparison[2].totalAmount / 1000000).toFixed(1)}M lost</li>
-                  </ul>
-                  <p><strong>Trend:</strong> Job scams have increased by approximately 3.2% annually in both reports and financial losses.</p>
-                </div>
-
-                <p className="data-source">Data source: Scamwatch.gov.au | Aggregated annual data from 2023-2025</p>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'types' && (
-            <div className="tab-content active">
-              <div className="card">
-                <h3 className="card-title"><i className="fas fa-chart-pie"></i> Job Scam Types Distribution</h3>
-                <p>The following chart shows the distribution of different types of job scams based on reported cases</p>
-
-                <div className="chart-container">
-                  <Doughnut data={scamTypeData} options={doughnutOptions} />
-                </div>
-
-                <div className="scam-types-breakdown">
-                  <h4>Scam Type Breakdown:</h4>
-                  <div className="type-list">
-                    <div className="type-item">
-                      <span className="type-color" style={{backgroundColor: '#FF6384'}}></span>
-                      <span className="type-name">Phishing Scams (35%)</span>
-                      <span className="type-desc">Fake websites and emails designed to steal personal information</span>
-                    </div>
-                    <div className="type-item">
-                      <span className="type-color" style={{backgroundColor: '#36A2EB'}}></span>
-                      <span className="type-name">Advance Fee Scams (25%)</span>
-                      <span className="type-desc">Requests for upfront payment for job opportunities</span>
-                    </div>
-                    <div className="type-item">
-                      <span className="type-color" style={{backgroundColor: '#FFCE56'}}></span>
-                      <span className="type-name">Identity Theft (20%)</span>
-                      <span className="type-desc">Stealing personal information for fraudulent purposes</span>
-                    </div>
-                    <div className="type-item">
-                      <span className="type-color" style={{backgroundColor: '#4BC0C0'}}></span>
-                      <span className="type-name">Work-from-Home Scams (12%)</span>
-                      <span className="type-desc">Fake remote work opportunities</span>
-                    </div>
-                    <div className="type-item">
-                      <span className="type-color" style={{backgroundColor: '#9966FF'}}></span>
-                      <span className="type-name">Fake Job Offers (5%)</span>
-                      <span className="type-desc">Non-existent job positions</span>
-                    </div>
-                    <div className="type-item">
-                      <span className="type-color" style={{backgroundColor: '#FF9F40'}}></span>
-                      <span className="type-name">Equipment Purchase Scams (3%)</span>
-                      <span className="type-desc">Requests to purchase equipment for work</span>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="data-source">Data source: Scamwatch.gov.au | Analysis of reported job scam types</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </section>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+        <Card title="Gender breakdown (click slice to filter)">
+          <ReactECharts style={{ height: 320 }} option={genderOpt} onEvents={{ click: onGenderClick }}/>
+        </Card>
+        <Card title="Reported scams and loss breakdown by age">
+          <ReactECharts style={{ height: 320 }} option={ageOpt}/>
+        </Card>
+      </div>
     </div>
   );
 }
 
-export default TrendsPage;
+function KPI({ title, value }) {
+  return (
+    <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)" }}>
+      <div style={{ fontSize: 12, opacity: .7 }}>{title}</div>
+      <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
+    </div>
+  );
+}
+
+function Card({ title, children }) {
+  return (
+    <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)", marginBottom: 16 }}>
+      <div style={{ fontWeight: 600, marginBottom: 8 }}>{title}</div>
+      {children}
+    </div>
+  );
+}
+
+function Select({ label, value, onChange, options }) {
+  return (
+    <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
+      <span style={{ fontSize: 12 }}>{label}</span>
+      <select value={value} onChange={e => onChange(e.target.value)}>
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </label>
+  );
+}
