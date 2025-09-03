@@ -1,7 +1,7 @@
 // API Configuration File
 const API_CONFIG = {
   // Backend API Base URL
-  BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:8003',
+  BASE_URL: process.env.REACT_APP_API_URL || 'http://13.211.253.6:8003',
   
   // API Endpoints
   ENDPOINTS: {

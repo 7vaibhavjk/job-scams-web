@@ -6,7 +6,7 @@ Create a `.env` file in the project root directory with the following configurat
 
 ```bash
 # Backend API server address
-REACT_APP_API_URL=http://localhost:8003
+REACT_APP_API_URL=http://13.211.253.6:8003
 
 # Application configuration
 REACT_APP_NAME=JobShield
