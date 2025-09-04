@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 .env
 .env.*
+
+# Build directories
+jobshield_frontend/build/
+jobshield_backend/build/
