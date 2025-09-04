@@ -18,6 +18,7 @@ type ServerList struct {
 }
 
 type QueryLinkSafeReq struct {
+	Url    string `json:"url"`
 	Search string `json:"search"`
 	Threat string `json:"threat" gorm:"column:threat"`
 	Source string `json:"source" gorm:"column:source"`
