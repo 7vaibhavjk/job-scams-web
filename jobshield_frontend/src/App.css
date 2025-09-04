@@ -932,3 +932,86 @@ select {
   border-radius: 8px;
 }
 
+/* slider nicer thumb */
+/* --- Year slider --- */
+.cardish {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  padding: 14px 16px;
+}
+
+.year-bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.year-label {
+  font-weight: 700;
+  color: var(--blue);
+  margin-right: 4px;
+}
+
+.year-range {
+  position: relative;
+}
+
+.year-range input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  background: linear-gradient(90deg, #dfe6f4, #dfe6f4);
+  height: 8px;
+  border-radius: 8px;
+  outline: none;
+}
+
+.year-range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px rgba(1,33,105,.25);
+  cursor: pointer;
+}
+
+.year-range input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: var(--blue);
+  cursor: pointer;
+}
+
+.year-tick-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--dark-grey);
+  margin-top: 6px;
+  padding: 0 2px;
+}
+
+.pill {
+  border: 1px solid var(--mid-grey);
+  background: #fff;
+  color: var(--dark-grey);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+.pill:hover { background: var(--light-grey); }
+.pill.active {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+

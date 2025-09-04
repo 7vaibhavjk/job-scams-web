@@ -29,6 +29,56 @@ const barGradient = (top, bottom=COLORS.primary) => ({
   ]
 });
 
+function YearSlider({ value, onChange }) {
+  const YEARS = [2020, 2021, 2022, 2023, 2024, 2025];
+
+  // if value is "All", keep the thumb at the max to avoid a weird position
+  const sliderVal = value === "All" ? 2025 : Number(value);
+
+  return (
+    <div className="year-bar cardish">
+      <label className="year-label">Year</label>
+
+      <div className="year-range">
+        <input
+          type="range"
+          min={2020}
+          max={2025}
+          step={1}
+          value={sliderVal}
+          onChange={(e) => onChange(String(e.target.value))}
+          list="year-ticks"
+        />
+        <datalist id="year-ticks">
+          {YEARS.map((y) => (
+            <option key={y} value={y} label={y} />
+          ))}
+        </datalist>
+        <div className="year-tick-labels">
+          {YEARS.map((y) => (
+            <span key={y}>{y}</span>
+          ))}
+        </div>
+      </div>
+
+      <button
+        className={`pill ${value === "All" ? "active" : ""}`}
+        onClick={() => onChange("All")}
+        title="Show all years"
+      >
+        All
+      </button>
+    </div>
+  );
+}
+
+function prettyMonth(m) {
+  // m looks like "2020-01"
+  const [y, mm] = String(m).split("-");
+  const names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const mon = names[(+mm || 1) - 1] || m;
+  return `${mon} ${String(y).slice(2)}`;
+}
 
 
 export default function TrendsPage() {
@@ -108,32 +158,91 @@ export default function TrendsPage() {
 
   // chart options
   const monthlyOpt = {
-  tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
-  legend: { data: ["Loss (AUD)", "Reports"] },
-  grid: { left: 50, right: 40, bottom: 40, top: 30 },
-  xAxis: { type: "category", data: monthly.map(x => x.month) },
+  tooltip: {
+    trigger: "axis",
+    axisPointer: { type: "cross" },
+    formatter: (params) => {
+      const x = params?.[0]?.axisValue;
+      const p = params
+        .map((s) =>
+          s.seriesName === "Loss (AUD)"
+            ? `${s.marker} ${s.seriesName}: <b>${currency(s.value)}</b>`
+            : `${s.marker} ${s.seriesName}: <b>${s.value.toLocaleString()}</b>`
+        )
+        .join("<br/>");
+      return `<div style="font-weight:700;margin-bottom:4px">${prettyMonth(x)}</div>${p}`;
+    },
+  },
+  legend: { data: ["Reports", "Loss (AUD)"] },
+  grid: { left: 70, right: 60, bottom: 60, top: 36 },
+  xAxis: {
+    type: "category",
+    data: monthly.map((x) => x.month),
+    axisLabel: {
+      formatter: (v) => prettyMonth(v),
+      rotate: 20,
+      color: "#59657a",
+      fontSize: 12,
+    },
+    axisLine: { lineStyle: { color: "#E5EBF4" } },
+    axisTick: { show: true, length: 6, lineStyle: { color: "#C8D2E3" } },
+  },
   yAxis: [
-    { type: "value", name: "Loss (AUD)", axisLabel: { formatter: v => currency(v) } },
-    { type: "value", name: "Reports", position: "right" }
+    {
+      type: "value",
+      name: "Loss (AUD)",
+      axisLabel: {
+        formatter: (v) => currency(v).replace(".00", ""),
+        color: "#59657a",
+      },
+      splitLine: { lineStyle: { color: "#EEF2F8" } },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    },
+    {
+      type: "value",
+      name: "Reports",
+      position: "right",
+      axisLabel: { color: "#59657a" },
+      splitLine: { show: false },
+      axisLine: { show: false },
+      axisTick: { show: false },
+    },
   ],
   series: [
     {
-      name: "Loss (AUD)",
+      name: "Reports",
       type: "bar",
-      itemStyle: { color: barGradient("#415aD5", COLORS.primary) },
-      emphasis: { itemStyle: { color: barGradient("#5C7CFF", COLORS.dark) }},
-      data: monthly.map(x => x.loss)
+      yAxisIndex: 1,
+      barWidth: 18,
+      itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
+      emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") } },
+      data: monthly.map((x) => x.count),
     },
     {
-      name: "Reports",
-      type: "scatter",
-      symbolSize: 10,
-      itemStyle: { color: COLORS.green },
-      yAxisIndex: 1,
-      data: monthly.map(x => x.count)
-    }
-  ]
-  };
+      name: "Loss (AUD)",
+      type: "line",
+      smooth: true,
+      symbol: "circle",
+      symbolSize: 6,
+      lineStyle: { width: 3, color: COLORS.red },
+      itemStyle: { color: COLORS.red },
+      areaStyle: {
+        color: {
+          type: "linear",
+          x: 0, y: 0, x2: 0, y2: 1,
+          colorStops: [
+            { offset: 0, color: "rgba(228,0,43,.18)" },
+            { offset: 1, color: "rgba(228,0,43,0)" },
+          ],
+        },
+        opacity: 0.7,
+      },
+      data: monthly.map((x) => x.loss),
+    },
+  ],
+};
+
 
 
   const topScamsOpt = {
@@ -289,6 +398,11 @@ const ausHeatmapOpt = {
 };
 
 
+// For the slider ticks under the thumb
+
+
+
+
 
 
 
@@ -324,6 +438,19 @@ const ausHeatmapOpt = {
         <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All",age:"All",scamType:"All" })}>Clear All</button>
         <button onClick={exportCSV}>Export</button>
       </div>
+
+      
+    
+    {/* Year control */}
+    <YearSlider
+      value={filters.year}
+      onChange={(v) => setFilters((f) => ({ ...f, year: v }))}
+    />
+
+
+
+
+
 
       {/* KPIs */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
