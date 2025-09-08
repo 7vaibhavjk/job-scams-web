@@ -6,7 +6,7 @@ function Header({ currentPage, onNavigate }) {
       <div className="container header-content">
         <div className="logo-container">
           <div className="team-logo">
-            <img src="/team-logo.png" alt="Team Logo" />
+            <img src="/project-logo.png" alt="Team Logo" />
           </div>
           <div className="logo">
             <h1>JobShield</h1>
