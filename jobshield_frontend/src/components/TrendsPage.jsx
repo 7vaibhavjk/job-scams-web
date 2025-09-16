@@ -5,7 +5,7 @@ import { loadRecords, groupBy, sum, currency } from "../services/data";
 
 // below other imports
 const COLORS = {
-  primary:   "#012169", // AUS blue
+  primary:   "#2e7d32", // AUS blue
   dark:      "#001A44",
   gold:      "#FFCD00",
   red:       "#E4002B",
