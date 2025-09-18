@@ -4,11 +4,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
 from langchain.docstore.document import Document
 from langchain.prompts import ChatPromptTemplate
+
+# NEW: local retriever
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
+import numpy as np
 
 load_dotenv()
 
@@ -46,22 +50,32 @@ splitter = RecursiveCharacterTextSplitter(chunk_size=1200, chunk_overlap=150)
 raw_docs = load_markdown_dir("data")
 chunks = splitter.split_documents(raw_docs)
 
-# Build vector store only if we have chunks
-vectordb = None
+# ---------- Local TF-IDF retriever (no network, no timeouts) ----------
+vectorizer = None
+doc_matrix = None
+chunk_texts = []
+chunk_sources = []
+
 if chunks:
-    emb = GoogleGenerativeAIEmbeddings(
-        model="text-embedding-004",
-        google_api_key=GOOGLE_API_KEY,
-    )
-    vectordb = FAISS.from_documents(chunks, emb)
+    chunk_texts = [c.page_content for c in chunks]
+    chunk_sources = [c.metadata.get("source", "doc") for c in chunks]
+    vectorizer = TfidfVectorizer(ngram_range=(1,2), max_features=20000, stop_words="english")
+    doc_matrix = vectorizer.fit_transform(chunk_texts)  # sparse CSR
 
 def retrieve_context(q: str, k: int = 5):
-    if vectordb is None:
+    if vectorizer is None or doc_matrix is None or not chunk_texts:
         return "", []
-    sims = vectordb.similarity_search(q, k=k)
-    ctx = "\n\n".join([f"[{d.metadata.get('source','doc')}]\n{d.page_content}" for d in sims])
-    sources = list({d.metadata.get("source","doc") for d in sims})
-    return ctx, sources
+    q_vec = vectorizer.transform([q])
+    scores = linear_kernel(q_vec, doc_matrix).ravel()   # cosine similarity
+    top_idx = np.argsort(scores)[-k:][::-1]
+    ctx_parts = []
+    srcs = []
+    for i in top_idx:
+        if scores[i] <= 0:
+            continue
+        ctx_parts.append(f"[{chunk_sources[i]}]\n{chunk_texts[i]}")
+        srcs.append(chunk_sources[i])
+    return "\n\n".join(ctx_parts), list(dict.fromkeys(srcs))
 
 # ---------- LLM ----------
 llm = ChatGoogleGenerativeAI(
@@ -99,7 +113,7 @@ class AskRequest(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"ok": True, "has_docs": bool(vectordb)}
+    return {"ok": True, "has_docs": bool(chunk_texts)}
 
 @app.post("/ask")
 def ask(req: AskRequest):
