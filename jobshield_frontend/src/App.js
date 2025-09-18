@@ -7,6 +7,7 @@ import ReportPage from './components/ReportPage';
 import TrendsPage from './components/TrendsPage';
 import Footer from './components/Footer';
 import ConnectionTest from './components/ConnectionTest';
+import AssistantPage from "./components/AssistantPage";
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -26,6 +27,8 @@ function App() {
         return <ReportPage onNavigate={navigateTo} />;
       case 'trends':
         return <TrendsPage onNavigate={navigateTo} />;
+      case "assistant":
+        return <AssistantPage onNavigate={navigateTo} />; // <-- NEW
       default:
         return <HomePage onNavigate={navigateTo} />;
     }
