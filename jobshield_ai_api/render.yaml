@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: jobshield-ai-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn server:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false   # set in Render dashboard
