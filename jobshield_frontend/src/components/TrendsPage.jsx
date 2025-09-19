@@ -36,39 +36,39 @@ function YearSlider({ value, onChange }) {
   const sliderVal = value === "All" ? 2025 : Number(value);
 
   return (
-    <div className="year-bar cardish">
-      <label className="year-label">Year</label>
+      <div className="year-bar cardish">
+        <label className="year-label">Year</label>
 
-      <div className="year-range">
-        <input
-          type="range"
-          min={2020}
-          max={2025}
-          step={1}
-          value={sliderVal}
-          onChange={(e) => onChange(String(e.target.value))}
-          list="year-ticks"
-        />
-        <datalist id="year-ticks">
-          {YEARS.map((y) => (
-            <option key={y} value={y} label={y} />
-          ))}
-        </datalist>
-        <div className="year-tick-labels">
-          {YEARS.map((y) => (
-            <span key={y}>{y}</span>
-          ))}
+        <div className="year-range">
+          <input
+              type="range"
+              min={2020}
+              max={2025}
+              step={1}
+              value={sliderVal}
+              onChange={(e) => onChange(String(e.target.value))}
+              list="year-ticks"
+          />
+          <datalist id="year-ticks">
+            {YEARS.map((y) => (
+                <option key={y} value={y} label={y} />
+            ))}
+          </datalist>
+          <div className="year-tick-labels">
+            {YEARS.map((y) => (
+                <span key={y}>{y}</span>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <button
-        className={`pill ${value === "All" ? "active" : ""}`}
-        onClick={() => onChange("All")}
-        title="Show all years"
-      >
-        All
-      </button>
-    </div>
+        <button
+            className={`pill ${value === "All" ? "active" : ""}`}
+            onClick={() => onChange("All")}
+            title="Show all years"
+        >
+          All
+        </button>
+      </div>
   );
 }
 
@@ -104,12 +104,12 @@ export default function TrendsPage() {
 
   // apply filters
   const data = useMemo(() => raw.filter(r =>
-    (filters.year    === "All" || String(r.year)        === filters.year) &&
-    (filters.state   === "All" || r.state_code          === filters.state) &&
-    (filters.contact === "All" || r.contact_method      === filters.contact) &&
-    (filters.gender  === "All" || r.gender              === filters.gender) &&
-    (filters.age     === "All" || r.age_band            === filters.age) &&
-    (filters.scamType=== "All" || r.scam_type           === filters.scamType)
+      (filters.year    === "All" || String(r.year)        === filters.year) &&
+      (filters.state   === "All" || r.state_code          === filters.state) &&
+      (filters.contact === "All" || r.contact_method      === filters.contact) &&
+      (filters.gender  === "All" || r.gender              === filters.gender) &&
+      (filters.age     === "All" || r.age_band            === filters.age) &&
+      (filters.scamType=== "All" || r.scam_type           === filters.scamType)
   ), [raw, filters]);
 
   // KPI
@@ -118,284 +118,284 @@ export default function TrendsPage() {
 
   // series
   const monthly = useMemo(() =>
-    groupBy(data, r => r.month)
-      .map(([month, rows]) => ({
-        month,
-        loss: sum(rows, r => r.amount_lost_aud),
-        count: sum(rows, r => r.report_count),
-      }))
-      .sort((a,b)=> a.month.localeCompare(b.month))
-  , [data]);
+          groupBy(data, r => r.month)
+              .map(([month, rows]) => ({
+                month,
+                loss: sum(rows, r => r.amount_lost_aud),
+                count: sum(rows, r => r.report_count),
+              }))
+              .sort((a,b)=> a.month.localeCompare(b.month))
+      , [data]);
 
   const topScams = useMemo(() =>
-    groupBy(data, r => r.scam_type)
-      .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
-      .sort((a,b)=> b.loss - a.loss).slice(0,10)
-  , [data]);
+          groupBy(data, r => r.scam_type)
+              .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
+              .sort((a,b)=> b.loss - a.loss).slice(0,10)
+      , [data]);
 
   const contactMethods = useMemo(() =>
-    groupBy(data, r => r.contact_method)
-      .map(([name, rows]) => ({ name, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
-      .sort((a,b)=> b.reports - a.reports)
-  , [data]);
+          groupBy(data, r => r.contact_method)
+              .map(([name, rows]) => ({ name, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
+              .sort((a,b)=> b.reports - a.reports)
+      , [data]);
 
   const byState = useMemo(() =>
-    groupBy(data, r => r.state_code)
-      .map(([code, rows]) => ({ code, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
-      .sort((a,b)=> b.reports - a.reports)
-  , [data]);
+          groupBy(data, r => r.state_code)
+              .map(([code, rows]) => ({ code, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
+              .sort((a,b)=> b.reports - a.reports)
+      , [data]);
 
   const byGender = useMemo(() =>
-    groupBy(data, r => r.gender)
-      .map(([name, rows]) => ({ name, value: sum(rows, r => r.amount_lost_aud) }))
-  , [data]);
+          groupBy(data, r => r.gender)
+              .map(([name, rows]) => ({ name, value: sum(rows, r => r.amount_lost_aud) }))
+      , [data]);
 
   const byAge = useMemo(() =>
-    groupBy(data, r => r.age_band)
-      .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
-      .sort((a,b)=> b.loss - a.loss)
-  , [data]);
+          groupBy(data, r => r.age_band)
+              .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
+              .sort((a,b)=> b.loss - a.loss)
+      , [data]);
 
   // chart options
   const monthlyOpt = {
-  tooltip: {
-    trigger: "axis",
-    axisPointer: { type: "cross" },
-    formatter: (params) => {
-      const x = params?.[0]?.axisValue;
-      const p = params
-        .map((s) =>
-          s.seriesName === "Loss (AUD)"
-            ? `${s.marker} ${s.seriesName}: <b>${currency(s.value)}</b>`
-            : `${s.marker} ${s.seriesName}: <b>${s.value.toLocaleString()}</b>`
-        )
-        .join("<br/>");
-      return `<div style="font-weight:700;margin-bottom:4px">${prettyMonth(x)}</div>${p}`;
+    tooltip: {
+      trigger: "axis",
+      axisPointer: { type: "cross" },
+      formatter: (params) => {
+        const x = params?.[0]?.axisValue;
+        const p = params
+            .map((s) =>
+                s.seriesName === "Loss (AUD)"
+                    ? `${s.marker} ${s.seriesName}: <b>${currency(s.value)}</b>`
+                    : `${s.marker} ${s.seriesName}: <b>${s.value.toLocaleString()}</b>`
+            )
+            .join("<br/>");
+        return `<div style="font-weight:700;margin-bottom:4px">${prettyMonth(x)}</div>${p}`;
+      },
     },
-  },
-  legend: { data: ["Reports", "Loss (AUD)"] },
-  grid: { left: 70, right: 60, bottom: 60, top: 36 },
-  xAxis: {
-    type: "category",
-    data: monthly.map((x) => x.month),
-    axisLabel: {
-      formatter: (v) => prettyMonth(v),
-      rotate: 20,
-      color: "#59657a",
-      fontSize: 12,
-    },
-    axisLine: { lineStyle: { color: "#E5EBF4" } },
-    axisTick: { show: true, length: 6, lineStyle: { color: "#C8D2E3" } },
-  },
-  yAxis: [
-    {
-      type: "value",
-      name: "Loss (AUD)",
+    legend: { data: ["Reports", "Loss (AUD)"] },
+    grid: { left: 70, right: 60, bottom: 60, top: 36 },
+    xAxis: {
+      type: "category",
+      data: monthly.map((x) => x.month),
       axisLabel: {
-        formatter: (v) => currency(v).replace(".00", ""),
+        formatter: (v) => prettyMonth(v),
+        rotate: 20,
         color: "#59657a",
+        fontSize: 12,
       },
-      splitLine: { lineStyle: { color: "#EEF2F8" } },
-      axisLine: { show: false },
-      axisTick: { show: false },
+      axisLine: { lineStyle: { color: "#E5EBF4" } },
+      axisTick: { show: true, length: 6, lineStyle: { color: "#C8D2E3" } },
     },
-    {
-      type: "value",
-      name: "Reports",
-      position: "right",
-      axisLabel: { color: "#59657a" },
-      splitLine: { show: false },
-      axisLine: { show: false },
-      axisTick: { show: false },
-    },
-  ],
-  series: [
-    {
-      name: "Reports",
-      type: "bar",
-      yAxisIndex: 1,
-      barWidth: 18,
-      itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
-      emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") } },
-      data: monthly.map((x) => x.count),
-    },
-    {
-      name: "Loss (AUD)",
-      type: "line",
-      smooth: true,
-      symbol: "circle",
-      symbolSize: 6,
-      lineStyle: { width: 3, color: COLORS.red },
-      itemStyle: { color: COLORS.red },
-      areaStyle: {
-        color: {
-          type: "linear",
-          x: 0, y: 0, x2: 0, y2: 1,
-          colorStops: [
-            { offset: 0, color: "rgba(228,0,43,.18)" },
-            { offset: 1, color: "rgba(228,0,43,0)" },
-          ],
+    yAxis: [
+      {
+        type: "value",
+        name: "Loss (AUD)",
+        axisLabel: {
+          formatter: (v) => currency(v).replace(".00", ""),
+          color: "#59657a",
         },
-        opacity: 0.7,
+        splitLine: { lineStyle: { color: "#EEF2F8" } },
+        axisLine: { show: false },
+        axisTick: { show: false },
       },
-      data: monthly.map((x) => x.loss),
-    },
-  ],
-};
+      {
+        type: "value",
+        name: "Reports",
+        position: "right",
+        axisLabel: { color: "#59657a" },
+        splitLine: { show: false },
+        axisLine: { show: false },
+        axisTick: { show: false },
+      },
+    ],
+    series: [
+      {
+        name: "Reports",
+        type: "bar",
+        yAxisIndex: 1,
+        barWidth: 18,
+        itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
+        emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") } },
+        data: monthly.map((x) => x.count),
+      },
+      {
+        name: "Loss (AUD)",
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        lineStyle: { width: 3, color: COLORS.red },
+        itemStyle: { color: COLORS.red },
+        areaStyle: {
+          color: {
+            type: "linear",
+            x: 0, y: 0, x2: 0, y2: 1,
+            colorStops: [
+              { offset: 0, color: "rgba(228,0,43,.18)" },
+              { offset: 1, color: "rgba(228,0,43,0)" },
+            ],
+          },
+          opacity: 0.7,
+        },
+        data: monthly.map((x) => x.loss),
+      },
+    ],
+  };
 
 
 
   const topScamsOpt = {
-  tooltip: { trigger: "item", valueFormatter: v => currency(v) },
-  grid: { left: 120, right: 40, bottom: 90, top: 20 },
-  xAxis: { type: "category", data: topScams.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-  yAxis: { type: "value", axisLabel: { formatter: v => currency(v) } },
-  series: [{
-    type: "bar",
-    itemStyle: { color: barGradient("#9A8CFF", "#6C63FF") },
-    emphasis: { itemStyle: { color: barGradient("#B3A8FF", "#7B71FF") }},
-    data: topScams.map(x => x.loss)
-  }]
- };
+    tooltip: { trigger: "item", valueFormatter: v => currency(v) },
+    grid: { left: 120, right: 40, bottom: 90, top: 20 },
+    xAxis: { type: "category", data: topScams.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+    yAxis: { type: "value", axisLabel: { formatter: v => currency(v) } },
+    series: [{
+      type: "bar",
+      itemStyle: { color: barGradient("#9A8CFF", "#6C63FF") },
+      emphasis: { itemStyle: { color: barGradient("#B3A8FF", "#7B71FF") }},
+      data: topScams.map(x => x.loss)
+    }]
+  };
 
 
   const contactOpt = {
-  tooltip: { trigger: "item" },
-  grid: { left: 120, right: 40, bottom: 60, top: 20 },
-  xAxis: { type: "category", data: contactMethods.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-  yAxis: [{ type: "value", name: "Reports" }],
-  series: [{
-    type: "bar",
-    itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
-    emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") }},
-    data: contactMethods.map(x => x.reports)
-  }]
- };
+    tooltip: { trigger: "item" },
+    grid: { left: 120, right: 40, bottom: 60, top: 20 },
+    xAxis: { type: "category", data: contactMethods.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+    yAxis: [{ type: "value", name: "Reports" }],
+    series: [{
+      type: "bar",
+      itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
+      emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") }},
+      data: contactMethods.map(x => x.reports)
+    }]
+  };
 
 
   const stateOpt = {
-  tooltip: { trigger: "item" },
-  grid: { left: 70, right: 40, bottom: 40, top: 20 },
-  xAxis: { type: "category", data: byState.map(x => x.code) },
-  yAxis: [{ type: "value", name: "Reports" }],
-  series: [{
-    type: "bar",
-    itemStyle: { color: barGradient("#FFE26B", COLORS.gold) },
-    emphasis: { itemStyle: { color: barGradient("#FFE891", "#FFB300") }},
-    data: byState.map(x => x.reports)
-  }]
- };
+    tooltip: { trigger: "item" },
+    grid: { left: 70, right: 40, bottom: 40, top: 20 },
+    xAxis: { type: "category", data: byState.map(x => x.code) },
+    yAxis: [{ type: "value", name: "Reports" }],
+    series: [{
+      type: "bar",
+      itemStyle: { color: barGradient("#FFE26B", COLORS.gold) },
+      emphasis: { itemStyle: { color: barGradient("#FFE891", "#FFB300") }},
+      data: byState.map(x => x.reports)
+    }]
+  };
 
 
   const genderOpt = {
-  tooltip: { trigger: "item", valueFormatter: v => currency(v) },
-  legend: { top: 0 },
-  color: [COLORS.primary, COLORS.pink, COLORS.orange, COLORS.slate],
-  series: [{
-    type: "pie",
-    radius: ["50%","70%"],
-    data: byGender,
-    label: { formatter: "{b}: {d}%"}
-  }]
- };
+    tooltip: { trigger: "item", valueFormatter: v => currency(v) },
+    legend: { top: 0 },
+    color: [COLORS.primary, COLORS.pink, COLORS.orange, COLORS.slate],
+    series: [{
+      type: "pie",
+      radius: ["50%","70%"],
+      data: byGender,
+      label: { formatter: "{b}: {d}%"}
+    }]
+  };
 
 
   const ageOpt = {
-  tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
-  grid: { left: 120, right: 40, bottom: 80, top: 20 },
-  xAxis: { type: "category", data: byAge.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-  yAxis: [{ type: "value", axisLabel: { formatter: v => currency(v) } }],
-  series: [{
-    type: "bar",
-    itemStyle: { color: barGradient("#FF9A7A", COLORS.coral) },
-    emphasis: { itemStyle: { color: barGradient("#FFB199", "#FF6A3D") }},
-    data: byAge.map(x => x.loss)
-  }]
- };
+    tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
+    grid: { left: 120, right: 40, bottom: 80, top: 20 },
+    xAxis: { type: "category", data: byAge.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+    yAxis: [{ type: "value", axisLabel: { formatter: v => currency(v) } }],
+    series: [{
+      type: "bar",
+      itemStyle: { color: barGradient("#FF9A7A", COLORS.coral) },
+      emphasis: { itemStyle: { color: barGradient("#FFB199", "#FF6A3D") }},
+      data: byAge.map(x => x.loss)
+    }]
+  };
 
   // fixed grid positions for each state/territory
 // fixed grid positions for each state/territory
 // --- tile layout stays the same ---
-const TILE = {
-  WA:  [0,1],
-  NT:  [1,0],
-  QLD: [2,0],
-  SA:  [1,1],
-  NSW: [2,1],
-  ACT: [3,1],
-  TAS: [1,2],
-  VIC: [2,2],
-};
+  const TILE = {
+    WA:  [0,1],
+    NT:  [1,0],
+    QLD: [2,0],
+    SA:  [1,1],
+    NSW: [2,1],
+    ACT: [3,1],
+    TAS: [1,2],
+    VIC: [2,2],
+  };
 
-const stateReports = new Map(byState.map(s => [s.code, s.reports]));
+  const stateReports = new Map(byState.map(s => [s.code, s.reports]));
 
 // Build data as objects with value:[x,y,v] + state label
-const heatData = Object.entries(TILE).map(([code, [x, y]]) => ({
-  value: [x, y, stateReports.get(code) || 0],
-  state: code
-}));
+  const heatData = Object.entries(TILE).map(([code, [x, y]]) => ({
+    value: [x, y, stateReports.get(code) || 0],
+    state: code
+  }));
 
 // Category labels derived from TILE extents
-const maxX = Math.max(...Object.values(TILE).map(([x]) => x));
-const maxY = Math.max(...Object.values(TILE).map(([, y]) => y));
-const xCats = Array.from({ length: maxX + 1 }, (_, i) => String(i));
-const yCats = Array.from({ length: maxY + 1 }, (_, i) => String(i));
+  const maxX = Math.max(...Object.values(TILE).map(([x]) => x));
+  const maxY = Math.max(...Object.values(TILE).map(([, y]) => y));
+  const xCats = Array.from({ length: maxX + 1 }, (_, i) => String(i));
+  const yCats = Array.from({ length: maxY + 1 }, (_, i) => String(i));
 
-const ausHeatmapOpt = {
-  tooltip: {
-    formatter: p =>
-      `${p.data.state}: ${p.value[2].toLocaleString()} reports`
-  },
-  grid: { left: 20, right: 20, top: 10, bottom: 30 },
-
-  // Two category axes with boundaryGap and visible split areas
-  xAxis: {
-    type: "category",
-    data: xCats,
-    boundaryGap: true,
-    axisLine: { show: false },
-    axisTick: { show: false },
-    axisLabel: { show: false },
-    splitArea: { show: true }     // helps you see the tiles
-  },
-  yAxis: {
-    type: "category",
-    data: yCats,
-    boundaryGap: true,
-    inverse: true,
-    axisLine: { show: false },
-    axisTick: { show: false },
-    axisLabel: { show: false },
-    splitArea: { show: true }
-  },
-
-  visualMap: {
-    min: 0,
-    max: Math.max(...heatData.map(d => d.value[2])) || 1,
-    calculable: true,
-    orient: "horizontal",
-    left: "center",
-    bottom: 0,
-    inRange: { color: ["#E6F0FF", COLORS.primary] }
-  },
-
-  series: [{
-    type: "heatmap",
-    coordinateSystem: "cartesian2d",
-    data: heatData,
-    encode: { x: 0, y: 1, value: 2 },  // 👈 make mapping explicit
-    itemStyle: { borderColor: "#fff", borderWidth: 2 },
-    label: {
-      show: true,
-      formatter: p => p.data.state,
-      color: "#fff",
-      fontWeight: 700
+  const ausHeatmapOpt = {
+    tooltip: {
+      formatter: p =>
+          `${p.data.state}: ${p.value[2].toLocaleString()} reports`
     },
-    emphasis: {
-      itemStyle: { shadowBlur: 8, shadowColor: "rgba(0,0,0,0.25)" }
-    }
-  }]
-};
+    grid: { left: 20, right: 20, top: 10, bottom: 30 },
+
+    // Two category axes with boundaryGap and visible split areas
+    xAxis: {
+      type: "category",
+      data: xCats,
+      boundaryGap: true,
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { show: false },
+      splitArea: { show: true }     // helps you see the tiles
+    },
+    yAxis: {
+      type: "category",
+      data: yCats,
+      boundaryGap: true,
+      inverse: true,
+      axisLine: { show: false },
+      axisTick: { show: false },
+      axisLabel: { show: false },
+      splitArea: { show: true }
+    },
+
+    visualMap: {
+      min: 0,
+      max: Math.max(...heatData.map(d => d.value[2])) || 1,
+      calculable: true,
+      orient: "horizontal",
+      left: "center",
+      bottom: 0,
+      inRange: { color: ["#E6F0FF", COLORS.primary] }
+    },
+
+    series: [{
+      type: "heatmap",
+      coordinateSystem: "cartesian2d",
+      data: heatData,
+      encode: { x: 0, y: 1, value: 2 },  // 👈 make mapping explicit
+      itemStyle: { borderColor: "#fff", borderWidth: 2 },
+      label: {
+        show: true,
+        formatter: p => p.data.state,
+        color: "#fff",
+        fontWeight: 700
+      },
+      emphasis: {
+        itemStyle: { shadowBlur: 8, shadowColor: "rgba(0,0,0,0.25)" }
+      }
+    }]
+  };
 
 
 // For the slider ticks under the thumb
@@ -416,7 +416,7 @@ const ausHeatmapOpt = {
   function exportCSV() {
     const headers = ["date","year","month","state_code","state_name","contact_method","age_band","gender","scam_group","scam_type","amount_lost_aud","report_count"];
     const lines = [headers.join(",")].concat(
-      data.map(r => headers.map(h => (""+ (r[h]?.valueOf?.() ?? r[h] ?? "")).replaceAll('"','""')).map(x=>`"${x}"`).join(","))
+        data.map(r => headers.map(h => (""+ (r[h]?.valueOf?.() ?? r[h] ?? "")).replaceAll('"','""')).map(x=>`"${x}"`).join(","))
     );
     const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
@@ -424,108 +424,141 @@ const ausHeatmapOpt = {
   }
 
   return (
-    <div style={{ padding: 24 }}>
-      <h2 style={{ marginBottom: 12 }}>Scam Trends & Insights</h2>
+      <div style={{ padding: 24 }}>
+        <h2 style={{ marginBottom: 12 }}>Scam Trends & Insights</h2>
 
-      {/* Filters */}
-      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 16 }}>
-        <Select label="Scam Type" value={filters.scamType} onChange={v => setFilters(f => ({...f, scamType: v}))} options={scamTypes}/>
-        <Select label="State"     value={filters.state}    onChange={v => setFilters(f => ({...f, state: v}))} options={states}/>
-        <Select label="Year"      value={filters.year}     onChange={v => setFilters(f => ({...f, year: v}))} options={years}/>
-        <Select label="Contact"   value={filters.contact}  onChange={v => setFilters(f => ({...f, contact: v}))} options={contacts}/>
-        <Select label="Gender"    value={filters.gender}   onChange={v => setFilters(f => ({...f, gender: v}))} options={genders}/>
-        <Select label="Age"       value={filters.age}      onChange={v => setFilters(f => ({...f, age: v}))} options={ages}/>
-        <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All",age:"All",scamType:"All" })}>Clear All</button>
-        <button onClick={exportCSV}>Export</button>
-      </div>
-
-      
-    
-    {/* Year control */}
-    <YearSlider
-      value={filters.year}
-      onChange={(v) => setFilters((f) => ({ ...f, year: v }))}
-    />
+        {/* Filters */}
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 16 }}>
+          <Select label="Scam Type" value={filters.scamType} onChange={v => setFilters(f => ({...f, scamType: v}))} options={scamTypes}/>
+          <Select label="State"     value={filters.state}    onChange={v => setFilters(f => ({...f, state: v}))} options={states}/>
+          <Select label="Year"      value={filters.year}     onChange={v => setFilters(f => ({...f, year: v}))} options={years}/>
+          <Select label="Contact"   value={filters.contact}  onChange={v => setFilters(f => ({...f, contact: v}))} options={contacts}/>
+          <Select label="Gender"    value={filters.gender}   onChange={v => setFilters(f => ({...f, gender: v}))} options={genders}/>
+          <Select label="Age"       value={filters.age}      onChange={v => setFilters(f => ({...f, age: v}))} options={ages}/>
+          <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All",age:"All",scamType:"All" })}>Clear All</button>
+          <button onClick={exportCSV}>Export</button>
+        </div>
 
 
 
-
-
-
-      {/* KPIs */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
-        <KPI title="Reported losses" value={totalLoss}/>
-        <KPI title="Reported scams"  value={totalReports}/>
-        <KPI title="Top scam by loss" value={topScams[0]?.name ?? "—"}/>
-        <KPI title="Top contact method" value={contactMethods[0]?.name ?? "—"}/>
-      </div>
-
-      {/* Charts */}
-      <Card title="Amount lost and number of reports">
-        <ReactECharts style={{ height: 340 }} option={monthlyOpt}/>
-      </Card>
-
-      <Card title="Top ten scams by loss (click bar to filter)">
-        <ReactECharts style={{ height: 360 }} option={topScamsOpt} onEvents={{ click: onTopScamClick }}/>
-      </Card>
-
-      <Card title="Top contact methods (click bar to filter)">
-        <ReactECharts style={{ height: 300 }} option={contactOpt} onEvents={{ click: onContactClick }}/>
-      </Card>
-
-      <Card title="State reported scams (click bar to filter)">
-        <ReactECharts style={{ height: 300 }} option={stateOpt} onEvents={{ click: onStateClick }}/>
-      </Card>
-
-      <Card title="State heatmap (click tile to filter)">
-        <ReactECharts
-          style={{ height: 260 }}
-          option={ausHeatmapOpt}
-          onEvents={{
-            click: (p) => setFilters(f => ({ ...f, state: p.data?.state || f.state }))
-          }}
+        {/* Year control */}
+        <YearSlider
+            value={filters.year}
+            onChange={(v) => setFilters((f) => ({ ...f, year: v }))}
         />
 
-      </Card>
 
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-        <Card title="Gender breakdown (click slice to filter)">
-          <ReactECharts style={{ height: 320 }} option={genderOpt} onEvents={{ click: onGenderClick }}/>
-        </Card>
-        <Card title="Reported scams and loss breakdown by age">
-          <ReactECharts style={{ height: 320 }} option={ageOpt}/>
-        </Card>
+
+
+
+        {/* KPIs */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
+          <KPI title="Reported losses" value={totalLoss}/>
+          <KPI title="Reported scams"  value={totalReports}/>
+          <KPI title="Top scam by loss" value={topScams[0]?.name ?? "—"}/>
+          <KPI title="Top contact method" value={contactMethods[0]?.name ?? "—"}/>
+        </div>
+
+        {/* Charts */}
+          <Card title="Amount lost and number of reports">
+              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                  💡 Shows the monthly trend of reported scam losses and case counts.
+              </p>
+              <ReactECharts style={{ height: 340 }} option={monthlyOpt} />
+          </Card>
+
+          <Card title="Top ten scams by loss (click bar to filter)">
+              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                  💡 This chart highlights the scams causing the highest reported losses.
+              </p>
+              <ReactECharts style={{ height: 360 }} option={topScamsOpt} onEvents={{ click: onTopScamClick }}/>
+          </Card>
+
+          <Card title="Top contact methods (click bar to filter)">
+              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                  💡 Displays which communication channels scammers most often use.
+              </p>
+              <ReactECharts
+                  style={{ height: 300 }}
+                  option={contactOpt}
+                  onEvents={{ click: onContactClick }}
+              />
+          </Card>
+
+          <Card title="State reported scams (click bar to filter)">
+              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                  💡 Shows the number of scam reports received per state.
+              </p>
+              <ReactECharts
+                  style={{ height: 300 }}
+                  option={stateOpt}
+                  onEvents={{ click: onStateClick }}
+              />
+          </Card>
+
+          <Card title="State heatmap (click tile to filter)">
+              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                  💡 Visualizes scam intensity across Australian states on a heatmap.
+              </p>
+              <ReactECharts
+                  style={{ height: 260 }}
+                  option={ausHeatmapOpt}
+                  onEvents={{
+                      click: (p) =>
+                          setFilters((f) => ({ ...f, state: p.data?.state || f.state })),
+                  }}
+              />
+          </Card>
+
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <Card title="Gender breakdown (click slice to filter)">
+                <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                    💡 Shows scam reports and losses broken down by gender.
+                </p>
+                <ReactECharts
+                    style={{ height: 320 }}
+                    option={genderOpt}
+                    onEvents={{ click: onGenderClick }}
+                />
+            </Card>
+            <Card title="Reported scams and loss breakdown by age">
+                <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                    💡 Shows scam trends segmented by different age groups.
+                </p>
+                <ReactECharts style={{ height: 320 }} option={ageOpt} />
+            </Card>
+        </div>
       </div>
-    </div>
   );
 }
 
 function KPI({ title, value }) {
   return (
-    <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)" }}>
-      <div style={{ fontSize: 12, opacity: .7 }}>{title}</div>
-      <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
-    </div>
+      <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)" }}>
+        <div style={{ fontSize: 12, opacity: .7 }}>{title}</div>
+        <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
+      </div>
   );
 }
 
 function Card({ title, children }) {
   return (
-    <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)", marginBottom: 16 }}>
-      <div style={{ fontWeight: 600, marginBottom: 8 }}>{title}</div>
-      {children}
-    </div>
+      <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)", marginBottom: 16 }}>
+        <div style={{ fontWeight: 600, marginBottom: 8 }}>{title}</div>
+        {children}
+      </div>
   );
 }
 
 function Select({ label, value, onChange, options }) {
   return (
-    <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-      <span style={{ fontSize: 12 }}>{label}</span>
-      <select value={value} onChange={e => onChange(e.target.value)}>
-        {options.map(o => <option key={o} value={o}>{o}</option>)}
-      </select>
-    </label>
+      <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
+        <span style={{ fontSize: 12 }}>{label}</span>
+        <select value={value} onChange={e => onChange(e.target.value)}>
+          {options.map(o => <option key={o} value={o}>{o}</option>)}
+        </select>
+      </label>
   );
 }

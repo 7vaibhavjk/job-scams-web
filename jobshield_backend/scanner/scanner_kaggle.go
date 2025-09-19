@@ -12,7 +12,15 @@ import (
 )
 
 func ProcessCSV() error {
+	var count int64
 	db := db2.DB
+	err := db.Model(&model.UrlCheck{}).Count(&count).Error
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
 	currentDir, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get current directory: %v", err)

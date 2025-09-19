@@ -1,0 +1,413 @@
+{
+  "kpis": {
+    "reported_losses": 1131411496.4699998,
+    "reported_scams": 786446
+  },
+  "monthly": [
+    {
+      "month": "2020-01",
+      "total_loss": 7382116.0,
+      "total_reports": 12135
+    },
+    {
+      "month": "2020-02",
+      "total_loss": 14494336.0,
+      "total_reports": 13061
+    },
+    {
+      "month": "2020-03",
+      "total_loss": 15899322.0,
+      "total_reports": 11005
+    },
+    {
+      "month": "2020-04",
+      "total_loss": 16089486.0,
+      "total_reports": 17705
+    },
+    {
+      "month": "2020-05",
+      "total_loss": 12574900.0,
+      "total_reports": 11351
+    },
+    {
+      "month": "2020-06",
+      "total_loss": 13503783.0,
+      "total_reports": 15480
+    },
+    {
+      "month": "2020-07",
+      "total_loss": 12112579.0,
+      "total_reports": 18589
+    },
+    {
+      "month": "2021-01",
+      "total_loss": 21789601.0,
+      "total_reports": 19845
+    },
+    {
+      "month": "2021-02",
+      "total_loss": 20799912.0,
+      "total_reports": 20179
+    },
+    {
+      "month": "2021-03",
+      "total_loss": 20177188.0,
+      "total_reports": 22874
+    },
+    {
+      "month": "2021-04",
+      "total_loss": 14083383.0,
+      "total_reports": 18242
+    },
+    {
+      "month": "2021-05",
+      "total_loss": 29889848.0,
+      "total_reports": 19134
+    },
+    {
+      "month": "2021-06",
+      "total_loss": 31154787.0,
+      "total_reports": 24037
+    },
+    {
+      "month": "2021-07",
+      "total_loss": 27142382.0,
+      "total_reports": 26787
+    },
+    {
+      "month": "2022-01",
+      "total_loss": 33100983.0,
+      "total_reports": 21109
+    },
+    {
+      "month": "2022-02",
+      "total_loss": 37868474.0,
+      "total_reports": 18346
+    },
+    {
+      "month": "2022-03",
+      "total_loss": 34400571.0,
+      "total_reports": 16452
+    },
+    {
+      "month": "2022-04",
+      "total_loss": 37130813.0,
+      "total_reports": 16345
+    },
+    {
+      "month": "2022-05",
+      "total_loss": 51288138.0,
+      "total_reports": 16302
+    },
+    {
+      "month": "2022-06",
+      "total_loss": 37608394.0,
+      "total_reports": 16590
+    },
+    {
+      "month": "2022-07",
+      "total_loss": 42789612.0,
+      "total_reports": 20387
+    },
+    {
+      "month": "2023-01",
+      "total_loss": 53326714.0,
+      "total_reports": 27515
+    },
+    {
+      "month": "2023-02",
+      "total_loss": 43177181.0,
+      "total_reports": 29529
+    },
+    {
+      "month": "2023-03",
+      "total_loss": 45305693.0,
+      "total_reports": 29098
+    },
+    {
+      "month": "2023-04",
+      "total_loss": 51468112.0,
+      "total_reports": 21835
+    },
+    {
+      "month": "2023-05",
+      "total_loss": 53286168.0,
+      "total_reports": 25230
+    },
+    {
+      "month": "2023-06",
+      "total_loss": 38108516.0,
+      "total_reports": 23060
+    },
+    {
+      "month": "2024-01",
+      "total_loss": 25662144.59,
+      "total_reports": 25190
+    },
+    {
+      "month": "2024-02",
+      "total_loss": 22445789.64,
+      "total_reports": 19913
+    },
+    {
+      "month": "2024-03",
+      "total_loss": 23789739.74,
+      "total_reports": 22631
+    },
+    {
+      "month": "2024-04",
+      "total_loss": 20879916.07,
+      "total_reports": 27843
+    },
+    {
+      "month": "2024-05",
+      "total_loss": 22042153.59,
+      "total_reports": 24299
+    },
+    {
+      "month": "2024-06",
+      "total_loss": 23060042.57,
+      "total_reports": 23230
+    },
+    {
+      "month": "2024-07",
+      "total_loss": 30332618.05,
+      "total_reports": 21010
+    },
+    {
+      "month": "2025-01",
+      "total_loss": 36595249.46,
+      "total_reports": 19137
+    },
+    {
+      "month": "2025-02",
+      "total_loss": 28772516.71,
+      "total_reports": 17394
+    },
+    {
+      "month": "2025-03",
+      "total_loss": 27058640.58,
+      "total_reports": 19225
+    },
+    {
+      "month": "2025-04",
+      "total_loss": 26453182.45,
+      "total_reports": 16474
+    },
+    {
+      "month": "2025-05",
+      "total_loss": 28366511.02,
+      "total_reports": 17878
+    }
+  ],
+  "top_scams_by_loss": [
+    {
+      "scam_type": "Investment scams",
+      "total_loss": 642027996.37,
+      "total_reports": 26039
+    },
+    {
+      "scam_type": "Dating and romance scams",
+      "total_loss": 118013956.33,
+      "total_reports": 11822
+    },
+    {
+      "scam_type": "False billing",
+      "total_loss": 68426031.4,
+      "total_reports": 80171
+    },
+    {
+      "scam_type": "Phishing",
+      "total_loss": 55749419.02,
+      "total_reports": 244400
+    },
+    {
+      "scam_type": "Remote access scams",
+      "total_loss": 47368335.29,
+      "total_reports": 30414
+    },
+    {
+      "scam_type": "Threats to life, arrest or other",
+      "total_loss": 44343765.45,
+      "total_reports": 35700
+    },
+    {
+      "scam_type": "Jobs and employment scams",
+      "total_loss": 37119233.97,
+      "total_reports": 12270
+    },
+    {
+      "scam_type": "Identity theft",
+      "total_loss": 26143676.18,
+      "total_reports": 60650
+    },
+    {
+      "scam_type": "Online shopping scams",
+      "total_loss": 23436152.94,
+      "total_reports": 57450
+    },
+    {
+      "scam_type": "Classified scams",
+      "total_loss": 20331816.61,
+      "total_reports": 31187
+    }
+  ],
+  "contact_methods": [
+    {
+      "contact_method": "Phone call",
+      "total_loss": 308251092.18,
+      "total_reports": 230293
+    },
+    {
+      "contact_method": "Text message",
+      "total_loss": 51606839.23,
+      "total_reports": 215574
+    },
+    {
+      "contact_method": "Email",
+      "total_loss": 189827967.21,
+      "total_reports": 208538
+    },
+    {
+      "contact_method": "Social media/Online forums",
+      "total_loss": 204705065.12,
+      "total_reports": 46595
+    },
+    {
+      "contact_method": "Internet",
+      "total_loss": 156625736.05,
+      "total_reports": 43982
+    },
+    {
+      "contact_method": "Mobile apps",
+      "total_loss": 141958702.79,
+      "total_reports": 22092
+    },
+    {
+      "contact_method": "Mail",
+      "total_loss": 6180971.7,
+      "total_reports": 8149
+    },
+    {
+      "contact_method": "In person",
+      "total_loss": 68784220.19,
+      "total_reports": 7931
+    },
+    {
+      "contact_method": "unspecified",
+      "total_loss": 3389390.0,
+      "total_reports": 3064
+    },
+    {
+      "contact_method": "Fax",
+      "total_loss": 81512.0,
+      "total_reports": 228
+    }
+  ],
+  "state_summary": [
+    {
+      "state_code": "NSW",
+      "total_loss": 359259885.49,
+      "total_reports": 233166
+    },
+    {
+      "state_code": "VIC",
+      "total_loss": 256883899.04,
+      "total_reports": 190349
+    },
+    {
+      "state_code": "QLD",
+      "total_loss": 202081875.65,
+      "total_reports": 149311
+    },
+    {
+      "state_code": "WA",
+      "total_loss": 116639614.14,
+      "total_reports": 76107
+    },
+    {
+      "state_code": "SA",
+      "total_loss": 57792593.17,
+      "total_reports": 55573
+    },
+    {
+      "state_code": "Unspecified",
+      "total_loss": 85448543.21,
+      "total_reports": 35409
+    },
+    {
+      "state_code": "ACT",
+      "total_loss": 30260491.8,
+      "total_reports": 24337
+    },
+    {
+      "state_code": "TAS",
+      "total_loss": 16806712.75,
+      "total_reports": 15792
+    },
+    {
+      "state_code": "NT",
+      "total_loss": 6237881.22,
+      "total_reports": 6402
+    }
+  ],
+  "gender_breakdown": [
+    {
+      "gender": "Male",
+      "total_loss": 625011717.31,
+      "total_reports": 368646
+    },
+    {
+      "gender": "Female",
+      "total_loss": 495295057.11,
+      "total_reports": 381360
+    },
+    {
+      "gender": "X (Indeterminate/Intersex/Unspecified)",
+      "total_loss": 11104722.05,
+      "total_reports": 36440
+    }
+  ],
+  "age_breakdown": [
+    {
+      "age_band": "65 and over",
+      "total_loss": 280204332.82,
+      "total_reports": 159268
+    },
+    {
+      "age_band": "55 - 64",
+      "total_loss": 205385350.49,
+      "total_reports": 101899
+    },
+    {
+      "age_band": "45 - 54",
+      "total_loss": 188813075.98,
+      "total_reports": 95876
+    },
+    {
+      "age_band": "35 - 44",
+      "total_loss": 171439120.77,
+      "total_reports": 95901
+    },
+    {
+      "age_band": "25 - 34",
+      "total_loss": 123177724.36,
+      "total_reports": 82674
+    },
+    {
+      "age_band": "Unspecified",
+      "total_loss": 117692057.05,
+      "total_reports": 211702
+    },
+    {
+      "age_band": "18 - 24",
+      "total_loss": 43416683.69,
+      "total_reports": 33938
+    },
+    {
+      "age_band": "Under 18",
+      "total_loss": 1283151.31,
+      "total_reports": 5188
+    }
+  ]
+}

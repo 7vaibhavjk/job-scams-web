@@ -1,124 +1,124 @@
 @echo off
-REM JobShield å¼€å‘çŽ¯å¢ƒå¯åŠ¨è„šæœ¬ (Windows)
-REM æ­¤è„šæœ¬å¯åŠ¨åŽç«¯å’Œå‰ç«¯æœåŠ¡
+REM JobShield ¿ª·¢»·¾³Æô¶¯½Å±¾ (Windows)
+REM ´Ë½Å±¾Æô¶¯ºó¶ËºÍÇ°¶Ë·þÎñ
 
-echo ðŸš€ å¯åŠ¨ JobShield å¼€å‘çŽ¯å¢ƒ...
+echo ?? Æô¶¯ JobShield ¿ª·¢»·¾³...
 
-REM æ£€æŸ¥æ˜¯å¦åœ¨æ­£ç¡®çš„ç›®å½•
+REM ¼ì²éÊÇ·ñÔÚÕýÈ·µÄÄ¿Â¼
 if not exist "jobshield_backend" (
-    echo âŒ é”™è¯¯: è¯·åœ¨é¡¹ç›®æ ¹ç›®å½•è¿è¡Œæ­¤è„šæœ¬
-    echo    å½“å‰ç›®å½•: %CD%
-    echo    æœŸæœ›çš„ç›®å½•ç»“æž„:
-    echo    â”œâ”€â”€ jobshield_backend/
-    echo    â”œâ”€â”€ jobshield_frontend/
-    echo    â””â”€â”€ start_dev_zh.bat
+    echo ? ´íÎó: ÇëÔÚÏîÄ¿¸ùÄ¿Â¼ÔËÐÐ´Ë½Å±¾
+    echo    µ±Ç°Ä¿Â¼: %CD%
+    echo    ÆÚÍûµÄÄ¿Â¼½á¹¹:
+    echo    ©À©¤©¤ jobshield_backend/
+    echo    ©À©¤©¤ jobshield_frontend/
+    echo    ©¸©¤©¤ start_dev_zh.bat
     pause
     exit /b 1
 )
 
 if not exist "jobshield_frontend" (
-    echo âŒ é”™è¯¯: è¯·åœ¨é¡¹ç›®æ ¹ç›®å½•è¿è¡Œæ­¤è„šæœ¬
-    echo    å½“å‰ç›®å½•: %CD%
-    echo    æœŸæœ›çš„ç›®å½•ç»“æž„:
-    echo    â”œâ”€â”€ jobshield_backend/
-    echo    â”œâ”€â”€ jobshield_frontend/
-    echo    â””â”€â”€ start_dev_zh.bat
+    echo ? ´íÎó: ÇëÔÚÏîÄ¿¸ùÄ¿Â¼ÔËÐÐ´Ë½Å±¾
+    echo    µ±Ç°Ä¿Â¼: %CD%
+    echo    ÆÚÍûµÄÄ¿Â¼½á¹¹:
+    echo    ©À©¤©¤ jobshield_backend/
+    echo    ©À©¤©¤ jobshield_frontend/
+    echo    ©¸©¤©¤ start_dev_zh.bat
     pause
     exit /b 1
 )
 
-REM åˆ›å»ºçŽ¯å¢ƒå˜é‡æ–‡ä»¶ï¼ˆå¦‚æžœä¸å­˜åœ¨ï¼‰
+REM ´´½¨»·¾³±äÁ¿ÎÄ¼þ£¨Èç¹û²»´æÔÚ£©
 if not exist "jobshield_frontend\.env" (
-    echo ðŸ“ åˆ›å»ºçŽ¯å¢ƒå˜é‡æ–‡ä»¶...
+    echo ?? ´´½¨»·¾³±äÁ¿ÎÄ¼þ...
     echo REACT_APP_API_URL=http://localhost:8003 > jobshield_frontend\.env
     echo REACT_APP_NAME=JobShield >> jobshield_frontend\.env
     echo REACT_APP_VERSION=1.0.0 >> jobshield_frontend\.env
     echo REACT_APP_DEBUG=true >> jobshield_frontend\.env
-    echo âœ… çŽ¯å¢ƒå˜é‡æ–‡ä»¶å·²åˆ›å»º
+    echo ? »·¾³±äÁ¿ÎÄ¼þÒÑ´´½¨
 )
 
-REM æ£€æŸ¥Goæ˜¯å¦å®‰è£…
+REM ¼ì²éGoÊÇ·ñ°²×°
 go version >nul 2>&1
 if errorlevel 1 (
-    echo âŒ é”™è¯¯: Goæœªå®‰è£…æˆ–ä¸åœ¨PATHä¸­
-    echo    è¯·ä»Žä»¥ä¸‹åœ°å€å®‰è£…Go 1.24+: https://golang.org/dl/
+    echo ? ´íÎó: GoÎ´°²×°»ò²»ÔÚPATHÖÐ
+    echo    Çë´ÓÒÔÏÂµØÖ·°²×°Go 1.24+: https://golang.org/dl/
     pause
     exit /b 1
 )
 
-REM æ£€æŸ¥Goç‰ˆæœ¬
+REM ¼ì²éGo°æ±¾
 for /f "tokens=3" %%i in ('go version') do set GO_VERSION=%%i
-echo ðŸ”§ Goç‰ˆæœ¬: %GO_VERSION%
+echo ?? Go°æ±¾: %GO_VERSION%
 
-REM æ£€æŸ¥Node.jsæ˜¯å¦å®‰è£…
+REM ¼ì²éNode.jsÊÇ·ñ°²×°
 node --version >nul 2>&1
 if errorlevel 1 (
-    echo âŒ é”™è¯¯: Node.jsæœªå®‰è£…æˆ–ä¸åœ¨PATHä¸­
-    echo    è¯·ä»Žä»¥ä¸‹åœ°å€å®‰è£…Node.js 16+: https://nodejs.org/
+    echo ? ´íÎó: Node.jsÎ´°²×°»ò²»ÔÚPATHÖÐ
+    echo    Çë´ÓÒÔÏÂµØÖ·°²×°Node.js 16+: https://nodejs.org/
     pause
     exit /b 1
 )
 
-REM æ£€æŸ¥Node.jsç‰ˆæœ¬
+REM ¼ì²éNode.js°æ±¾
 for /f "tokens=1" %%i in ('node --version') do set NODE_VERSION=%%i
-echo ðŸŒ Node.jsç‰ˆæœ¬: %NODE_VERSION%
+echo ?? Node.js°æ±¾: %NODE_VERSION%
 
-REM æ£€æŸ¥npmæ˜¯å¦å®‰è£…
+REM ¼ì²énpmÊÇ·ñ°²×°
 npm --version >nul 2>&1
 if errorlevel 1 (
-    echo âŒ é”™è¯¯: npmæœªå®‰è£…æˆ–ä¸åœ¨PATHä¸­
-    echo    è¯·ä»Žä»¥ä¸‹åœ°å€å®‰è£…npm: https://nodejs.org/
+    echo ? ´íÎó: npmÎ´°²×°»ò²»ÔÚPATHÖÐ
+    echo    Çë´ÓÒÔÏÂµØÖ·°²×°npm: https://nodejs.org/
     pause
     exit /b 1
 )
 
-REM å®‰è£…å‰ç«¯ä¾èµ–ï¼ˆå¦‚æžœéœ€è¦ï¼‰
-echo ðŸ“¦ å®‰è£…å‰ç«¯ä¾èµ–...
+REM °²×°Ç°¶ËÒÀÀµ£¨Èç¹ûÐèÒª£©
+echo ?? °²×°Ç°¶ËÒÀÀµ...
 cd jobshield_frontend
 if not exist "node_modules" (
-    echo    æ­£åœ¨å®‰è£…npmåŒ…...
+    echo    ÕýÔÚ°²×°npm°ü...
     npm install
     if errorlevel 1 (
-        echo âŒ å®‰è£…npmåŒ…å¤±è´¥
+        echo ? °²×°npm°üÊ§°Ü
         pause
         exit /b 1
     )
-    echo âœ… å‰ç«¯ä¾èµ–å·²å®‰è£…
+    echo ? Ç°¶ËÒÀÀµÒÑ°²×°
 ) else (
-    echo âœ… å‰ç«¯ä¾èµ–å·²å®‰è£…
+    echo ? Ç°¶ËÒÀÀµÒÑ°²×°
 )
 cd ..
 
-REM å¯åŠ¨åŽç«¯æœåŠ¡
-echo ðŸ”§ å¯åŠ¨åŽç«¯æœåŠ¡...
-start "JobShield åŽç«¯" cmd /k "cd jobshield_backend && go run cmd/main.go"
+REM Æô¶¯ºó¶Ë·þÎñ
+echo ?? Æô¶¯ºó¶Ë·þÎñ...
+start "JobShield ºó¶Ë" cmd /k "cd jobshield_backend && go run cmd/main.go"
 
-REM ç­‰å¾…åŽç«¯å¯åŠ¨
-echo â³ ç­‰å¾…åŽç«¯æœåŠ¡å¯åŠ¨...
+REM µÈ´ýºó¶ËÆô¶¯
+echo ? µÈ´ýºó¶Ë·þÎñÆô¶¯...
 timeout /t 5 /nobreak >nul
 
-REM å¯åŠ¨å‰ç«¯æœåŠ¡
-echo ðŸŒ å¯åŠ¨å‰ç«¯æœåŠ¡...
-start "JobShield å‰ç«¯" cmd /k "cd jobshield_frontend && npm start"
+REM Æô¶¯Ç°¶Ë·þÎñ
+echo ?? Æô¶¯Ç°¶Ë·þÎñ...
+start "JobShield Ç°¶Ë" cmd /k "cd jobshield_frontend && npm start"
 
-REM ç­‰å¾…å‰ç«¯å¯åŠ¨
-echo â³ ç­‰å¾…å‰ç«¯æœåŠ¡å¯åŠ¨...
+REM µÈ´ýÇ°¶ËÆô¶¯
+echo ? µÈ´ýÇ°¶Ë·þÎñÆô¶¯...
 timeout /t 10 /nobreak >nul
 
 echo.
-echo ðŸŽ‰ JobShield å¼€å‘çŽ¯å¢ƒå¯åŠ¨æˆåŠŸï¼
-echo â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-echo ðŸ“± å‰ç«¯: http://localhost:3000
-echo ðŸ”§ åŽç«¯: http://localhost:8003
-echo ðŸ“Š APIæ–‡æ¡£: æŸ¥çœ‹ README.md äº†è§£APIç«¯ç‚¹
+echo ?? JobShield ¿ª·¢»·¾³Æô¶¯³É¹¦£¡
+echo ©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
+echo ?? Ç°¶Ë: http://localhost:3000
+echo ?? ºó¶Ë: http://localhost:8003
+echo ?? APIÎÄµµ: ²é¿´ README.md ÁË½âAPI¶Ëµã
 echo.
-echo ðŸ’¡ æç¤º:
-echo    â€¢ å‰ç«¯å’ŒåŽç«¯åœ¨ç‹¬ç«‹çš„å‘½ä»¤çª—å£ä¸­è¿è¡Œ
-echo    â€¢ æ£€æŸ¥æµè§ˆå™¨æŽ§åˆ¶å°æŸ¥çœ‹å‰ç«¯æ—¥å¿—
-echo    â€¢ åŽç«¯æ—¥å¿—æ˜¾ç¤ºåœ¨åŽç«¯å‘½ä»¤çª—å£ä¸­
-echo    â€¢ è¿žæŽ¥çŠ¶æ€æ˜¾ç¤ºåœ¨å‰ç«¯å³ä¸Šè§’
-echo    â€¢ å…³é—­å‘½ä»¤çª—å£å¯åœæ­¢æœåŠ¡
-echo â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+echo ?? ÌáÊ¾:
+echo    ? Ç°¶ËºÍºó¶ËÔÚ¶ÀÁ¢µÄÃüÁî´°¿ÚÖÐÔËÐÐ
+echo    ? ¼ì²éä¯ÀÀÆ÷¿ØÖÆÌ¨²é¿´Ç°¶ËÈÕÖ¾
+echo    ? ºó¶ËÈÕÖ¾ÏÔÊ¾ÔÚºó¶ËÃüÁî´°¿ÚÖÐ
+echo    ? Á¬½Ó×´Ì¬ÏÔÊ¾ÔÚÇ°¶ËÓÒÉÏ½Ç
+echo    ? ¹Ø±ÕÃüÁî´°¿Ú¿ÉÍ£Ö¹·þÎñ
+echo ©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥©¥
 echo.
-echo æŒ‰ä»»æ„é”®é€€å‡ºå¯åŠ¨è„šæœ¬...
+echo °´ÈÎÒâ¼üÍË³öÆô¶¯½Å±¾...
 pause >nul

@@ -2,6 +2,10 @@ package v1
 
 import (
 	"context"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	"anti_scam/apiserver/data"
@@ -101,4 +105,25 @@ func AddDangerLink(c *gin.Context) {
 		return
 	}
 	ginutil.WriteResponse(c, nil, nil)
+}
+
+func GetScamRecords(c *gin.Context) {
+	currentDir, err := os.Getwd()
+	if err != nil {
+		log.Println("Failed to get current directory:", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get current directory"})
+		return
+	}
+	// 拼接 JSON 文件的路径
+	csvPath := filepath.Join(currentDir, "scams_records_normalized_2020_2025.json")
+	// 设置响应头
+	c.Header("Content-Type", "application/json")
+	// 返回文件
+	if _, err := os.Stat(csvPath); os.IsNotExist(err) {
+		// 如果文件不存在
+		c.JSON(http.StatusNotFound, gin.H{"error": "File not found"})
+		return
+	}
+	// 使用 c.File 返回 JSON 文件
+	c.File(csvPath)
 }

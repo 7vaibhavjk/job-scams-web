@@ -6,7 +6,7 @@ Create a `.env` file in the project root directory with the following configurat
 
 ```bash
 # Backend API server address
-REACT_APP_API_URL=http://13.211.253.6:8003
+REACT_APP_API_URL=http://13.236.66.151:8003
 
 # Application configuration
 REACT_APP_NAME=JobShield
@@ -50,6 +50,6 @@ npm start
 
 ## Connection Testing
 
-1. Ensure the backend service is running on `http://13.211.253.6:8003`
+1. Ensure the backend service is running on `http://13.236.66.151:8003`
 2. Frontend will automatically connect to the backend API
 3. You can view API request logs in the browser developer tools

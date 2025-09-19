@@ -65,13 +65,13 @@ header {
 }
 
 .logo h1 {
-    font-size: 50px;
+    font-size: 30px;
     font-weight: 800;
     color: white;
     margin: 0;
     margin-left: 50px;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-    letter-spacing: 8px;
+    letter-spacing: 4px;
 }
 
 .team-logo {
@@ -1014,4 +1014,1551 @@ select {
   border-color: var(--blue);
 }
 
+/* 新增的AI检测和基础检测结果样式 */
+.check-result-card {
+    margin-top: 25px;
+    padding: 25px;
+    border-radius: 12px;
+    background: #f8f9fa;
+    border-left: 4px solid #007bff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
 
+.check-result-card.ai-result {
+    border-left-color: var(--blue);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.check-result-card.basic-result {
+    border-left-color: var(--dark-grey);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.check-result-card h4 {
+    margin-bottom: 20px;
+    color: var(--dark-blue);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.check-result-card h4 i {
+    color: var(--blue);
+    font-size: 24px;
+}
+
+.result-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    min-width: 180px;
+    color: var(--dark-blue);
+    font-size: 15px;
+}
+
+/* 预测值样式 */
+.prediction-value {
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prediction-value.phishing {
+    background: #ffeaea;
+    color: var(--red);
+    border: 1px solid #ffb8b8;
+}
+
+.prediction-value.legitimate {
+    background: #e8f5e8;
+    color: var(--green);
+    border: 1px solid #a3d4a3;
+}
+
+/* 数值显示样式 */
+.confidence-value {
+    font-weight: bold;
+    color: var(--blue);
+    font-size: 16px;
+}
+
+.probability-value {
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.probability-value.phishing {
+    background: #ffebee;
+    color: var(--red);
+}
+
+.probability-value.legitimate {
+    background: #e8f5e8;
+    color: var(--green);
+}
+
+/* 风险等级样式 */
+.risk-level {
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.risk-level.critical {
+    background: var(--red);
+    color: white;
+}
+
+.risk-level.high {
+    background: #ff6b81;
+    color: white;
+}
+
+.risk-level.medium {
+    background: var(--orange);
+    color: white;
+}
+
+.risk-level.low {
+    background: var(--green);
+    color: white;
+}
+
+/* 安全分数样式 */
+.safety-score {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 6px 14px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: var(--dark-blue);
+}
+
+.score-0 { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); color: var(--red); }
+.score-1 { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); color: var(--orange); }
+.score-2 { background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%); color: #827717; }
+.score-3 { background: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%); color: #33691e; }
+.score-4 { background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); color: var(--green); }
+.score-5 { background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); color: var(--green); }
+
+/* 原因列表样式 */
+.reasons-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.reason-item {
+    background: #fff3cd;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 3px solid var(--orange);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.reason-item i {
+    color: var(--orange);
+    flex-shrink: 0;
+}
+
+/* 总体结果样式 */
+.overall-result {
+    margin-top: 25px;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.overall-result.safety {
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+    border: 2px solid var(--green);
+    color: var(--green);
+}
+
+.overall-result.danger {
+    background: linear-gradient(135deg, #ffebee 0%, #f8d7da 100%);
+    border: 2px solid var(--red);
+    color: var(--red);
+}
+
+.overall-result.unknown {
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+    border: 2px solid var(--orange);
+    color: var(--orange);
+}
+
+.result-summary h4 {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+}
+
+.result-summary p {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* 无记录样式 */
+.no-records {
+    color: var(--dark-grey);
+    font-style: italic;
+    padding: 8px 0;
+}
+
+.url-value {
+    word-break: break-all;
+    color: var(--dark-grey);
+    font-family: monospace;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--mid-grey);
+}
+
+.count-value {
+    font-weight: bold;
+    color: var(--blue);
+    font-size: 18px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .check-result-card {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .detail-label {
+        min-width: auto;
+        margin-bottom: 4px;
+    }
+
+    .result-details {
+        gap: 12px;
+    }
+
+    .overall-result {
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .result-summary h4 {
+        font-size: 20px;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .reasons-list {
+        gap: 6px;
+    }
+
+    .reason-item {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
+
+/* EducationPage.css - 魔幻风格主题 */
+
+.magical-theme {
+    background: linear-gradient(135deg, #0c0a1d 0%, #1a1a2e 50%, #16213e 100%);
+    color: #e6e6fa;
+    font-family: 'Cinzel', 'Times New Roman', serif;
+}
+
+.magical-btn {
+    background: linear-gradient(to bottom, #d4af37 0%, #b8860b 100%);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.magical-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.7);
+}
+
+.magical-title {
+    color: #d4af37;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.magical-subtitle {
+    color: #e6e6fa;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.magical-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #d4af37;
+}
+
+.magical-tab {
+    background: rgba(26, 26, 46, 0.8);
+    color: #e6e6fa;
+    padding: 12px 24px;
+    margin: 0 10px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #d4af37;
+    border-bottom: none;
+}
+
+.magical-tab.active {
+    background: linear-gradient(to bottom, #d4af37 0%, #b8860b 100%);
+    color: #000;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.magical-card {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid #d4af37;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.3);
+    margin-bottom: 20px;
+}
+
+.magical-card-title {
+    color: #d4af37;
+    border-bottom: 1px solid #d4af37;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* 冒险游戏样式 */
+.magical-adventure {
+    background: rgba(12, 10, 29, 0.7);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #d4af37;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.magical-header h3 {
+    color: #d4af37;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.magical-risk-meter {
+    background: rgba(26, 26, 46, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #d4af37;
+    margin-bottom: 20px;
+}
+
+.magical-risk-bar {
+    height: 20px;
+    background: #1a1a2e;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+    border: 1px solid #d4af37;
+}
+
+.magical-risk-fill {
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+.magical-game-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.magical-map-view {
+    flex: 1;
+    background: rgba(26, 26, 46, 0.8);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #d4af37;
+}
+
+.magical-game-map {
+    position: relative;
+    height: 400px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="%2316213E"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23d4af37" stroke-width="0.5" stroke-opacity="0.3"/></svg>');
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #d4af37;
+}
+
+.magical-map-cell {
+    position: absolute;
+    background: transparent;
+    border: 1px solid #d4af37;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.magical-map-cell.current {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+    z-index: 10;
+}
+
+.magical-map-cell.visited {
+    background: rgba(212, 175, 55, 0.2);
+}
+
+.magical-marker {
+    font-size: 1.5rem;
+    color: #d4af37;
+}
+
+.magical-player {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    z-index: 20;
+    transition: all 0.5s ease;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+}
+
+.magical-scenario-view {
+    flex: 2;
+}
+
+.magical-scenario-card {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid #d4af37;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.magical-scenario-card h4 {
+    color: #d4af37;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #d4af37;
+    padding-bottom: 10px;
+}
+
+.magical-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.magical-option-btn {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid #d4af37;
+    color: #e6e6fa;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.magical-option-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateX(5px);
+}
+
+.magical-option-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.magical-risk-indicator {
+    background: #d4af37;
+    color: #000;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.magical-outcome {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.magical-outcome.safe {
+    background: rgba(46, 125, 50, 0.2);
+    border: 1px solid #2e7d32;
+}
+
+.magical-outcome.warning {
+    background: rgba(245, 127, 23, 0.2);
+    border: 1px solid #f57f17;
+}
+
+.magical-outcome.danger {
+    background: rgba(228, 0, 43, 0.2);
+    border: 1px solid #E4002B;
+}
+
+.magical-log-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #d4af37;
+    margin-bottom: 10px;
+}
+
+/* 翻卡游戏样式 */
+.magical-flashcard-game {
+    background: rgba(12, 10, 29, 0.7);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #d4af37;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.magical-flashcard-container {
+    perspective: 1000px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.magical-flashcard {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.magical-flashcard.flipped {
+    transform: rotateY(180deg);
+}
+
+.magical-card-front,
+.magical-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.magical-card-front {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid #d4af37;
+}
+
+.magical-card-back {
+    background: linear-gradient(135deg, #16213e 0%, #0c0a1d 100%);
+    border: 2px solid #d4af37;
+    transform: rotateY(180deg);
+}
+
+.magical-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d4af37;
+}
+
+.magical-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.magical-answer-result {
+    text-align: center;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.magical-answer-result .correct {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.magical-answer-result .incorrect {
+    color: #E4002B;
+    font-weight: bold;
+}
+
+.magical-correct-answer {
+    background: rgba(212, 175, 55, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.magical-progress-bar {
+    height: 10px;
+    background: #1a1a2e;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+    border: 1px solid #d4af37;
+}
+
+.magical-progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #d4af37 0%, #b8860b 100%);
+    transition: width 0.5s ease;
+}
+
+.magical-tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.magical-tip-item {
+    display: flex;
+    align-items: center;
+    background: rgba(26, 26, 46, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #d4af37;
+}
+
+.magical-tip-item .tip-icon {
+    font-size: 1.5rem;
+    color: #d4af37;
+    margin-right: 15px;
+}
+
+.magical-tip-item .tip-content h5 {
+    color: #d4af37;
+    margin-bottom: 5px;
+}
+
+.magical-game-complete {
+    text-align: center;
+    padding: 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .magical-game-container {
+        flex-direction: column;
+    }
+
+    .magical-tabs {
+        flex-direction: column;
+    }
+
+    .magical-tab {
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border: 1px solid #d4af37;
+    }
+}
+
+
+/* 超级玛丽风格背景 */
+.super-mario-bg {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%2365b5e8" width="100" height="60"/><rect fill="%2374d188" y="60" width="100" height="40"/><circle fill="%23ffeb3b" cx="20" cy="20" r="10"/></svg>');
+    background-size: 200px 200px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.super-mario-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path fill="%23c8e6c9" d="M0 20 A20 20 0 0 0 40 20 A20 25 0 0 1 0 20 Z"/></svg>');
+    background-size: 80px 40px;
+    background-position: 0 60px;
+    opacity: 0.3;
+}
+
+/* 怪物样式 */
+.monsters-container {
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.monster-icon {
+    font-size: 24px;
+    color: #E4002B;
+    animation: float 3s infinite ease-in-out;
+}
+
+.monster-icon:nth-child(2) {
+    animation-delay: 0.5s;
+    color: #f57f17;
+}
+
+.monster-icon:nth-child(3) {
+    animation-delay: 1s;
+    color: #7b1fa2;
+}
+
+.monster-icon:nth-child(4) {
+    animation-delay: 1.5s;
+    color: #000000;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.player {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #ff5722;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 10;
+    transition: all 0.5s ease;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.7);
+}
+
+.attached-monster {
+    position: absolute;
+    font-size: 12px;
+    animation: bounce 1s infinite alternate;
+}
+
+.attached-monster:nth-child(1) {
+    top: -15px;
+    left: 5px;
+    color: #E4002B;
+}
+
+.attached-monster:nth-child(2) {
+    top: -15px;
+    right: 5px;
+    color: #f57f17;
+    animation-delay: 0.3s;
+}
+
+.attached-monster:nth-child(3) {
+    bottom: -15px;
+    left: 5px;
+    color: #7b1fa2;
+    animation-delay: 0.6s;
+}
+
+.attached-monster:nth-child(4) {
+    bottom: -15px;
+    right: 5px;
+    color: #000000;
+    animation-delay: 0.9s;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+}
+
+/* 地图单元格样式 */
+.map-cell {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.map-cell.current {
+    background-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    z-index: 5;
+}
+
+.map-cell.visited {
+    background-color: rgba(100, 200, 100, 0.2);
+}
+
+.map-cell.theme-danger,
+.map-cell.theme-safe,
+.map-cell.theme-success,
+.map-cell.theme-advice,
+.map-cell.theme-start,
+.map-cell.theme-sms,
+.map-cell.theme-web {
+    background: transparent !important;
+}
+
+.scenario-marker {
+    font-size: 20px;
+    opacity: 0.7;
+}
+
+/* 风险计量器样式 */
+.risk-meter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.risk-bar {
+    width: 150px;
+    height: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.risk-fill {
+    height: 100%;
+    transition: width 0.5s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column;
+    }
+
+    .map-view {
+        width: 100%;
+        height: 300px;
+        margin-bottom: 20px;
+    }
+
+    .scenario-view {
+        width: 100%;
+    }
+
+    .monsters-container {
+        margin-left: 0;
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .risk-meter {
+        margin-left: 0;
+        justify-content: center;
+    }
+}
+
+.magical-theme {
+    background: linear-gradient(135deg, #0c0a1d 0%, #1a1a2e 50%, #16213e 100%);
+    color: #e6e6fa;
+    font-family: 'Cinzel', 'Times New Roman', serif;
+}
+
+.magical-btn {
+    background: linear-gradient(to bottom, #d4af37 0%, #b8860b 100%);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.magical-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.7);
+}
+
+.magical-title {
+    color: #d4af37;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.magical-subtitle {
+    color: #e6e6fa;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.magical-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #d4af37;
+}
+
+.magical-tab {
+    background: rgba(26, 26, 46, 0.8);
+    color: #e6e6fa;
+    padding: 12px 24px;
+    margin: 0 10px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid #d4af37;
+    border-bottom: none;
+}
+
+.magical-tab.active {
+    background: linear-gradient(to bottom, #d4af37 0%, #b8860b 100%);
+    color: #000;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.magical-card {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid #d4af37;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.3);
+    margin-bottom: 20px;
+}
+
+.magical-card-title {
+    color: #d4af37;
+    border-bottom: 1px solid #d4af37;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* 冒险游戏样式 */
+.magical-adventure {
+    background: rgba(12, 10, 29, 0.7);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #d4af37;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.magical-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.magical-header h3 {
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+.magical-risk-meter {
+    background: rgba(26, 26, 46, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #d4af37;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.risk-label {
+    margin-right: 10px;
+}
+
+.magical-risk-bar {
+    height: 20px;
+    width: 150px;
+    background: #1a1a2e;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 10px;
+    border: 1px solid #d4af37;
+}
+
+.magical-risk-fill {
+    height: 100%;
+    transition: width 0.5s ease;
+    border-radius: 10px;
+}
+
+.risk-value {
+    font-weight: bold;
+}
+
+.magical-game-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .magical-game-container {
+        flex-direction: row;
+    }
+}
+
+.magical-map-view {
+    background: rgba(26, 26, 46, 0.8);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #d4af37;
+    display: flex;
+    justify-content: center;
+}
+
+.magical-game-map {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #d4af37;
+}
+
+.magical-map-cell {
+    position: absolute;
+    background: transparent;
+    border: 1px solid #d4af37;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.magical-map-cell.current {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+    z-index: 10;
+}
+
+.magical-map-cell.visited {
+    background: rgba(212, 175, 55, 0.2);
+}
+
+.magical-marker {
+    font-size: 1.5rem;
+    color: #d4af37;
+}
+
+.magical-player {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    z-index: 20;
+    transition: all 0.5s ease;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+    background-size: cover;
+    background-position: center;
+}
+
+.magical-scenario-view {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .magical-scenario-view {
+        flex: 2;
+    }
+}
+
+.magical-scenario-card {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid #d4af37;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.magical-scenario-card h4 {
+    color: #d4af37;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #d4af37;
+    padding-bottom: 10px;
+}
+
+.magical-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.magical-option-btn {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid #d4af37;
+    color: #e6e6fa;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.magical-option-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateX(5px);
+}
+
+.magical-option-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.magical-risk-indicator {
+    background: #d4af37;
+    color: #000;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.magical-outcome {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.magical-outcome.safe {
+    background: rgba(46, 125, 50, 0.2);
+    border: 1px solid #2e7d32;
+}
+
+.magical-outcome.danger {
+    background: rgba(228, 0, 43, 0.2);
+    border: 1px solid #E4002B;
+}
+
+.magical-outcome.success {
+    background: rgba(46, 125, 50, 0.3);
+    border: 1px solid #2e7d32;
+}
+
+.magical-log-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #d4af37;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+/* 怪物样式 */
+.monsters-container {
+    display: flex;
+    gap: 10px;
+}
+
+.monster-icon {
+    font-size: 24px;
+    color: #E4002B;
+    animation: float 3s infinite ease-in-out;
+}
+
+.monster-icon:nth-child(2) {
+    animation-delay: 0.5s;
+    color: #f57f17;
+}
+
+.monster-icon:nth-child(3) {
+    animation-delay: 1s;
+    color: #7b1fa2;
+}
+
+.monster-icon:nth-child(4) {
+    animation-delay: 1.5s;
+    color: #000000;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.attached-monster {
+    position: absolute;
+    font-size: 12px;
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+}
+
+/* 翻卡游戏样式 */
+.magical-flashcard-game {
+    background: rgba(12, 10, 29, 0.7);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #d4af37;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.magical-flashcard-container {
+    perspective: 1000px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.magical-flashcard {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.magical-flashcard.flipped {
+    transform: rotateY(180deg);
+}
+
+.magical-card-front,
+.magical-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.magical-card-front {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid #d4af37;
+}
+
+.magical-card-back {
+    background: linear-gradient(135deg, #16213e 0%, #0c0a1d 100%);
+    border: 2px solid #d4af37;
+    transform: rotateY(180deg);
+}
+
+.magical-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d4af37;
+}
+
+.magical-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.magical-answer-result {
+    text-align: center;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.magical-answer-result .correct {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.magical-answer-result .incorrect {
+    color: #E4002B;
+    font-weight: bold;
+}
+
+.magical-correct-answer {
+    background: rgba(212, 175, 55, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.magical-progress-bar {
+    height: 10px;
+    background: #1a1a2e;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+    border: 1px solid #d4af37;
+}
+
+.magical-progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #d4af37 0%, #b8860b 100%);
+    transition: width 0.5s ease;
+}
+
+.magical-tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.magical-tip-item {
+    display: flex;
+    align-items: center;
+    background: rgba(26, 26, 46, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #d4af37;
+}
+
+.magical-tip-item .tip-icon {
+    font-size: 1.5rem;
+    color: #d4af37;
+    margin-right: 15px;
+}
+
+.magical-tip-item .tip-content h5 {
+    color: #d4af37;
+    margin-bottom: 5px;
+}
+
+.magical-game-complete {
+    text-align: center;
+    padding: 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .magical-tabs {
+        flex-direction: column;
+    }
+
+    .magical-tab {
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border: 1px solid #d4af37;
+    }
+
+    .magical-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .magical-risk-meter {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .magical-game-map {
+        height: 400px;
+        width: 400px;
+    }
+}
+
+/* 辅助样式 */
+.back-btn {
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.decision-log {
+    margin-top: 20px;
+}
+
+.log-entries {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(to bottom, #d4af37 0%, #b8860b 100%);
+    color: #000;
+    border: none;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2rem;
+}
+
+.theme-start {
+    background: rgba(75, 0, 130, 0.3) !important;
+}
+
+.theme-sms {
+    background: rgba(0, 100, 200, 0.3) !important;
+}
+
+.theme-web {
+    background: rgba(200, 100, 0, 0.3) !important;
+}
+
+.theme-safe {
+    background: rgba(0, 150, 0, 0.3) !important;
+}
+
+.theme-danger {
+    background: rgba(200, 0, 0, 0.3) !important;
+}
+
+.theme-advice {
+    background: rgba(150, 0, 150, 0.3) !important;
+}
+
+
+
+.deepseek-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    height: 90vh;
+    box-sizing: border-box;
+}
+
+.left-panel, .middle-panel, .right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: auto;
+}
+
+h3 { margin-bottom: 15px; color: #333; }
+
+.quick-questionnaire { display: flex; flex-direction: column; gap: 12px; }
+
+.question-item { display: flex; flex-direction: column; gap: 6px; }
+
+.radio-options { display: flex; gap: 15px; }
+
+.radio-options label { cursor: pointer; font-size: 14px; color: #555; }
+
+.radio-options input[type="radio"] { margin-right: 6px; }
+
+.input-field { padding: 6px 10px; border-radius: 4px; border: 1px solid #ccc; }
+
+.submit-button { padding: 10px 16px; margin-top: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+.submit-button:hover { background-color: #3578c3; }
+
+.final-advice { margin-top: 15px; background-color: #fff9e6; padding: 10px; border-radius: 6px; border-left: 4px solid #ffc107; }
+
+.middle-panel { display: flex; flex-direction: column; height: 100%; }
+.answer-text-area { flex: 0 0 60%; margin-bottom: 10px; }
+.input-area { flex: 1; display: flex; flex-direction: column; }
+.input-area textarea { flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ccc; resize: none; }
+
+.text-area-content { background-color: #f5f5f5; padding: 10px; border-radius: 6px; min-height: 80px; overflow-y: auto; }
+
+.right-panel section { margin-bottom: 12px; }
+.right-panel h4 { margin-bottom: 6px; color: #555; }
+.right-panel ul { list-style: none; padding-left: 0; }
+.right-panel ul li { margin-bottom: 4px; }
+.right-panel table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+.right-panel table, th, td { border: 1px solid #ccc; }
+.right-panel th, td { padding: 6px; font-size: 13px; text-align: left; }
+.scam-message-rotator { background-color: #f0f8ff; padding: 10px; border-radius: 6px; font-size: 14px; color: #333; min-height: 40px; margin-top: 8px; }
+
+.ai-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.ai-container textarea {
+    flex: 1;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: none;
+    margin-bottom: 8px;
+}

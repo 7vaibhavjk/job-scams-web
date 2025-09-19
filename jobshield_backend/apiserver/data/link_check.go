@@ -62,3 +62,14 @@ func AddDangerLink(req repo.AddLinkReq) error {
 	}
 	return nil
 }
+
+func GetScamRecords() ([]model.ScamRecord, error) {
+	var records []model.ScamRecord
+	db := db2.DB
+	err := db.Find(&records).Error
+	if err != nil {
+		fmt.Printf("get the scam records fail %v\n", err)
+		return nil, err
+	}
+	return records, nil
+}

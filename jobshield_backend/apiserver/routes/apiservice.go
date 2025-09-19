@@ -18,6 +18,10 @@ func ApiService(g *gin.Engine) *gin.Engine {
 		{
 			cert.POST("/add", v1.AddDangerLink)
 		}
+		record := api.Group("record")
+		{
+			record.GET("/query", v1.GetScamRecords)
+		}
 	}
 	return g
 }

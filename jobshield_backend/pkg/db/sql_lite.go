@@ -37,7 +37,7 @@ func Connect() {
 		panic("Failed to connect to the database")
 	}
 	// Auto migrate models
-	err = DB.AutoMigrate(&model.UrlCheck{})
+	err = DB.AutoMigrate(&model.UrlCheck{}, &model.ScamRecord{})
 	if err != nil {
 		fmt.Println("Failed to auto-migrate:", err)
 		panic("Failed to auto-migrate")

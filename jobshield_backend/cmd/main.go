@@ -4,6 +4,7 @@ import (
 	"anti_scam/apiserver/routes"
 	"anti_scam/pkg/db"
 	"anti_scam/pkg/middleware"
+	"anti_scam/scanner"
 	"log"
 	_ "net/http/pprof"
 	"os"
@@ -41,13 +42,10 @@ func main() {
 
 	db.Connect()
 
-	//scanner.ProcessCSV()
-	//scanner.ProcessHaus()
+	scanner.ProcessCSV()
+	//scanner.ScamRecordHandler()
 
 	if err := g.Run(":8003"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
-
-// http://rgipt.ac.in safe
-// http://shadetreetechnology.com/V4/validation/a111aedc8ae390eabcfa130e041a10a4 danger
