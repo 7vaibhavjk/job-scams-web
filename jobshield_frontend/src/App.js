@@ -11,8 +11,9 @@ import Footer from './components/Footer';
 import ConnectionTest from './components/ConnectionTest';
 
 /** 
- * 只负责渲染你原来的站点内容（保持你的原始逻辑不变）
+ * Only responsible for rendering the original site content (keep original logic unchanged)
  */
+
 function AppContent() {
   const [currentPage, setCurrentPage] = useState('home');
 
@@ -23,7 +24,8 @@ function AppContent() {
     window.scrollTo(0, 0);
   };
 
-  // 可访问页面映射
+// Accessible page mapping
+
   const accessiblePages = {
     home: <HomePage onNavigate={navigateTo} />,
     check: <CheckPage onNavigate={navigateTo} />,
@@ -41,7 +43,7 @@ function AppContent() {
 
   return (
     <div className="App">
-      <ConnectionTest />
+      {/* <ConnectionTest /> */}
       <Header currentPage={currentPage} onNavigate={navigateTo} isFullAccess={isFullAccess} />
       {renderPage()}
       <Footer />
@@ -50,8 +52,9 @@ function AppContent() {
 }
 
 /**
- * 最外层：密码门（只处理授权与否，不混用 AppContent 的 Hooks）
+ * Outermost: password gate (only handles authorization, separate from AppContent hooks)
  */
+
 export default function App() {
   const [authorized, setAuthorized] = useState(false);
   const [pwd, setPwd] = useState('');
@@ -64,7 +67,7 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (pwd === 'TA39test123') { // 👈 这里改成你的临时密码
+    if (pwd === 'TA39test123') { 
       sessionStorage.setItem('test_auth_ok', '1');
       setAuthorized(true);
     } else {

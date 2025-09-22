@@ -6,8 +6,8 @@ function Footer() {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>About JobShield</h3>
-            <p>JobShield is a non-profit project aimed at helping job seekers identify and avoid online job scams.</p>
+            <h3>About Protegrad</h3>
+            <p>Protegrad is a non-profit project aimed at helping job seekers identify and avoid online job scams.</p>
           </div>
 
           <div className="footer-section">
@@ -21,10 +21,11 @@ function Footer() {
             <h3>Need Help?</h3>
             <p>If you believe you have been a victim of a job scam, contact your bank immediately and report to ACCC.</p>
           </div>
-        </div>
 
-        <div className="copyright">
-          <p>&copy; 2025 JobShield Australia. All rights reserved.</p>
+          {/* Team Logo moved here */}
+          <div className="footer-section team-logo">
+            <img src="/team-logo.png" alt="Thesus Protocol Team Logo" />
+          </div>
         </div>
       </div>
     </footer>

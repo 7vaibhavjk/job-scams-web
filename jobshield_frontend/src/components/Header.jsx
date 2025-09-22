@@ -5,11 +5,15 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
         <header>
             <div className="container header-content">
                 <div className="logo-container">
-                    <div className="team-logo">
-                        <img src="/team-logo.png" alt="Team Logo" />
-                    </div>
-                    <div className="logo">
-                        <h1>JobShield</h1>
+                    <div 
+                        className="logo"
+                        style={{ cursor: "pointer" }} // optional: makes it look clickable
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onNavigate('home');
+                        }}
+                    >
+                        <h1>Protegrad</h1>
                     </div>
                 </div>
                 <nav>
@@ -63,7 +67,6 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
                             </a>
                         </li>
 
-                        {/* 只有在 full access 模式下才渲染 */}
                         {isFullAccess && (
                             <>
                                 <li>
