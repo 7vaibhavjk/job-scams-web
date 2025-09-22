@@ -84,13 +84,13 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
                                 <li>
                                     <a
                                         href="#"
-                                        className={currentPage === 'support' ? 'active' : ''}
+                                        className={currentPage === 'ChatAssistant' ? 'active' : ''}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            onNavigate('support');
+                                            onNavigate('ChatAssistant');
                                         }}
                                     >
-                                        Support Center
+                                        Chat Assistant
                                     </a>
                                 </li>
                             </>

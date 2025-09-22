@@ -6,7 +6,7 @@ import CheckPage from './components/CheckPage';
 import ReportPage from './components/ReportPage';
 import TrendsPage from './components/TrendsPage';
 import EducationPage from './components/EducationPage';
-import SupportPage from './components/SupportPage';
+import ChatAssistant from "./components/ChatAssistant";
 import Footer from './components/Footer';
 import ConnectionTest from './components/ConnectionTest';
 
@@ -33,7 +33,7 @@ function AppContent() {
     trends: <TrendsPage onNavigate={navigateTo} />,
     ...(isFullAccess && {
       education: <EducationPage onNavigate={navigateTo} />,
-      support: <SupportPage onNavigate={navigateTo} />
+      ChatAssistant: <ChatAssistant onNavigate={navigateTo} />
     })
   };
 
