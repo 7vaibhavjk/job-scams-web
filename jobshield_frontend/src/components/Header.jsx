@@ -7,7 +7,7 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
                 <div className="logo-container">
                     <div 
                         className="logo"
-                        style={{ cursor: "pointer" }} // optional: makes it look clickable
+                        style={{ cursor: "pointer" }}
                         onClick={(e) => {
                             e.preventDefault();
                             onNavigate('home');
@@ -95,6 +95,20 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
                                 </li>
                             </>
                         )}
+
+                        {/* Extension always last */}
+                        <li>
+                            <a
+                                href="#"
+                                className={currentPage === 'extension' ? 'active' : ''}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onNavigate('extension');
+                                }}
+                            >
+                                Extension
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </div>

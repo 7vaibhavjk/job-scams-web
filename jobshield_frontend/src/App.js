@@ -8,6 +8,7 @@ import TrendsPage from './components/TrendsPage';
 import EducationPage from './components/EducationPage';
 import ChatAssistant from "./components/ChatAssistant";
 import Footer from './components/Footer';
+import ExtensionPage from './components/ExtensionPage';
 import ConnectionTest from './components/ConnectionTest';
 
 /** 
@@ -26,16 +27,18 @@ function AppContent() {
 
 // Accessible page mapping
 
-  const accessiblePages = {
-    home: <HomePage onNavigate={navigateTo} />,
-    check: <CheckPage onNavigate={navigateTo} />,
-    report: <ReportPage onNavigate={navigateTo} />,
-    trends: <TrendsPage onNavigate={navigateTo} />,
-    ...(isFullAccess && {
-      education: <EducationPage onNavigate={navigateTo} />,
-      ChatAssistant: <ChatAssistant onNavigate={navigateTo} />
-    })
-  };
+const accessiblePages = {
+  home: <HomePage onNavigate={navigateTo} />,
+  check: <CheckPage onNavigate={navigateTo} />,
+  report: <ReportPage onNavigate={navigateTo} />,
+  trends: <TrendsPage onNavigate={navigateTo} />,
+  extension: <ExtensionPage />,   // ⬅️ new page here
+  ...(isFullAccess && {
+    education: <EducationPage onNavigate={navigateTo} />,
+    ChatAssistant: <ChatAssistant onNavigate={navigateTo} />
+  })
+};
+
 
   const renderPage = () => {
     return accessiblePages[currentPage] || <HomePage onNavigate={navigateTo} />;
