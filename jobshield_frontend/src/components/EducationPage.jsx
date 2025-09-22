@@ -10,9 +10,9 @@ function EducationPage({onNavigate}) {
                     <i className="fas fa-arrow-left"></i> Back to Home
                 </div>
 
-                <h2 className="section-title magical-title">Magical Job Hunting Adventure</h2>
+                <h2 className="section-title magical-title">Job Hunting Adventure</h2>
                 <p className="section-subtitle magical-subtitle">
-                    Learn to identify and avoid job scams through a magical adventure
+                    Learn to identify and avoid job scams through an adventure
                 </p>
 
                 <div className="tab-container magical-tabs">
@@ -20,13 +20,13 @@ function EducationPage({onNavigate}) {
                         className={`tab ${activeTab === 'maze' ? 'active' : ''} magical-tab`}
                         onClick={() => setActiveTab('maze')}
                     >
-                        <i className="fas fa-dragon"></i> Magical Adventure Game
+                        <i className="fas fa-dragon"></i> Adventure Game
                     </div>
                     <div
                         className={`tab ${activeTab === 'flashcards' ? 'active' : ''} magical-tab`}
                         onClick={() => setActiveTab('flashcards')}
                     >
-                        <i className="fas fa-scroll"></i> Magical Knowledge Scrolls
+                        <i className="fas fa-scroll"></i> Knowledge Scrolls
                     </div>
                 </div>
 
@@ -35,14 +35,14 @@ function EducationPage({onNavigate}) {
 
                 <div className="card magical-card" style={{marginTop: '40px'}}>
                     <h3 className="card-title magical-card-title">
-                        <i className="fas fa-info-circle"></i> Magical Guide
+                        <i className="fas fa-info-circle"></i> Disclaimer
                     </h3>
                     <p>
-                        <strong>Magical Warning:</strong> These educational games are based on common scam patterns but may not cover all situations.
+                        <strong>Warning:</strong> These educational games are based on common scam patterns but may not cover all situations.
                         Always exercise caution when sharing personal information online.
                     </p>
                     <p>
-                        <strong>Magical Privacy:</strong> We do not collect any personal data from these games. Your progress is stored only on your device.
+                        <strong>Privacy:</strong> We do not collect any personal data from these games. Your progress is stored only on your device.
                     </p>
                     <p>
                         <strong>Knowledge Sources:</strong> Information is based on reports from the Australian Cyber Security Centre, Scamwatch, and other cybersecurity organizations.
@@ -978,7 +978,7 @@ const FlashCardGame = () => {
                                     className={`option-btn ${selectedOption === index ? 'selected' : ''} magical-option-btn`}
                                     onClick={() => handleOptionSelect(index)}
                                     disabled={showAnswer}
-                                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+                                    style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '8px' }}
                                 >
                                     <span className="option-letter">{String.fromCharCode(65 + index)}</span>
                                     <span className="option-text">{option}</span>
@@ -997,7 +997,7 @@ const FlashCardGame = () => {
                                     }, 300);
                                 }}
                             >
-                                <i className="fas fa-eye"></i> Reveal Magical Answer
+                                <i className="fas fa-eye"></i> Reveal Answer
                             </button>
                         )}
                     </div>
@@ -1051,7 +1051,7 @@ const FlashCardGame = () => {
 
             <div className="knowledge-center card magical-card">
                 <h4>
-                    <i className="fas fa-lightbulb"></i> Magical Scam Prevention Guide
+                    <i className="fas fa-lightbulb"></i> Scam Prevention Guide
                 </h4>
                 <div className="tips-grid magical-tips-grid">
                     <div className="tip-item magical-tip-item">
@@ -1060,7 +1060,7 @@ const FlashCardGame = () => {
                         </div>
                         <div className="tip-content">
                             <h5>No Advance Payment</h5>
-                            <p>Legitimate magical employers will never ask you to pay before starting work</p>
+                            <p>Legitimate employers will never ask you to pay before starting work</p>
                         </div>
                     </div>
                     <div className="tip-item magical-tip-item">
@@ -1068,8 +1068,8 @@ const FlashCardGame = () => {
                             <i className="fas fa-shield-alt"></i>
                         </div>
                         <div className="tip-content">
-                            <h5>Verify Magical Contacts</h5>
-                            <p>Always verify company contact information through official Ministry of Magic</p>
+                            <h5>Verify Contacts</h5>
+                            <p>Always verify company contact information</p>
                         </div>
                     </div>
                     <div className="tip-item magical-tip-item">
@@ -1077,7 +1077,7 @@ const FlashCardGame = () => {
                             <i className="fas fa-search"></i>
                         </div>
                         <div className="tip-content">
-                            <h5>Research Magical Companies</h5>
+                            <h5>Research Companies</h5>
                             <p>Thoroughly research company background before sharing personal information</p>
                         </div>
                     </div>
@@ -1086,8 +1086,8 @@ const FlashCardGame = () => {
                             <i className="fas fa-exclamation-triangle"></i>
                         </div>
                         <div className="tip-content">
-                            <h5>Watch for Magical Red Flags</h5>
-                            <p>Be cautious of interviews conducted only through owls or magical messengers</p>
+                            <h5>Watch for Red Flags</h5>
+                            <p>Be cautious of interviews conducted only through text</p>
                         </div>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ function ReportPage({ onNavigate }) {
     }
 
     if (!scamType) {
-      setReportError('Please describe the threat type');
+      setReportError('Please select the threat type');
       return;
     }
 
@@ -57,10 +57,13 @@ function ReportPage({ onNavigate }) {
           </a>
 
           <h2 className="section-title">Report Dangerous Website</h2>
-          <p className="section-subtitle">If you've encountered a scam website, please report it here to help protect other Australians.</p>
+          <p className="section-subtitle">
+            If you've encountered a scam website, please report it here to help protect other Australians.
+          </p>
 
           <div className="card">
             <h3 className="card-title"><i className="fas fa-flag"></i> Report Suspicious Website</h3>
+            
             <div className="form-group">
               <label htmlFor="report-url">Enter URL to report</label>
               <input 
@@ -72,17 +75,25 @@ function ReportPage({ onNavigate }) {
                 onChange={(e) => setUrlToReport(e.target.value)}
               />
             </div>
+
             <div className="form-group">
-              <label htmlFor="scam-type">Threat Type (Please describe the threat)</label>
-              <input 
-                type="text" 
-                id="scam-type" 
-                className="form-control" 
-                placeholder="e.g., Phishing, Job Scam, Investment Scam, etc." 
+              <label htmlFor="scam-type">Threat Type</label>
+              <select
+                id="scam-type"
+                className="form-control"
                 value={scamType}
                 onChange={(e) => setScamType(e.target.value)}
-              />
+              >
+                <option value="">-- Select a threat type --</option>
+                <option value="Phishing Scams">Phishing Scams</option>
+                <option value="Advance Fee Scams">Advance Fee Scams</option>
+                <option value="Identity Theft">Identity Theft</option>
+                <option value="Work-from-Home Scams">Work-from-Home Scams</option>
+                <option value="Fake Job Offers">Fake Job Offers</option>
+                <option value="Money Mule Scams">Money Mule Scams</option>
+              </select>
             </div>
+
             <button 
               className="btn" 
               onClick={reportUrl} 
@@ -108,36 +119,6 @@ function ReportPage({ onNavigate }) {
                 <p><i className="fas fa-exclamation-triangle"></i> {reportError}</p>
               </div>
             )}
-          </div>
-
-          <div className="card">
-            <h3 className="card-title"><i className="fas fa-exclamation-triangle"></i> Common Job Scam Types</h3>
-            <div className="scam-type-grid">
-              <div className="scam-type-item">
-                <i className="fas fa-fish scam-type-icon"></i>
-                <span>Phishing Scams</span>
-              </div>
-              <div className="scam-type-item">
-                <i className="fas fa-money-bill-wave scam-type-icon"></i>
-                <span>Advance Fee Scams</span>
-              </div>
-              <div className="scam-type-item">
-                <i className="fas fa-id-card scam-type-icon"></i>
-                <span>Identity Theft</span>
-              </div>
-              <div className="scam-type-item">
-                <i className="fas fa-house-user scam-type-icon"></i>
-                <span>Work-from-Home Scams</span>
-              </div>
-              <div className="scam-type-item">
-                <i className="fas fa-file-invoice-dollar scam-type-icon"></i>
-                <span>Fake Job Offers</span>
-              </div>
-              <div className="scam-type-item">
-                <i className="fas fa-tools scam-type-icon"></i>
-                <span>Equipment Purchase Scams</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>

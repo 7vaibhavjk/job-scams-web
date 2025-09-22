@@ -101,7 +101,7 @@ export default function AssistantPage() {
 
   return (
     <div className="assistant-shell container">
-      <h2 className="assistant-title">Recovery Assistant <span className="beta-pill">Beta</span></h2>
+      <h2 className="assistant-title">Recovery Assistant</h2>
       <p className="assistant-sub">
         We don’t store your messages. If you enable <strong>Ask AI</strong>, your text is sent once to our AI provider to generate a reply. Avoid sharing personal identifiers.
       </p>

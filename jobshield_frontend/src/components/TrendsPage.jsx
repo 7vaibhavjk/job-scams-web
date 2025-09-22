@@ -395,7 +395,7 @@ const TILE = {
             value={selectedChart}
             onChange={(e) => setSelectedChart(e.target.value)}
           >
-            <option value="">-- choose one --</option>
+            <option value="">-- Choose One --</option>
             <option value="monthly">Amount lost & reports (monthly trend)</option>
             <option value="topScams">Top ten scams by loss</option>
             <option value="contact">Top contact methods</option>
