@@ -48,7 +48,9 @@ const accessiblePages = {
     <div className="App">
       {/* <ConnectionTest /> */}
       <Header currentPage={currentPage} onNavigate={navigateTo} isFullAccess={isFullAccess} />
-      {renderPage()}
+      <main>
+        {renderPage()}
+      </main>
       <Footer />
     </div>
   );

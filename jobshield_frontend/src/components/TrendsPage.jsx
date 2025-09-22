@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import { loadRecords, groupBy, sum, currency } from "../services/data";
 
-// below other imports
 const COLORS = {
   primary:   "#012169", // AUS blue
   dark:      "#001A44",
@@ -29,57 +28,12 @@ const barGradient = (top, bottom=COLORS.primary) => ({
   ]
 });
 
-function YearSlider({ value, onChange }) {
-  const YEARS = [2020, 2021, 2022, 2023, 2024, 2025];
-
-  // if value is "All", keep the thumb at the max to avoid a weird position
-  const sliderVal = value === "All" ? 2025 : Number(value);
-
-  return (
-      <div className="year-bar cardish">
-        <label className="year-label">Year</label>
-
-        <div className="year-range">
-          <input
-              type="range"
-              min={2020}
-              max={2025}
-              step={1}
-              value={sliderVal}
-              onChange={(e) => onChange(String(e.target.value))}
-              list="year-ticks"
-          />
-          <datalist id="year-ticks">
-            {YEARS.map((y) => (
-                <option key={y} value={y} label={y} />
-            ))}
-          </datalist>
-          <div className="year-tick-labels">
-            {YEARS.map((y) => (
-                <span key={y}>{y}</span>
-            ))}
-          </div>
-        </div>
-
-        <button
-            className={`pill ${value === "All" ? "active" : ""}`}
-            onClick={() => onChange("All")}
-            title="Show all years"
-        >
-          All
-        </button>
-      </div>
-  );
-}
-
 function prettyMonth(m) {
-  // m looks like "2020-01"
   const [y, mm] = String(m).split("-");
   const names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const mon = names[(+mm || 1) - 1] || m;
   return `${mon} ${String(y).slice(2)}`;
 }
-
 
 export default function TrendsPage() {
   const [raw, setRaw] = useState([]);
@@ -89,8 +43,12 @@ export default function TrendsPage() {
     contact: "All",
     gender: "All",
     age: "All",
-    scamType: "All",
+    scamType: "Jobs and employment scams",
   });
+
+  // NEW: for chart selection
+  const [selectedChart, setSelectedChart] = useState("");
+  const [showChart, setShowChart] = useState(false);
 
   useEffect(() => { (async () => setRaw(await loadRecords()))(); }, []);
 
@@ -156,109 +114,104 @@ export default function TrendsPage() {
               .sort((a,b)=> b.loss - a.loss)
       , [data]);
 
-  // chart options
+  // chart options (same as before)
   const monthlyOpt = {
-    tooltip: {
-      trigger: "axis",
-      axisPointer: { type: "cross" },
-      formatter: (params) => {
-        const x = params?.[0]?.axisValue;
-        const p = params
-            .map((s) =>
-                s.seriesName === "Loss (AUD)"
-                    ? `${s.marker} ${s.seriesName}: <b>${currency(s.value)}</b>`
-                    : `${s.marker} ${s.seriesName}: <b>${s.value.toLocaleString()}</b>`
-            )
-            .join("<br/>");
-        return `<div style="font-weight:700;margin-bottom:4px">${prettyMonth(x)}</div>${p}`;
+      tooltip: {
+        trigger: "axis",
+        axisPointer: { type: "cross" },
+        formatter: (params) => {
+          const x = params?.[0]?.axisValue;
+          const p = params
+              .map((s) =>
+                  s.seriesName === "Loss (AUD)"
+                      ? `${s.marker} ${s.seriesName}: <b>${currency(s.value)}</b>`
+                      : `${s.marker} ${s.seriesName}: <b>${s.value.toLocaleString()}</b>`
+              )
+              .join("<br/>");
+          return `<div style="font-weight:700;margin-bottom:4px">${prettyMonth(x)}</div>${p}`;
+        },
       },
-    },
-    legend: { data: ["Reports", "Loss (AUD)"] },
-    grid: { left: 70, right: 60, bottom: 60, top: 36 },
-    xAxis: {
-      type: "category",
-      data: monthly.map((x) => x.month),
-      axisLabel: {
-        formatter: (v) => prettyMonth(v),
-        rotate: 20,
-        color: "#59657a",
-        fontSize: 12,
-      },
-      axisLine: { lineStyle: { color: "#E5EBF4" } },
-      axisTick: { show: true, length: 6, lineStyle: { color: "#C8D2E3" } },
-    },
-    yAxis: [
-      {
-        type: "value",
-        name: "Loss (AUD)",
+      legend: { data: ["Reports", "Loss (AUD)"] },
+      grid: { left: 70, right: 60, bottom: 60, top: 36 },
+      xAxis: {
+        type: "category",
+        data: monthly.map((x) => x.month),
         axisLabel: {
-          formatter: (v) => currency(v).replace(".00", ""),
+          formatter: (v) => prettyMonth(v),
+          rotate: 20,
           color: "#59657a",
+          fontSize: 12,
         },
-        splitLine: { lineStyle: { color: "#EEF2F8" } },
-        axisLine: { show: false },
-        axisTick: { show: false },
+        axisLine: { lineStyle: { color: "#E5EBF4" } },
+        axisTick: { show: true, length: 6, lineStyle: { color: "#C8D2E3" } },
       },
-      {
-        type: "value",
-        name: "Reports",
-        position: "right",
-        axisLabel: { color: "#59657a" },
-        splitLine: { show: false },
-        axisLine: { show: false },
-        axisTick: { show: false },
-      },
-    ],
-    series: [
-      {
-        name: "Reports",
-        type: "bar",
-        yAxisIndex: 1,
-        barWidth: 18,
-        itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
-        emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") } },
-        data: monthly.map((x) => x.count),
-      },
-      {
-        name: "Loss (AUD)",
-        type: "line",
-        smooth: true,
-        symbol: "circle",
-        symbolSize: 6,
-        lineStyle: { width: 3, color: COLORS.red },
-        itemStyle: { color: COLORS.red },
-        areaStyle: {
-          color: {
-            type: "linear",
-            x: 0, y: 0, x2: 0, y2: 1,
-            colorStops: [
-              { offset: 0, color: "rgba(228,0,43,.18)" },
-              { offset: 1, color: "rgba(228,0,43,0)" },
-            ],
+      yAxis: [
+        {
+          type: "value",
+          name: "Loss (AUD)",
+          axisLabel: {
+            formatter: (v) => currency(v).replace(".00", ""),
+            color: "#59657a",
           },
-          opacity: 0.7,
+          splitLine: { lineStyle: { color: "#EEF2F8" } },
+          axisLine: { show: false },
+          axisTick: { show: false },
         },
-        data: monthly.map((x) => x.loss),
-      },
-    ],
-  };
-
-
-
+        {
+          type: "value",
+          name: "Reports",
+          position: "right",
+          axisLabel: { color: "#59657a" },
+          splitLine: { show: false },
+          axisLine: { show: false },
+          axisTick: { show: false },
+        },
+      ],
+      series: [
+        {
+          name: "Reports",
+          type: "bar",
+          yAxisIndex: 1,
+          barWidth: 18,
+          itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
+          emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") } },
+          data: monthly.map((x) => x.count),
+        },
+        {
+          name: "Loss (AUD)",
+          type: "line",
+          smooth: true,
+          symbol: "circle",
+          symbolSize: 6,
+          lineStyle: { width: 3, color: COLORS.red },
+          itemStyle: { color: COLORS.red },
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [
+                { offset: 0, color: "rgba(228,0,43,.18)" },
+                { offset: 1, color: "rgba(228,0,43,0)" },
+              ],
+            },
+            opacity: 0.7,
+          },
+          data: monthly.map((x) => x.loss),
+        },
+      ],
+    };
   const topScamsOpt = {
-    tooltip: { trigger: "item", valueFormatter: v => currency(v) },
-    grid: { left: 120, right: 40, bottom: 90, top: 20 },
-    xAxis: { type: "category", data: topScams.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-    yAxis: { type: "value", axisLabel: { formatter: v => currency(v) } },
-    series: [{
-      type: "bar",
-      itemStyle: { color: barGradient("#9A8CFF", "#6C63FF") },
-      emphasis: { itemStyle: { color: barGradient("#B3A8FF", "#7B71FF") }},
-      data: topScams.map(x => x.loss)
-    }]
-  };
-
-
+      tooltip: { trigger: "item", valueFormatter: v => currency(v) },
+      grid: { left: 120, right: 40, bottom: 90, top: 20 },
+      xAxis: { type: "category", data: topScams.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+      yAxis: { type: "value", axisLabel: { formatter: v => currency(v) } },
+      series: [{
+        type: "bar",
+        itemStyle: { color: barGradient("#9A8CFF", "#6C63FF") },
+        emphasis: { itemStyle: { color: barGradient("#B3A8FF", "#7B71FF") }},
+        data: topScams.map(x => x.loss)
+      }]
+    };
   const contactOpt = {
     tooltip: { trigger: "item" },
     grid: { left: 120, right: 40, bottom: 60, top: 20 },
@@ -271,8 +224,6 @@ export default function TrendsPage() {
       data: contactMethods.map(x => x.reports)
     }]
   };
-
-
   const stateOpt = {
     tooltip: { trigger: "item" },
     grid: { left: 70, right: 40, bottom: 40, top: 20 },
@@ -285,38 +236,31 @@ export default function TrendsPage() {
       data: byState.map(x => x.reports)
     }]
   };
-
-
   const genderOpt = {
-    tooltip: { trigger: "item", valueFormatter: v => currency(v) },
-    legend: { top: 0 },
-    color: [COLORS.primary, COLORS.pink, COLORS.orange, COLORS.slate],
-    series: [{
-      type: "pie",
-      radius: ["50%","70%"],
-      data: byGender,
-      label: { formatter: "{b}: {d}%"}
-    }]
-  };
-
-
+      tooltip: { trigger: "item", valueFormatter: v => currency(v) },
+      legend: { top: 0 },
+      color: [COLORS.primary, COLORS.pink, COLORS.orange, COLORS.slate],
+      series: [{
+        type: "pie",
+        radius: ["50%","70%"],
+        data: byGender,
+        label: { formatter: "{b}: {d}%"}
+      }]
+    };
   const ageOpt = {
-    tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
-    grid: { left: 120, right: 40, bottom: 80, top: 20 },
-    xAxis: { type: "category", data: byAge.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-    yAxis: [{ type: "value", axisLabel: { formatter: v => currency(v) } }],
-    series: [{
-      type: "bar",
-      itemStyle: { color: barGradient("#FF9A7A", COLORS.coral) },
-      emphasis: { itemStyle: { color: barGradient("#FFB199", "#FF6A3D") }},
-      data: byAge.map(x => x.loss)
-    }]
-  };
+      tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
+      grid: { left: 120, right: 40, bottom: 80, top: 20 },
+      xAxis: { type: "category", data: byAge.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
+      yAxis: [{ type: "value", axisLabel: { formatter: v => currency(v) } }],
+      series: [{
+        type: "bar",
+        itemStyle: { color: barGradient("#FF9A7A", COLORS.coral) },
+        emphasis: { itemStyle: { color: barGradient("#FFB199", "#FF6A3D") }},
+        data: byAge.map(x => x.loss)
+      }]
+    };
 
-  // fixed grid positions for each state/territory
-// fixed grid positions for each state/territory
-// --- tile layout stays the same ---
-  const TILE = {
+const TILE = {
     WA:  [0,1],
     NT:  [1,0],
     QLD: [2,0],
@@ -340,6 +284,7 @@ export default function TrendsPage() {
   const maxY = Math.max(...Object.values(TILE).map(([, y]) => y));
   const xCats = Array.from({ length: maxX + 1 }, (_, i) => String(i));
   const yCats = Array.from({ length: maxY + 1 }, (_, i) => String(i));
+
 
   const ausHeatmapOpt = {
     tooltip: {
@@ -397,16 +342,7 @@ export default function TrendsPage() {
     }]
   };
 
-
-// For the slider ticks under the thumb
-
-
-
-
-
-
-
-  // linked interactions: click → apply filter
+  // interactions
   const onTopScamClick = p => setFilters(f => ({ ...f, scamType: p.name }));
   const onGenderClick  = p => setFilters(f => ({ ...f, gender: p.name }));
   const onContactClick = p => setFilters(f => ({ ...f, contact: p.name }));
@@ -424,141 +360,127 @@ export default function TrendsPage() {
   }
 
   return (
-      <div style={{ padding: 24 }}>
-        <h2 style={{ marginBottom: 12 }}>Scam Trends & Insights</h2>
-
-        {/* Filters */}
-        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 16 }}>
-          <Select label="Scam Type" value={filters.scamType} onChange={v => setFilters(f => ({...f, scamType: v}))} options={scamTypes}/>
-          <Select label="State"     value={filters.state}    onChange={v => setFilters(f => ({...f, state: v}))} options={states}/>
-          <Select label="Year"      value={filters.year}     onChange={v => setFilters(f => ({...f, year: v}))} options={years}/>
-          <Select label="Contact"   value={filters.contact}  onChange={v => setFilters(f => ({...f, contact: v}))} options={contacts}/>
-          <Select label="Gender"    value={filters.gender}   onChange={v => setFilters(f => ({...f, gender: v}))} options={genders}/>
-          <Select label="Age"       value={filters.age}      onChange={v => setFilters(f => ({...f, age: v}))} options={ages}/>
-          <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All",age:"All",scamType:"All" })}>Clear All</button>
-          <button onClick={exportCSV}>Export</button>
-        </div>
+    <div style={{ padding: 24 }}>
+      <section className="section">
+  <div className="container">
+    <h2 className="features-title">Scam Trends & Insights</h2>
+  </div>
+</section>
 
 
-
-        {/* Year control */}
-        <YearSlider
-            value={filters.year}
-            onChange={(v) => setFilters((f) => ({ ...f, year: v }))}
-        />
-
-
-
-
-
-
-        {/* KPIs */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
-          <KPI title="Reported losses" value={totalLoss}/>
-          <KPI title="Reported scams"  value={totalReports}/>
-          <KPI title="Top scam by loss" value={topScams[0]?.name ?? "—"}/>
-          <KPI title="Top contact method" value={contactMethods[0]?.name ?? "—"}/>
-        </div>
-
-        {/* Charts */}
-          <Card title="Amount lost and number of reports">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Shows the monthly trend of reported scam losses and case counts.
-              </p>
-              <ReactECharts style={{ height: 340 }} option={monthlyOpt} />
-          </Card>
-
-          <Card title="Top ten scams by loss (click bar to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 This chart highlights the scams causing the highest reported losses.
-              </p>
-              <ReactECharts style={{ height: 360 }} option={topScamsOpt} onEvents={{ click: onTopScamClick }}/>
-          </Card>
-
-          <Card title="Top contact methods (click bar to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Displays which communication channels scammers most often use.
-              </p>
-              <ReactECharts
-                  style={{ height: 300 }}
-                  option={contactOpt}
-                  onEvents={{ click: onContactClick }}
-              />
-          </Card>
-
-          <Card title="State reported scams (click bar to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Shows the number of scam reports received per state.
-              </p>
-              <ReactECharts
-                  style={{ height: 300 }}
-                  option={stateOpt}
-                  onEvents={{ click: onStateClick }}
-              />
-          </Card>
-
-          <Card title="State heatmap (click tile to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Visualizes scam intensity across Australian states on a heatmap.
-              </p>
-              <ReactECharts
-                  style={{ height: 260 }}
-                  option={ausHeatmapOpt}
-                  onEvents={{
-                      click: (p) =>
-                          setFilters((f) => ({ ...f, state: p.data?.state || f.state })),
-                  }}
-              />
-          </Card>
-
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-            <Card title="Gender breakdown (click slice to filter)">
-                <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                    💡 Shows scam reports and losses broken down by gender.
-                </p>
-                <ReactECharts
-                    style={{ height: 320 }}
-                    option={genderOpt}
-                    onEvents={{ click: onGenderClick }}
-                />
-            </Card>
-            <Card title="Reported scams and loss breakdown by age">
-                <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                    💡 Shows scam trends segmented by different age groups.
-                </p>
-                <ReactECharts style={{ height: 320 }} option={ageOpt} />
-            </Card>
-        </div>
+      {/* Filters */}
+      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 16 }}>
+        <Select label="State"     value={filters.state}    onChange={v => setFilters(f => ({...f, state: v}))} options={states}/>
+        <Select label="Year"      value={filters.year}     onChange={v => setFilters(f => ({...f, year: v}))} options={years}/>
+        <Select label="Contact"   value={filters.contact}  onChange={v => setFilters(f => ({...f, contact: v}))} options={contacts}/>
+        <Select label="Gender"    value={filters.gender}   onChange={v => setFilters(f => ({...f, gender: v}))} options={genders}/>
+        <Select label="Age"       value={filters.age}      onChange={v => setFilters(f => ({...f, age: v}))} options={ages}/>
+        <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All",age:"All",scamType:"All" })}>Clear All</button>
+        <button onClick={exportCSV}>Export</button>
       </div>
+
+      {/* KPIs */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
+        <KPI title="Reported losses" value={totalLoss}/>
+        <KPI title="Reported scams"  value={totalReports}/>
+        <KPI title="Scam Type" value="Jobs and Employment Scams"/>
+        <KPI title="Contact method" value={contactMethods[0]?.name ?? "—"}/>
+      </div>
+
+      {/* Chart selector */}
+      <div style={{ display: "flex", gap: 12, margin: "16px 0" }}>
+        <label>
+          <span style={{ fontSize: 12, marginRight: 6 }}>Select Chart</span>
+          <select
+            value={selectedChart}
+            onChange={(e) => setSelectedChart(e.target.value)}
+          >
+            <option value="">-- choose one --</option>
+            <option value="monthly">Amount lost & reports (monthly trend)</option>
+            <option value="topScams">Top ten scams by loss</option>
+            <option value="contact">Top contact methods</option>
+            <option value="state">State reported scams</option>
+            <option value="heatmap">State heatmap</option>
+            <option value="gender">Gender breakdown</option>
+            <option value="age">Age breakdown</option>
+          </select>
+        </label>
+
+        <button onClick={() => setShowChart(true)} disabled={!selectedChart}>
+          Show Graph
+        </button>
+      </div>
+
+      {/* Conditional chart rendering */}
+      {showChart && (
+        <>
+          {selectedChart === "monthly" && (
+            <Card title="Amount lost and number of reports">
+              <ReactECharts style={{ height: 340 }} option={monthlyOpt} />
+            </Card>
+          )}
+          {selectedChart === "topScams" && (
+            <Card title="Top ten scams by loss (click bar to filter)">
+              <ReactECharts style={{ height: 360 }} option={topScamsOpt} onEvents={{ click: onTopScamClick }}/>
+            </Card>
+          )}
+          {selectedChart === "contact" && (
+            <Card title="Top contact methods (click bar to filter)">
+              <ReactECharts style={{ height: 300 }} option={contactOpt} onEvents={{ click: onContactClick }}/>
+            </Card>
+          )}
+          {selectedChart === "state" && (
+            <Card title="State reported scams (click bar to filter)">
+              <ReactECharts style={{ height: 300 }} option={stateOpt} onEvents={{ click: onStateClick }}/>
+            </Card>
+          )}
+          {selectedChart === "heatmap" && (
+            <Card title="State heatmap (click tile to filter)">
+              <ReactECharts style={{ height: 260 }} option={ausHeatmapOpt} />
+            </Card>
+          )}
+          {selectedChart === "gender" && (
+            <Card title="Gender breakdown (click slice to filter)">
+              <ReactECharts style={{ height: 320 }} option={genderOpt} onEvents={{ click: onGenderClick }}/>
+            </Card>
+          )}
+          {selectedChart === "age" && (
+            <Card title="Reported scams and loss breakdown by age">
+              <ReactECharts style={{ height: 320 }} option={ageOpt} />
+            </Card>
+          )}
+        </>
+      )}
+    </div>
   );
 }
 
+// small helper components
 function KPI({ title, value }) {
   return (
-      <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)" }}>
-        <div style={{ fontSize: 12, opacity: .7 }}>{title}</div>
-        <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
-      </div>
+    <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)" }}>
+      <div style={{ fontSize: 12, opacity: .7 }}>{title}</div>
+      <div style={{ fontSize: 22, fontWeight: 700 }}>{value}</div>
+    </div>
   );
 }
 
 function Card({ title, children }) {
   return (
-      <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)", marginBottom: 16 }}>
-        <div style={{ fontWeight: 600, marginBottom: 8 }}>{title}</div>
-        {children}
-      </div>
+    <div style={{ padding: 16, borderRadius: 12, background: "#fff", boxShadow: "0 2px 8px rgba(0,0,0,.08)", marginBottom: 16 }}>
+      <div style={{ fontWeight: 600, marginBottom: 8 }}>{title}</div>
+      {children}
+    </div>
   );
 }
 
 function Select({ label, value, onChange, options }) {
   return (
-      <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-        <span style={{ fontSize: 12 }}>{label}</span>
-        <select value={value} onChange={e => onChange(e.target.value)}>
-          {options.map(o => <option key={o} value={o}>{o}</option>)}
-        </select>
-      </label>
+    <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
+      <span style={{ fontSize: 12 }}>{label}</span>
+      <select value={value} onChange={e => onChange(e.target.value)}>
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </label>
   );
 }
