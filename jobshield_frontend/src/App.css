@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700;800&display=swap');
+
 :root {
-    --blue: #012169;      /* Australian blue */
+    --blue: #0D86E3;      /* Australian blue */
     --red: #E4002B;       /* Australian red */
-    --gold: #FFCD00;      /* Australian gold */
+    --gold: #FCDFB3;      /* Australian gold */
     --light-blue: #B3D4E0; /* Light blue */
     --dark-blue: #001A44;  /* Dark blue */
     --light-grey: #f5f7fa;
@@ -39,7 +41,7 @@ header .container {
 
 header {
     background: white;
-    color: black;
+    color: rgb(45, 44, 44);
     padding: 15px 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -176,7 +178,7 @@ nav ul li a:hover, nav ul li a.active {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.0);
     padding-left: 10%;
 }
 
@@ -191,10 +193,11 @@ nav ul li a:hover, nav ul li a.active {
 
 .hero-title {
     font-size: 48px;
-    font-weight: 700;
+    font-weight: 400;
     margin-bottom: 20px;
     line-height: 1.2;
     color: white;
+    font-family: 'Montserrat Alternates', 'Source Sans Pro', sans-serif;
 }
 
 .green-text {
@@ -706,7 +709,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .title-section .section-title {
-    font-family: 'Times New Roman', serif;
+    font-family: 'Montagu Slab', bold;
     font-size: 48px;
     font-weight: 700;
     color: #000;
@@ -746,7 +749,7 @@ nav ul li a:hover, nav ul li a.active {
 .second-card-section {
     width: 100%;
     padding: 0;
-    background-color: #E3F2FD;
+    background-color: transparent;
     min-height: 70vh;
     display: flex;
     align-items: center;
@@ -760,6 +763,11 @@ nav ul li a:hover, nav ul li a.active {
     width: 100%;
     padding: 60px 0;
     gap: 60px;
+    background-color: #E3F2FD;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    margin: 0;
+    overflow: hidden;
 }
 
 .second-card-image {
@@ -827,7 +835,7 @@ nav ul li a:hover, nav ul li a.active {
 .third-card-section {
     width: 100%;
     padding: 0;
-    background-color: #FFF8E1;
+    background-color: transparent;
     min-height: 70vh;
     display: flex;
     align-items: center;
@@ -841,6 +849,11 @@ nav ul li a:hover, nav ul li a.active {
     width: 100%;
     padding: 60px 0;
     gap: 60px;
+    background-color: #FFF8E1;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    margin: 0;
+    overflow: hidden;
 }
 
 .third-card-content {
@@ -931,7 +944,7 @@ nav ul li a:hover, nav ul li a.active {
 .fourth-card-section {
     width: 100%;
     padding: 0;
-    background-color: #E8F5E8;
+    background-color: transparent;
     min-height: 70vh;
     display: flex;
     align-items: center;
@@ -945,6 +958,11 @@ nav ul li a:hover, nav ul li a.active {
     width: 100%;
     padding: 60px 0;
     gap: 60px;
+    background-color: #E8F5E8;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    margin: 0;
+    overflow: hidden;
 }
 
 .fourth-card-image {
