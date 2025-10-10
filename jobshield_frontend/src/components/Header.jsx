@@ -14,21 +14,33 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
 
     return (
         <header>
-            <div className="container header-content">
-                <div className="logo-container">
-                    <div className="team-logo">
-                        <img src="/team-logo.png" alt="Team Logo" />
-                    </div>
-                    <div
-                        className="logo"
-                        style={{cursor: 'pointer'}}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            onNavigate('home');
+            <div className="logo-container">
+                <div
+                    className="project-logo"
+                    role="button"
+                    tabIndex={0}
+                    style={{ cursor: 'pointer' }}
+                    onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('home');
+                    }}
+                    onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onNavigate('home');
+                    }
+                    }}
+                    aria-label="Go to Home"
+                >
+                    <img
+                        src="/project-logo.png"
+                        alt="project-logo"
+                        style={{
+                        width: '140px',      // ← 调整宽度
+                        height: 'auto',      // 保持比例
+                        display: 'block'     // 避免图片下方留白
                         }}
-                    >
-                        <h1>Protegrad</h1>
-                    </div>
+                    />
                 </div>
                 
                 {/* 移动端菜单按钮 */}

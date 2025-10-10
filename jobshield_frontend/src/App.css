@@ -82,11 +82,11 @@ header {
     letter-spacing: 1px;
 }
 
-.team-logo {
+.project-logo {
     order: -1;
 }
 
-.team-logo img {
+.project-logo img {
     height: 60px;
     border-radius: 4px;
     object-fit: contain;
@@ -248,7 +248,7 @@ nav ul li a:hover, nav ul li a.active {
         font-size: 24px;
     }
 
-    .team-logo img {
+    .project-logo img {
         height: 45px;
     }
 }
@@ -2180,7 +2180,7 @@ footer {
     font-size: 20px;
   }
 
-  .team-logo img {
+  .project-logo img {
     height: 35px;
   }
 
