@@ -9,14 +9,14 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 assert GOOGLE_API_KEY, "GOOGLE_API_KEY not set"
 
-MODEL_NAME = os.getenv("MODEL_NAME", "gemini-1.5-flash")
+MODEL_NAME = os.getenv("MODEL_NAME", "gemini-2.5-flash")
 ALLOWED_ORIGINS = [o.strip() for o in os.getenv("CORS_ALLOWED_ORIGINS", "http://13.236.66.151:3000").split(",")]
 
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel(MODEL_NAME)
 
 SYSTEM_INSTRUCTIONS = """
-You are JobShield's Recovery Assistant. Be calm, clear, and non-judgmental.
+You are Protegrad's Recovery Assistant. Be calm, clear, and non-judgmental.
 
 FORMAT:
 - Return output as SIMPLE HTML ONLY (no Markdown, no asterisks).
@@ -33,7 +33,7 @@ POLICY:
 
 """
 
-app = FastAPI(title="JobShield Mini AI API", version="0.1")
+app = FastAPI(title="Protegrad Mini AI API", version="0.1")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
