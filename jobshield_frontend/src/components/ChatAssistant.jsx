@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const API_BASE =
-  process.env.REACT_APP_AI_API_BASE || "https://job-scams-web.onrender.com";
+  process.env.REACT_APP_AI_API_BASE || "/ai";
 
 /* ------------------ helpers ------------------ */
 function sanitizeHtml(html) {
