@@ -142,6 +142,7 @@ nav ul li a:hover, nav ul li a.active {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
+    margin-bottom: 70px; /* 添加底部外边距 */
     padding: 0;
     left: 0;
     right: 0;
@@ -151,7 +152,7 @@ nav ul li a:hover, nav ul li a.active {
 .hero-image-container {
     position: relative;
     width: 100vw;
-    height: 70vh;
+    height: 90vh;
     min-height: 500px;
     max-height: 800px;
     overflow: hidden;
@@ -215,7 +216,7 @@ nav ul li a:hover, nav ul li a.active {
 /* 响应式设计 */
 @media (max-width: 768px) {
     .hero-image-container {
-        height: 60vh;
+        height: 90vh;
         min-height: 400px;
     }
     
@@ -750,7 +751,7 @@ nav ul li a:hover, nav ul li a.active {
     width: 100%;
     padding: 0;
     background-color: transparent;
-    min-height: 70vh;
+    min-height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
