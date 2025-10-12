@@ -6,7 +6,6 @@ import CheckPage from './components/CheckPage';
 import ReportPage from './components/ReportPage';
 import CheckReportPage from './components/CheckReportPage';
 import TrendsPage from './components/TrendsPage';
-import NewsPage from './components/NewsPage';
 import EducationPage from './components/EducationPage';
 import ChatAssistant from "./components/ChatAssistant";
 import ExtensionPage from "./components/ExtensionPage";
@@ -34,8 +33,7 @@ function AppContent({ isFullAccess }) {
         check: <CheckPage onNavigate={navigateTo} />,
         report: <ReportPage onNavigate={navigateTo} />,
         'check-report': <CheckReportPage onNavigate={navigateTo} />,
-        news: <NewsPage onNavigate={navigateTo} />,
-        trends: <TrendsPage onNavigate={navigateTo} />,
+        trends: <TrendsPage />,
     };
 
     // 只有在完整权限下才添加教育页面和聊天助手

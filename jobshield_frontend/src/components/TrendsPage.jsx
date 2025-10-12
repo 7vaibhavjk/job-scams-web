@@ -3,200 +3,103 @@ import React, { useEffect, useMemo, useState } from "react";
 import ReactECharts from "echarts-for-react";
 import { loadRecords, groupBy, sum, currency } from "../services/data";
 
-// below other imports
 const COLORS = {
-  primary:   "#012169", // AUS blue
-  dark:      "#001A44",
-  gold:      "#FFCD00",
-  red:       "#E4002B",
-  green:     "#2e7d32",
-  teal:      "#00A3A1",
-  violet:    "#6C63FF",
-  slate:     "#67758d",
-  sky:       "#7AB8F5",
-  coral:     "#FF7F50",
-  pink:      "#F06292",
-  orange:    "#F57F17",
+  primary: "#012169",
+  red: "#E4002B",
+  gold: "#FFCD00",
 };
 
-// helper to build a soft vertical gradient bar
-const barGradient = (top, bottom=COLORS.primary) => ({
-  type: "linear",
-  x: 0, y: 0, x2: 0, y2: 1,
-  colorStops: [
-    { offset: 0, color: top },
-    { offset: 1, color: bottom }
-  ]
-});
-
-function YearSlider({ value, onChange }) {
-  const YEARS = [2020, 2021, 2022, 2023, 2024, 2025];
-
-  // if value is "All", keep the thumb at the max to avoid a weird position
-  const sliderVal = value === "All" ? 2025 : Number(value);
-
-  return (
-      <div className="year-bar cardish">
-        <label className="year-label">Year</label>
-
-        <div className="year-range">
-          <input
-              type="range"
-              min={2020}
-              max={2025}
-              step={1}
-              value={sliderVal}
-              onChange={(e) => onChange(String(e.target.value))}
-              list="year-ticks"
-          />
-          <datalist id="year-ticks">
-            {YEARS.map((y) => (
-                <option key={y} value={y} label={y} />
-            ))}
-          </datalist>
-          <div className="year-tick-labels">
-            {YEARS.map((y) => (
-                <span key={y}>{y}</span>
-            ))}
-          </div>
-        </div>
-
-        <button
-            className={`pill ${value === "All" ? "active" : ""}`}
-            onClick={() => onChange("All")}
-            title="Show all years"
-        >
-          All
-        </button>
-      </div>
-  );
-}
-
 function prettyMonth(m) {
-  // m looks like "2020-01"
   const [y, mm] = String(m).split("-");
   const names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const mon = names[(+mm || 1) - 1] || m;
   return `${mon} ${String(y).slice(2)}`;
 }
 
-
-export default function TrendsPage({ onNavigate }) {
+export default function TrendsPage() {
   const [raw, setRaw] = useState([]);
-  const [viewMode, setViewMode] = useState('charts'); // 'charts' or 'overview'
+  const [viewMode, setViewMode] = useState('overview');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     year: "All",
     state: "All",
     contact: "All",
     gender: "All",
-    age: "All",
-    scamType: "All",
   });
 
-  const ITEMS_PER_PAGE = 100; // 每页显示100条数据
+  const ITEMS_PER_PAGE = 20;
 
-  useEffect(() => { (async () => setRaw(await loadRecords()))(); }, []);
+  useEffect(() => { 
+    (async () => {
+      setIsLoading(true);
+      try {
+        const allRecords = await loadRecords();
+        // Only keep job scam records
+        const jobScams = allRecords.filter(r => r.scam_type === "Jobs and employment scams");
+        setRaw(jobScams);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setRaw([]);
+      } finally {
+        setIsLoading(false);
+      }
+    })(); 
+  }, []);
 
-  // build select options from the data
-  const years   = useMemo(() => ["All", ...new Set(raw.map(r => String(r.year)))].sort(), [raw]);
-  const states  = useMemo(() => ["All", ...new Set(raw.map(r => r.state_code))].sort(), [raw]);
-  const contacts= useMemo(() => ["All", ...new Set(raw.map(r => r.contact_method))].sort(), [raw]);
-  const genders = useMemo(() => ["All", ...new Set(raw.map(r => r.gender))].sort(), [raw]);
-  const ages    = useMemo(() => ["All", ...new Set(raw.map(r => r.age_band))].sort(), [raw]);
-  const scamTypes = useMemo(() => ["All", ...new Set(raw.map(r => r.scam_type))].sort(), [raw]);
-
-  // apply filters
-  const data = useMemo(() => raw.filter(r =>
-      (filters.year    === "All" || String(r.year)        === filters.year) &&
-      (filters.state   === "All" || r.state_code          === filters.state) &&
-      (filters.contact === "All" || r.contact_method      === filters.contact) &&
-      (filters.gender  === "All" || r.gender              === filters.gender) &&
-      (filters.age     === "All" || r.age_band            === filters.age) &&
-      (filters.scamType=== "All" || r.scam_type           === filters.scamType)
+  // Apply filters
+  const data = useMemo(() => raw.filter(r => 
+    (filters.year === "All" || String(r.year) === filters.year) &&
+    (filters.state === "All" || r.state_code === filters.state) &&
+    (filters.contact === "All" || r.contact_method === filters.contact) &&
+    (filters.gender === "All" || r.gender === filters.gender)
   ), [raw, filters]);
 
-  // 分页数据
+  // Build select options
+  const years = useMemo(() => ["All", ...new Set(raw.map(r => String(r.year)))].sort(), [raw]);
+  const states = useMemo(() => ["All", ...new Set(raw.map(r => r.state_code))].sort(), [raw]);
+  const contacts = useMemo(() => ["All", ...new Set(raw.map(r => r.contact_method))].sort(), [raw]);
+  const genders = useMemo(() => ["All", ...new Set(raw.map(r => r.gender))].sort(), [raw]);
+
+  // Pagination
   const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const paginatedData = data.slice(startIndex, endIndex);
 
-  // 切换视图模式时重置页码
-  const handleViewModeChange = (mode) => {
-    setViewMode(mode);
-    setCurrentPage(1);
-    if (mode === 'overview') {
-      setIsLoading(true);
-      // 使用setTimeout来避免阻塞UI
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 100);
-    }
-  };
+  // KPIs
+  const totalLoss = currency(sum(data, r => r.amount_lost_aud));
+  const totalReports = sum(data, r => r.report_count).toLocaleString();
+  const avgLossPerReport = data.length > 0 ? currency(sum(data, r => r.amount_lost_aud) / sum(data, r => r.report_count)) : "$0";
+  const totalRecords = data.length.toLocaleString();
 
-  // KPI
-  const totalLoss   = currency(sum(data, r => r.amount_lost_aud));
-  const totalReports= sum(data, r => r.report_count).toLocaleString();
+  // Simple data series
+  const monthly = useMemo(() => {
+    const grouped = groupBy(data, r => r.month);
+    return grouped
+      .map(([month, rows]) => ({
+        month,
+        loss: sum(rows, r => r.amount_lost_aud),
+        count: sum(rows, r => r.report_count),
+      }))
+      .sort((a, b) => a.month.localeCompare(b.month));
+  }, [data]);
 
-  // series
-  const monthly = useMemo(() =>
-          groupBy(data, r => r.month)
-              .map(([month, rows]) => ({
-                month,
-                loss: sum(rows, r => r.amount_lost_aud),
-                count: sum(rows, r => r.report_count),
-              }))
-              .sort((a,b)=> a.month.localeCompare(b.month))
-      , [data]);
+  const byState = useMemo(() => {
+    const grouped = groupBy(data, r => r.state_code);
+    return grouped
+      .map(([code, rows]) => ({ 
+        code, 
+        reports: sum(rows, r => r.report_count), 
+        loss: sum(rows, r => r.amount_lost_aud)
+      }))
+      .sort((a, b) => b.reports - a.reports)
+      .slice(0, 8); // Only show top 8 states
+  }, [data]);
 
-  const topScams = useMemo(() =>
-          groupBy(data, r => r.scam_type)
-              .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
-              .sort((a,b)=> b.loss - a.loss).slice(0,10)
-      , [data]);
-
-  const contactMethods = useMemo(() =>
-          groupBy(data, r => r.contact_method)
-              .map(([name, rows]) => ({ name, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
-              .sort((a,b)=> b.reports - a.reports)
-      , [data]);
-
-  const byState = useMemo(() =>
-          groupBy(data, r => r.state_code)
-              .map(([code, rows]) => ({ code, reports: sum(rows, r => r.report_count), loss: sum(rows, r => r.amount_lost_aud) }))
-              .sort((a,b)=> b.reports - a.reports)
-      , [data]);
-
-  const byGender = useMemo(() =>
-          groupBy(data, r => r.gender)
-              .map(([name, rows]) => ({ name, value: sum(rows, r => r.amount_lost_aud) }))
-      , [data]);
-
-  const byAge = useMemo(() =>
-          groupBy(data, r => r.age_band)
-              .map(([name, rows]) => ({ name, loss: sum(rows, r => r.amount_lost_aud), count: sum(rows, r => r.report_count) }))
-              .sort((a,b)=> b.loss - a.loss)
-      , [data]);
-
-  // chart options
+  // Simple chart options
   const monthlyOpt = {
-    tooltip: {
-      trigger: "axis",
-      axisPointer: { type: "cross" },
-      formatter: (params) => {
-        const x = params?.[0]?.axisValue;
-        const p = params
-            .map((s) =>
-                s.seriesName === "Loss (AUD)"
-                    ? `${s.marker} ${s.seriesName}: <b>${currency(s.value)}</b>`
-                    : `${s.marker} ${s.seriesName}: <b>${s.value.toLocaleString()}</b>`
-            )
-            .join("<br/>");
-        return `<div style="font-weight:700;margin-bottom:4px">${prettyMonth(x)}</div>${p}`;
-      },
-    },
+    tooltip: { trigger: "axis" },
     legend: { data: ["Reports", "Loss (AUD)"] },
     grid: { left: 70, right: 60, bottom: 60, top: 36 },
     xAxis: {
@@ -205,32 +108,18 @@ export default function TrendsPage({ onNavigate }) {
       axisLabel: {
         formatter: (v) => prettyMonth(v),
         rotate: 20,
-        color: "#59657a",
-        fontSize: 12,
       },
-      axisLine: { lineStyle: { color: "#E5EBF4" } },
-      axisTick: { show: true, length: 6, lineStyle: { color: "#C8D2E3" } },
     },
     yAxis: [
       {
         type: "value",
         name: "Loss (AUD)",
-        axisLabel: {
-          formatter: (v) => currency(v).replace(".00", ""),
-          color: "#59657a",
-        },
-        splitLine: { lineStyle: { color: "#EEF2F8" } },
-        axisLine: { show: false },
-        axisTick: { show: false },
+        axisLabel: { formatter: (v) => currency(v).replace(".00", "") },
       },
       {
         type: "value",
         name: "Reports",
         position: "right",
-        axisLabel: { color: "#59657a" },
-        splitLine: { show: false },
-        axisLine: { show: false },
-        axisTick: { show: false },
       },
     ],
     series: [
@@ -238,64 +127,18 @@ export default function TrendsPage({ onNavigate }) {
         name: "Reports",
         type: "bar",
         yAxisIndex: 1,
-        barWidth: 18,
-        itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
-        emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") } },
+        itemStyle: { color: COLORS.primary },
         data: monthly.map((x) => x.count),
       },
       {
         name: "Loss (AUD)",
         type: "line",
         smooth: true,
-        symbol: "circle",
-        symbolSize: 6,
-        lineStyle: { width: 3, color: COLORS.red },
         itemStyle: { color: COLORS.red },
-        areaStyle: {
-          color: {
-            type: "linear",
-            x: 0, y: 0, x2: 0, y2: 1,
-            colorStops: [
-              { offset: 0, color: "rgba(228,0,43,.18)" },
-              { offset: 1, color: "rgba(228,0,43,0)" },
-            ],
-          },
-          opacity: 0.7,
-        },
         data: monthly.map((x) => x.loss),
       },
     ],
   };
-
-
-
-  const topScamsOpt = {
-    tooltip: { trigger: "item", valueFormatter: v => currency(v) },
-    grid: { left: 120, right: 40, bottom: 90, top: 20 },
-    xAxis: { type: "category", data: topScams.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-    yAxis: { type: "value", axisLabel: { formatter: v => currency(v) } },
-    series: [{
-      type: "bar",
-      itemStyle: { color: barGradient("#9A8CFF", "#6C63FF") },
-      emphasis: { itemStyle: { color: barGradient("#B3A8FF", "#7B71FF") }},
-      data: topScams.map(x => x.loss)
-    }]
-  };
-
-
-  const contactOpt = {
-    tooltip: { trigger: "item" },
-    grid: { left: 120, right: 40, bottom: 60, top: 20 },
-    xAxis: { type: "category", data: contactMethods.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-    yAxis: [{ type: "value", name: "Reports" }],
-    series: [{
-      type: "bar",
-      itemStyle: { color: barGradient("#3EDBD9", COLORS.teal) },
-      emphasis: { itemStyle: { color: barGradient("#68E7E5", "#06B3B1") }},
-      data: contactMethods.map(x => x.reports)
-    }]
-  };
-
 
   const stateOpt = {
     tooltip: { trigger: "item" },
@@ -304,467 +147,192 @@ export default function TrendsPage({ onNavigate }) {
     yAxis: [{ type: "value", name: "Reports" }],
     series: [{
       type: "bar",
-      itemStyle: { color: barGradient("#FFE26B", COLORS.gold) },
-      emphasis: { itemStyle: { color: barGradient("#FFE891", "#FFB300") }},
+      itemStyle: { color: COLORS.gold },
       data: byState.map(x => x.reports)
     }]
   };
 
+  // Event handlers
+  const onStateClick = p => setFilters(f => ({ ...f, state: p.name }));
 
-  const genderOpt = {
-    tooltip: { trigger: "item", valueFormatter: v => currency(v) },
-    legend: { top: 0 },
-    color: [COLORS.primary, COLORS.pink, COLORS.orange, COLORS.slate],
-    series: [{
-      type: "pie",
-      radius: ["50%","70%"],
-      data: byGender,
-      label: { formatter: "{b}: {d}%"}
-    }]
-  };
-
-
-  const ageOpt = {
-    tooltip: { trigger: "axis", valueFormatter: v => currency(v) },
-    grid: { left: 120, right: 40, bottom: 80, top: 20 },
-    xAxis: { type: "category", data: byAge.map(x => x.name), axisLabel: { interval: 0, rotate: 20 } },
-    yAxis: [{ type: "value", axisLabel: { formatter: v => currency(v) } }],
-    series: [{
-      type: "bar",
-      itemStyle: { color: barGradient("#FF9A7A", COLORS.coral) },
-      emphasis: { itemStyle: { color: barGradient("#FFB199", "#FF6A3D") }},
-      data: byAge.map(x => x.loss)
-    }]
-  };
-
-  // fixed grid positions for each state/territory
-// fixed grid positions for each state/territory
-// --- tile layout stays the same ---
-  const TILE = {
-    WA:  [0,1],
-    NT:  [1,0],
-    QLD: [2,0],
-    SA:  [1,1],
-    NSW: [2,1],
-    ACT: [3,1],
-    TAS: [1,2],
-    VIC: [2,2],
-  };
-
-  const stateReports = new Map(byState.map(s => [s.code, s.reports]));
-
-// Build data as objects with value:[x,y,v] + state label
-  const heatData = Object.entries(TILE).map(([code, [x, y]]) => ({
-    value: [x, y, stateReports.get(code) || 0],
-    state: code
-  }));
-
-// Category labels derived from TILE extents
-  const maxX = Math.max(...Object.values(TILE).map(([x]) => x));
-  const maxY = Math.max(...Object.values(TILE).map(([, y]) => y));
-  const xCats = Array.from({ length: maxX + 1 }, (_, i) => String(i));
-  const yCats = Array.from({ length: maxY + 1 }, (_, i) => String(i));
-
-  const ausHeatmapOpt = {
-    tooltip: {
-      formatter: p =>
-          `${p.data.state}: ${p.value[2].toLocaleString()} reports`
-    },
-    grid: { left: 20, right: 20, top: 10, bottom: 30 },
-
-    // Two category axes with boundaryGap and visible split areas
-    xAxis: {
-      type: "category",
-      data: xCats,
-      boundaryGap: true,
-      axisLine: { show: false },
-      axisTick: { show: false },
-      axisLabel: { show: false },
-      splitArea: { show: true }     // helps you see the tiles
-    },
-    yAxis: {
-      type: "category",
-      data: yCats,
-      boundaryGap: true,
-      inverse: true,
-      axisLine: { show: false },
-      axisTick: { show: false },
-      axisLabel: { show: false },
-      splitArea: { show: true }
-    },
-
-    visualMap: {
-      min: 0,
-      max: Math.max(...heatData.map(d => d.value[2])) || 1,
-      calculable: true,
-      orient: "horizontal",
-      left: "center",
-      bottom: 0,
-      inRange: { color: ["#E6F0FF", COLORS.primary] }
-    },
-
-    series: [{
-      type: "heatmap",
-      coordinateSystem: "cartesian2d",
-      data: heatData,
-      encode: { x: 0, y: 1, value: 2 },  // 👈 make mapping explicit
-      itemStyle: { borderColor: "#fff", borderWidth: 2 },
-      label: {
-        show: true,
-        formatter: p => p.data.state,
-        color: "#fff",
-        fontWeight: 700
-      },
-      emphasis: {
-        itemStyle: { shadowBlur: 8, shadowColor: "rgba(0,0,0,0.25)" }
-      }
-    }]
-  };
-
-
-// For the slider ticks under the thumb
-
-
-
-
-
-
-
-  // linked interactions: click → apply filter
-  const onTopScamClick = p => setFilters(f => ({ ...f, scamType: p.name }));
-  const onGenderClick  = p => setFilters(f => ({ ...f, gender: p.name }));
-  const onContactClick = p => setFilters(f => ({ ...f, contact: p.name }));
-  const onStateClick   = p => setFilters(f => ({ ...f, state: p.name }));
-
-  // export filtered rows as CSV
+  // Simple export function
   function exportCSV() {
-    const headers = ["date","year","month","state_code","state_name","contact_method","age_band","gender","scam_group","scam_type","amount_lost_aud","report_count"];
+    const headers = ["month","state_code","contact_method","gender","amount_lost_aud","report_count"];
     const lines = [headers.join(",")].concat(
-        data.map(r => headers.map(h => (""+ (r[h]?.valueOf?.() ?? r[h] ?? "")).replaceAll('"','""')).map(x=>`"${x}"`).join(","))
+        data.slice(0, 100).map(r => headers.map(h => r[h] || "").join(","))
     );
     const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8"});
-    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-    a.download = "jobshield_filtered.csv"; a.click(); URL.revokeObjectURL(a.href);
+    const a = document.createElement("a"); 
+    a.href = URL.createObjectURL(blob);
+    a.download = "job_scam_data.csv"; 
+    a.click(); 
+    URL.revokeObjectURL(a.href);
   }
 
-  return (
+  if (isLoading) {
+    return (
       <div id="trends-page" className="page active">
         <div className="page-content-wrapper">
-          <div style={{ padding: 24 }}>
-            <a
-                href="#"
-                className="back-btn"
-                onClick={(e) => {
-                    e.preventDefault();
-                    onNavigate('news');
-                }}
-                style={{ 
-                    display: 'inline-flex', 
-                    alignItems: 'center', 
-                    gap: '8px', 
-                    marginBottom: '20px',
-                    color: '#012169',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                    fontWeight: '600'
-                }}
-            >
-                <i className="fas fa-arrow-left"></i> Back to News
-            </a>
-        <h2 style={{ marginBottom: 12 }}>Scam Trends & Insights</h2>
-
-        {/* View Mode Toggle */}
-        <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
-          <button 
-            className={`pill ${viewMode === 'charts' ? 'active' : ''}`}
-            onClick={() => handleViewModeChange('charts')}
-            style={{ 
-              padding: '8px 16px', 
-              border: '2px solid #012169', 
-              background: viewMode === 'charts' ? '#012169' : 'transparent',
-              color: viewMode === 'charts' ? 'white' : '#012169',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              fontWeight: '600'
-            }}
-          >
-            📊 Charts View
-          </button>
-          <button 
-            className={`pill ${viewMode === 'overview' ? 'active' : ''}`}
-            onClick={() => handleViewModeChange('overview')}
-            style={{ 
-              padding: '8px 16px', 
-              border: '2px solid #012169', 
-              background: viewMode === 'overview' ? '#012169' : 'transparent',
-              color: viewMode === 'overview' ? 'white' : '#012169',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              fontWeight: '600'
-            }}
-          >
-            📋 Data Overview
-          </button>
-        </div>
-
-        {/* Filters */}
-        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 16 }}>
-          <Select label="Scam Type" value={filters.scamType} onChange={v => setFilters(f => ({...f, scamType: v}))} options={scamTypes}/>
-          <Select label="State"     value={filters.state}    onChange={v => setFilters(f => ({...f, state: v}))} options={states}/>
-          <Select label="Year"      value={filters.year}     onChange={v => setFilters(f => ({...f, year: v}))} options={years}/>
-          <Select label="Contact"   value={filters.contact}  onChange={v => setFilters(f => ({...f, contact: v}))} options={contacts}/>
-          <Select label="Gender"    value={filters.gender}   onChange={v => setFilters(f => ({...f, gender: v}))} options={genders}/>
-          <Select label="Age"       value={filters.age}      onChange={v => setFilters(f => ({...f, age: v}))} options={ages}/>
-          <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All",age:"All",scamType:"All" })}>Clear All</button>
-          <button onClick={exportCSV}>Export</button>
-        </div>
-
-
-
-        {/* Year control */}
-        <YearSlider
-            value={filters.year}
-            onChange={(v) => setFilters((f) => ({ ...f, year: v }))}
-        />
-
-
-
-
-
-
-        {/* KPIs */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 }}>
-          <KPI title="Reported losses" value={totalLoss}/>
-          <KPI title="Reported scams"  value={totalReports}/>
-          <KPI title="Top scam by loss" value={topScams[0]?.name ?? "—"}/>
-          <KPI title="Top contact method" value={contactMethods[0]?.name ?? "—"}/>
-        </div>
-
-        {/* Conditional Rendering */}
-        {viewMode === 'charts' ? (
-          <>
-            {/* Charts */}
-            <Card title="Amount lost and number of reports">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Shows the monthly trend of reported scam losses and case counts.
-              </p>
-              <ReactECharts style={{ height: 340 }} option={monthlyOpt} />
-          </Card>
-
-          <Card title="Top ten scams by loss (click bar to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 This chart highlights the scams causing the highest reported losses.
-              </p>
-              <ReactECharts style={{ height: 360 }} option={topScamsOpt} onEvents={{ click: onTopScamClick }}/>
-          </Card>
-
-          <Card title="Top contact methods (click bar to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Displays which communication channels scammers most often use.
-              </p>
-              <ReactECharts
-                  style={{ height: 300 }}
-                  option={contactOpt}
-                  onEvents={{ click: onContactClick }}
-              />
-          </Card>
-
-          <Card title="State reported scams (click bar to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Shows the number of scam reports received per state.
-              </p>
-              <ReactECharts
-                  style={{ height: 300 }}
-                  option={stateOpt}
-                  onEvents={{ click: onStateClick }}
-              />
-          </Card>
-
-          <Card title="State heatmap (click tile to filter)">
-              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                  💡 Visualizes scam intensity across Australian states on a heatmap.
-              </p>
-              <ReactECharts
-                  style={{ height: 260 }}
-                  option={ausHeatmapOpt}
-                  onEvents={{
-                      click: (p) =>
-                          setFilters((f) => ({ ...f, state: p.data?.state || f.state })),
-                  }}
-              />
-          </Card>
-
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-            <Card title="Gender breakdown (click slice to filter)">
-                <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                    💡 Shows scam reports and losses broken down by gender.
-                </p>
-                <ReactECharts
-                    style={{ height: 320 }}
-                    option={genderOpt}
-                    onEvents={{ click: onGenderClick }}
-                />
-            </Card>
-            <Card title="Reported scams and loss breakdown by age">
-                <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-                    💡 Shows scam trends segmented by different age groups.
-                </p>
-                <ReactECharts style={{ height: 320 }} option={ageOpt} />
-            </Card>
-        </div>
-          </>
-        ) : (
-          /* Data Overview Table */
-          <Card title="Complete Data Overview">
-            <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
-              💡 Paginated table view of filtered scam data. Showing {startIndex + 1}-{Math.min(endIndex, data.length)} of {data.length} records.
-            </p>
-            
-            {isLoading ? (
-              <div style={{ 
-                textAlign: 'center', 
-                padding: '40px', 
-                color: '#666',
-                fontSize: '16px'
-              }}>
-                <div style={{ display: 'inline-block', marginRight: '10px' }}>
-                  <div style={{
-                    width: '20px',
-                    height: '20px',
-                    border: '2px solid #f3f3f3',
-                    borderTop: '2px solid #012169',
-                    borderRadius: '50%',
-                    animation: 'spin 1s linear infinite',
-                    display: 'inline-block'
-                  }}></div>
-                </div>
-                Loading data...
-              </div>
-            ) : (
-              <>
-                <div style={{ overflowX: 'auto', maxHeight: '600px', overflowY: 'auto' }}>
-                  <table style={{ 
-                    width: '100%', 
-                    borderCollapse: 'collapse', 
-                    fontSize: '14px',
-                    background: 'white'
-                  }}>
-                    <thead style={{ 
-                      background: '#f8f9fa', 
-                      position: 'sticky', 
-                      top: 0, 
-                      zIndex: 10 
-                    }}>
-                      <tr>
-                        <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>Date</th>
-                        <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>State</th>
-                        <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>Contact Method</th>
-                        <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>Age Group</th>
-                        <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>Gender</th>
-                        <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>Scam Type</th>
-                        <th style={{ padding: '12px', textAlign: 'right', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>Amount Lost (AUD)</th>
-                        <th style={{ padding: '12px', textAlign: 'right', borderBottom: '2px solid #dee2e6', fontWeight: '600' }}>Report Count</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {paginatedData.map((row, index) => (
-                        <tr key={startIndex + index} style={{ 
-                          borderBottom: '1px solid #dee2e6'
-                        }}>
-                          <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>
-                            {row.month ? prettyMonth(row.month) : 'N/A'}
-                          </td>
-                          <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>
-                            {row.state_code || 'N/A'}
-                          </td>
-                          <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>
-                            {row.contact_method || 'N/A'}
-                          </td>
-                          <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>
-                            {row.age_band || 'N/A'}
-                          </td>
-                          <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>
-                            {row.gender || 'N/A'}
-                          </td>
-                          <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>
-                            {row.scam_type || 'N/A'}
-                          </td>
-                          <td style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid #dee2e6', fontWeight: '600' }}>
-                            {currency(row.amount_lost_aud)}
-                          </td>
-                          <td style={{ padding: '12px', textAlign: 'right', borderBottom: '1px solid #dee2e6', fontWeight: '600' }}>
-                            {row.report_count?.toLocaleString() || '0'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {data.length === 0 && (
-                    <div style={{ 
-                      textAlign: 'center', 
-                      padding: '40px', 
-                      color: '#666',
-                      fontSize: '16px'
-                    }}>
-                      No data found matching the current filters.
-                    </div>
-                  )}
-                </div>
-                
-                {/* 分页控件 */}
-                {data.length > ITEMS_PER_PAGE && (
-                  <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center', 
-                    marginTop: '20px',
-                    padding: '15px',
-                    background: '#f8f9fa',
-                    borderRadius: '8px'
-                  }}>
-                    <div style={{ fontSize: '14px', color: '#666' }}>
-                      Page {currentPage} of {totalPages} ({data.length} total records)
-                    </div>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                      <button
-                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                        disabled={currentPage === 1}
-                        style={{
-                          padding: '8px 16px',
-                          border: '1px solid #ddd',
-                          background: currentPage === 1 ? '#f5f5f5' : 'white',
-                          color: currentPage === 1 ? '#999' : '#333',
-                          borderRadius: '4px',
-                          cursor: currentPage === 1 ? 'not-allowed' : 'pointer'
-                        }}
-                      >
-                        Previous
-                      </button>
-                      <button
-                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                        disabled={currentPage === totalPages}
-                        style={{
-                          padding: '8px 16px',
-                          border: '1px solid #ddd',
-                          background: currentPage === totalPages ? '#f5f5f5' : 'white',
-                          color: currentPage === totalPages ? '#999' : '#333',
-                          borderRadius: '4px',
-                          cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
-                        }}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </Card>
-        )}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '60vh',
+            flexDirection: 'column',
+            gap: '20px'
+          }}>
+            <div style={{
+              width: '50px',
+              height: '50px',
+              border: '4px solid #f3f3f3',
+              borderTop: '4px solid #012169',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }}></div>
+            <p style={{ color: '#666', fontSize: '16px' }}>Loading job scam data...</p>
           </div>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div id="trends-page" className="page active">
+      <div className="page-content-wrapper">
+        <div style={{ padding: 24 }}>
+          {/* Simple Header */}
+          <div style={{ marginBottom: 24 }}>
+            <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: '700', color: '#012169' }}>
+              Job Scam Analytics
+            </h2>
+            <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>
+              Analysis of employment-related fraud data across all years
+            </p>
+          </div>
+
+          {/* Simple View Toggle */}
+          <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+            <button 
+              className={`pill ${viewMode === 'overview' ? 'active' : ''}`}
+              onClick={() => setViewMode('overview')}
+              style={{ 
+                padding: '8px 16px', 
+                border: '2px solid #012169', 
+                background: viewMode === 'overview' ? '#012169' : 'transparent',
+                color: viewMode === 'overview' ? 'white' : '#012169',
+                borderRadius: '20px',
+                cursor: 'pointer',
+                fontWeight: '600'
+              }}
+            >
+              📋 Data Table
+            </button>
+            <button 
+              className={`pill ${viewMode === 'charts' ? 'active' : ''}`}
+              onClick={() => setViewMode('charts')}
+              style={{ 
+                padding: '8px 16px', 
+                border: '2px solid #012169', 
+                background: viewMode === 'charts' ? '#012169' : 'transparent',
+                color: viewMode === 'charts' ? 'white' : '#012169',
+                borderRadius: '20px',
+                cursor: 'pointer',
+                fontWeight: '600'
+              }}
+            >
+              📊 Charts
+            </button>
+          </div>
+
+          {/* Simple Filters */}
+          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginBottom: 20 }}>
+            <Select label="Year" value={filters.year} onChange={v => setFilters(f => ({...f, year: v}))} options={years}/>
+            <Select label="State" value={filters.state} onChange={v => setFilters(f => ({...f, state: v}))} options={states}/>
+            <Select label="Contact" value={filters.contact} onChange={v => setFilters(f => ({...f, contact: v}))} options={contacts}/>
+            <Select label="Gender" value={filters.gender} onChange={v => setFilters(f => ({...f, gender: v}))} options={genders}/>
+            <button onClick={() => setFilters({ year:"All",state:"All",contact:"All",gender:"All" })}>Clear All</button>
+            <button onClick={exportCSV}>Export CSV</button>
+          </div>
+
+          {/* Simple KPIs */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 20 }}>
+            <KPI title="Total Loss" value={totalLoss}/>
+            <KPI title="Total Reports" value={totalReports}/>
+            <KPI title="Avg Loss/Report" value={avgLossPerReport}/>
+            <KPI title="Records" value={totalRecords}/>
+          </div>
+
+          {/* Content */}
+          {viewMode === 'charts' ? (
+            <>
+              <Card title="Monthly Job Scam Trends">
+                <ReactECharts style={{ height: 300 }} option={monthlyOpt} />
+              </Card>
+              <Card title="State Distribution (click to filter)">
+                <ReactECharts style={{ height: 300 }} option={stateOpt} onEvents={{ click: onStateClick }} />
+              </Card>
+            </>
+          ) : (
+            <Card title={`Job Scam Data (${data.length} records)`}>
+              <p style={{ margin: "4px 0 12px", color: "#666", fontSize: 14 }}>
+                Showing {startIndex + 1}-{Math.min(endIndex, data.length)} of {data.length} records.
+              </p>
+              
+              <div style={{ overflowX: 'auto', maxHeight: '400px', overflowY: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                  <thead style={{ background: '#f8f9fa', position: 'sticky', top: 0 }}>
+                    <tr>
+                      <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Month</th>
+                      <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>State</th>
+                      <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Contact</th>
+                      <th style={{ padding: '8px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Gender</th>
+                      <th style={{ padding: '8px', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>Loss</th>
+                      <th style={{ padding: '8px', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>Reports</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginatedData.map((row, index) => (
+                      <tr key={startIndex + index} style={{ borderBottom: '1px solid #dee2e6' }}>
+                        <td style={{ padding: '8px' }}>{row.month ? prettyMonth(row.month) : 'N/A'}</td>
+                        <td style={{ padding: '8px' }}>{row.state_code || 'N/A'}</td>
+                        <td style={{ padding: '8px' }}>{row.contact_method || 'N/A'}</td>
+                        <td style={{ padding: '8px' }}>{row.gender || 'N/A'}</td>
+                        <td style={{ padding: '8px', textAlign: 'right' }}>{currency(row.amount_lost_aud)}</td>
+                        <td style={{ padding: '8px', textAlign: 'right' }}>{row.report_count?.toLocaleString() || '0'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              {data.length > ITEMS_PER_PAGE && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
+                  <div style={{ fontSize: '12px', color: '#666' }}>
+                    Page {currentPage} of {totalPages}
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      disabled={currentPage === 1}
+                      style={{ padding: '4px 8px', fontSize: '12px' }}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}
+                      style={{ padding: '4px 8px', fontSize: '12px' }}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Card>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

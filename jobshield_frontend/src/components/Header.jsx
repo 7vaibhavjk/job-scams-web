@@ -83,13 +83,13 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
                     <li>
                         <a
                             href="#"
-                            className={currentPage === 'news' || currentPage === 'trends' ? 'active' : ''}
+                            className={currentPage === 'trends' ? 'active' : ''}
                             onClick={(e) => {
                                 e.preventDefault();
-                                handleNavClick('news');
+                                handleNavClick('trends');
                             }}
                         >
-                            News
+                            Trends
                         </a>
                     </li>
 

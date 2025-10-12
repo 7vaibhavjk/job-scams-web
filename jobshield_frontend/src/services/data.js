@@ -1,24 +1,35 @@
 // src/services/data.js
 import dayjs from "dayjs";
-import ApiService from "./api";
 
 export async function loadRecords() {
-    const rows = await ApiService.getRecords();
-    return rows.map(r => ({
-        ...r,
-        date: dayjs(r.date),
-        year: r.year ?? Number(dayjs(r.date).format("YYYY")),
-        month: r.month ?? dayjs(r.date).format("YYYY-MM"),
-        state_code: r.state_code || "Unspecified",
-        state_name: r.state_name || "Unspecified",
-        contact_method: r.contact_method || "Unspecified",
-        age_band: r.age_band || "Unspecified",
-        gender: r.gender || "Unspecified",
-        scam_group: r.scam_group || "Unspecified",
-        scam_type: r.scam_type || "Unspecified",
-        amount_lost_aud: +r.amount_lost_aud || 0,
-        report_count: +r.report_count || 0,
-    }));
+    try {
+        // Load data directly from the local JSON file
+        const response = await fetch('/data/scams_records_normalized_2020_2025.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const rows = await response.json();
+        
+        return rows.map(r => ({
+            ...r,
+            date: dayjs(r.date),
+            year: r.year ?? Number(dayjs(r.date).format("YYYY")),
+            month: r.month ?? dayjs(r.date).format("YYYY-MM"),
+            state_code: r.state_code || "Unspecified",
+            state_name: r.state_name || "Unspecified",
+            contact_method: r.contact_method || "Unspecified",
+            age_band: r.age_band || "Unspecified",
+            gender: r.gender || "Unspecified",
+            scam_group: r.scam_group || "Unspecified",
+            scam_type: r.scam_type || "Unspecified",
+            amount_lost_aud: +r.amount_lost_aud || 0,
+            report_count: +r.report_count || 0,
+        }));
+    } catch (error) {
+        console.error('Error loading data from local file:', error);
+        // Return empty array if loading fails
+        return [];
+    }
 }
 
 export const currency = v =>
