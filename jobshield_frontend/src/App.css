@@ -2644,7 +2644,7 @@ select {
 
 .magical-btn {
     background: linear-gradient(to bottom, #d4af37 0%, #b8860b 100%);
-    color: #012069;
+    color: #0D86E3;
     border: none;
     border-radius: 8px;
     padding: 10px 20px;
@@ -2681,7 +2681,7 @@ select {
 
 .magical-tab {
     background: rgba(255, 255, 255, 0.8);
-    color: #012069;
+    color: #0D86E3;
     padding: 12px 24px;
     margin: 0 10px;
     border-radius: 8px 8px 0 0;
@@ -2694,7 +2694,7 @@ select {
 
 .magical-tab.active {
     background: linear-gradient(to bottom, #fff3ca 0%, #ffdd87 100%);
-    color: #012069;
+    color: #0D86E3;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -2809,7 +2809,7 @@ select {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #012069;
+    color: #0D86E3;
     z-index: 20;
     transition: all 0.5s ease;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
@@ -2866,7 +2866,7 @@ select {
 
 .magical-risk-indicator {
     background: #d4af37;
-    color: #012069;
+    color: #0D86E3;
     padding: 3px 8px;
     border-radius: 10px;
     font-size: 0.8rem;
@@ -3285,7 +3285,7 @@ select {
 }
 
 .magical-subtitle {
-    color: #012069;
+    color: #0D86E3;
     font-size: 1.2rem;
     margin-bottom: 2rem;
 }
@@ -3298,7 +3298,7 @@ select {
 }
 
 .magical-tab {
-    background: #012069c3;
+    background: #0D86E3c3;
     color: #e6e6fa;
     padding: 12px 24px;
     margin: 0 10px;
@@ -3311,7 +3311,7 @@ select {
 
 .magical-tab.active {
     background: linear-gradient(to bottom, #ffde72 0%, #ffbb0f 100%);
-    color: #012069;
+    color: #0D86E3;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -4101,7 +4101,7 @@ h3 { margin-bottom: 15px; color: #333; }
   border: 1px solid #ffd86a !important;
   border-radius: 10px !important;
   margin: 20px auto !important;
-  color: #012069 !important;        /* 金色文字 */
+  color: #0D86E3 !important;        /* 金色文字 */
   font-size: 1rem !important;
   font-weight: 600 !important;
   text-align: center !important;
