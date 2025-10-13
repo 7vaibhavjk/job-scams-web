@@ -35,10 +35,16 @@ const AnimatedHighlightedText = ({ text, phrases = [], verdict }) => {
       setHtml("");
       return;
     }
-    if (!phrases || phrases.length === 0) {
-      setHtml(text);
-      return;
-    }
+    if (
+  !phrases ||
+  phrases.length === 0 ||
+  verdict?.toLowerCase().includes('real') ||
+  verdict?.toLowerCase().includes('safe')
+) {
+  setHtml(text);
+  return;
+}
+
 
     let startTime = null;
     let frameId;
