@@ -4,6 +4,7 @@ import * as echarts from "echarts";
 import ReactECharts from "echarts-for-react";
 import { loadRecords, groupBy, sum, currency } from "../services/data";
 
+/* ---------- theme ---------- */
 const COLORS = { primary: "#012169", red: "#E4002B", gold: "#FFCD00" };
 const GENDER_COLORS = {
   Female: "#2F55D4",
@@ -12,6 +13,8 @@ const GENDER_COLORS = {
   Unspecified: "#C9D3E2",
 };
 
+/* ---------- utils ---------- */
+const nfmt = (n) => Number(n || 0).toLocaleString();
 function prettyMonth(m) {
   const [y, mm] = String(m).split("-");
   const names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -19,7 +22,7 @@ function prettyMonth(m) {
   return `${mon} ${String(y).slice(2)}`;
 }
 
-// Canonical AU names <-> codes
+/* AU canonical names <-> codes */
 const CANON = {
   "New South Wales": "NSW",
   "Victoria": "VIC",
@@ -32,7 +35,7 @@ const CANON = {
 };
 const CODE_TO_NAME = Object.fromEntries(Object.entries(CANON).map(([n,c]) => [c,n]));
 
-// Normalize feature names for the map
+/* try to normalize feature name for echarts */
 function normalizeGeo(features) {
   const NAME_KEYS = [
     "name","STATE_NAME","STATE_NAME_2016","st_name16","STATE","STATE_NM",
@@ -57,9 +60,11 @@ function normalizeGeo(features) {
   });
 }
 
+/* ========================================================= */
+
 export default function TrendsPage() {
   const [raw, setRaw] = useState([]);
-  const [mode, setMode] = useState("explore"); // guided | explore | table
+  const [mode, setMode] = useState("guided"); // open Guided FIRST
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [genderMetric, setGenderMetric] = useState("loss"); // 'loss' | 'reports'
@@ -69,7 +74,7 @@ export default function TrendsPage() {
 
   const ITEMS_PER_PAGE = 20;
 
-  // Load data
+  /* load data */
   useEffect(() => {
     (async () => {
       setIsLoading(true);
@@ -86,7 +91,7 @@ export default function TrendsPage() {
     })();
   }, []);
 
-  // Load AU map
+  /* load AU map */
   useEffect(() => {
     fetch("/maps/australia-states.geo.json")
       .then(r => r.json())
@@ -103,7 +108,7 @@ export default function TrendsPage() {
       .catch(e => { console.error("AU map load failed:", e); setAuMapReady(false); });
   }, []);
 
-  // Filtered data
+  /* filtered data */
   const data = useMemo(
     () => raw.filter(r =>
       (filters.year === "All" || String(r.year) === filters.year) &&
@@ -114,27 +119,27 @@ export default function TrendsPage() {
     [raw, filters]
   );
 
-  // Options
+  /* options */
   const years    = useMemo(() => ["All", ...new Set(raw.map(r => String(r.year)))].sort(), [raw]);
   const states   = useMemo(() => ["All", ...new Set(raw.map(r => r.state_code))].sort(), [raw]);
   const contacts = useMemo(() => ["All", ...new Set(raw.map(r => r.contact_method))].sort(), [raw]);
   const genders  = useMemo(() => ["All", ...new Set(raw.map(r => r.gender))].sort(), [raw]);
 
-  // Pagination
+  /* pagination */
   const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex   = startIndex + ITEMS_PER_PAGE;
   const paginatedData = data.slice(startIndex, endIndex);
 
-  // KPIs
+  /* KPIs */
   const totalLoss = currency(sum(data, r => r.amount_lost_aud));
-  const totalReports = sum(data, r => r.report_count).toLocaleString();
+  const totalReports = nfmt(sum(data, r => r.report_count));
   const avgLossPerReport = data.length > 0
     ? currency(sum(data, r => r.amount_lost_aud) / Math.max(1, sum(data, r => r.report_count)))
     : "$0";
-  const totalRecords = data.length.toLocaleString();
+  const totalRecords = nfmt(data.length);
 
-  // Series
+  /* series */
   const monthly = useMemo(() => {
     const grouped = groupBy(data, r => r.month);
     return grouped
@@ -158,7 +163,7 @@ export default function TrendsPage() {
       .slice(0, 8);
   }, [data]);
 
-  // Main chart options (bigger + year scrubber)
+  /* main chart (with scrubber) */
   const monthlyOpt = {
     tooltip: { trigger: "axis" },
     legend:  { data: ["Reports", "Loss (AUD)"] },
@@ -182,16 +187,7 @@ export default function TrendsPage() {
     ],
   };
 
-  // Bar fallback for states
-  const stateBarOpt = {
-    tooltip: { trigger: "item" },
-    grid: { left: 70, right: 40, bottom: 40, top: 20 },
-    xAxis: { type: "category", data: byState.map(x => x.code) },
-    yAxis: [{ type: "value", name: "Reports" }],
-    series: [{ type: "bar", itemStyle: { color: COLORS.gold }, data: byState.map(x => x.reports) }],
-  };
-
-  // Map data & option
+  /* map data */
   const mapAgg = useMemo(() => {
     const m = new Map();
     data.forEach(r => {
@@ -204,19 +200,23 @@ export default function TrendsPage() {
     const arr = [];
     for (const [code, v] of m) {
       const name = CODE_TO_NAME[code];
-      if (!name) continue;
+      if (!name) continue; // skip unspecified
       arr.push({ name, value: v.reports, loss: v.loss, code });
     }
     return arr;
   }, [data]);
 
+  /* map options (safe tooltip) */
   const auMapOption = {
     tooltip: {
       trigger: "item",
-      formatter: p => {
-        const { name, data } = p;
-        if (!data) return `<b>${name}</b><br/>No data`;
-        return [`<b>${name}</b>`,`Reports: ${data.value.toLocaleString()}`,`Loss: ${currency(data.loss)}`].join("<br/>");
+      formatter: (p) => {
+        const nm = p?.name || "Unknown";
+        const d  = p?.data || {};
+        const rep = nfmt(d?.value);
+        const loss = currency(d?.loss || 0);
+        if (!d || d.value == null) return `<b>${nm}</b><br/>No data`;
+        return `<b>${nm}</b><br/>Reports: ${rep}<br/>Loss: ${loss}`;
       }
     },
     visualMap: { left: 10, bottom: 10, text: ["High","Low"], inRange: { color: ["#E6F0FF", "#012169"] }, calculable: true },
@@ -231,7 +231,7 @@ export default function TrendsPage() {
     }]
   };
 
-  // Gender donut data
+  /* gender donut */
   const genderAgg = useMemo(() => {
     const grouped = groupBy(data, r => r.gender || "Unspecified");
     const g = grouped.map(([g, rows]) => ({
@@ -283,11 +283,11 @@ export default function TrendsPage() {
     };
   }, [genderAgg, genderMetric]);
 
-  // Insights
+  /* insights */
   const insights = useMemo(() => makeInsights(data, monthly, byState), [data, monthly, byState]);
   const genderSideInsight = useMemo(() => genderInsightFrom(genderAgg, genderMetric), [genderAgg, genderMetric]);
 
-  // Guided config
+  /* guided steps */
   const steps = [
     { key: "year",    title: "Which year do you want to look at?", options: years },
     { key: "state",   title: "Focus on any state?",               options: states },
@@ -297,8 +297,16 @@ export default function TrendsPage() {
   function setAnswer(key, value) { setFilters(f => ({ ...f, [key]: value })); setStepIdx(i => Math.min(i+1, steps.length)); }
   function resetGuided() { setFilters({ year:"All", state:"All", contact:"All", gender:"All" }); setStepIdx(0); }
 
-  const onStateClick = p => setFilters(f => ({ ...f, state: p.name ?? p.value ?? "All" }));
-  const onMapClick   = p => { const code = Object.entries(CANON).find(([n]) => n === p?.name)?.[1]; if (code) setFilters(f => ({ ...f, state: code })); };
+  /* map click: resolve code safely */
+  const onMapClick = (p) => {
+    const codeFromData = p?.data?.code;
+    if (codeFromData) return setFilters(f => ({ ...f, state: codeFromData }));
+    const name = p?.name;
+    if (!name) return;
+    const found = Object.entries(CANON).find(([n]) => n === name);
+    if (found) setFilters(f => ({ ...f, state: found[1] }));
+  };
+  const onStateClick = (p) => setFilters(f => ({ ...f, state: p?.name ?? p?.value ?? "All" }));
 
   if (isLoading) {
     return (
@@ -342,7 +350,7 @@ export default function TrendsPage() {
             <KPI title="Records" value={totalRecords} />
           </div>
 
-          {/* Filters (only for Explore/Table) */}
+          {/* Filters (visible only on Explore/Table) */}
           {(mode === "explore" || mode === "table") && (
             <div className="cardish" style={{ display:"flex", gap:12, alignItems:"center", flexWrap:"wrap", marginBottom:16 }}>
               <Select label="Year"    value={filters.year}    onChange={v => setFilters(f => ({...f, year:v}))}    options={years}/>
@@ -353,7 +361,7 @@ export default function TrendsPage() {
             </div>
           )}
 
-          {/* ====================== EXPLORE MODE ====================== */}
+          {/* ================= EXPLORE ================= */}
           {mode === "explore" && (
             <>
               {/* ROW 1: Bar + Insights */}
@@ -395,18 +403,36 @@ export default function TrendsPage() {
               <div style={{ display:"grid", gridTemplateColumns:"1fr", gap:16 }}>
                 <Card title="State Distribution (Australia map — hover for stats, click to filter)">
                   {auMapReady ? (
-                    <ReactECharts style={{ height: 560 }} option={auMapOption} onEvents={{ click: onMapClick }} notMerge />
+                    <ReactECharts
+                      style={{ height: 560 }}
+                      option={auMapOption}
+                      onEvents={{ click: onMapClick }}
+                      notMerge
+                    />
                   ) : (
-                    <ReactECharts style={{ height: 420 }} option={stateBarOpt} onEvents={{ click: onStateClick }} />
+                    <ReactECharts
+                      style={{ height: 420 }}
+                      option={{
+                        tooltip: { trigger: "item" },
+                        grid: { left: 70, right: 40, bottom: 40, top: 20 },
+                        xAxis: { type: "category", data: byState.map(x => x.code) },
+                        yAxis: [{ type: "value", name: "Reports" }],
+                        series: [{ type: "bar", itemStyle: { color: COLORS.gold }, data: byState.map(x => x.reports) }],
+                      }}
+                      onEvents={{ click: onStateClick }}
+                    />
                   )}
                 </Card>
               </div>
             </>
           )}
 
-          {/* ====================== GUIDED MODE ====================== */}
+          {/* ================= GUIDED ================= */}
           {mode === "guided" && (
             <Card title={`Step ${Math.min(stepIdx + 1, steps.length)} of ${steps.length} · Guided filters`}>
+              {/* friendly intro for first step */}
+              {stepIdx === 0 && <IntroHero />}
+
               <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:12 }}>
                 {Object.entries(filters).map(([k,v]) => (
                   <Chip key={k} onClear={() => setFilters(f => ({...f, [k]:"All"}))}>{labelOf(k)}: {v}</Chip>
@@ -419,7 +445,7 @@ export default function TrendsPage() {
                   title={steps[stepIdx].title}
                   options={steps[stepIdx].options}
                   value={filters[steps[stepIdx].key]}
-                  onSelect={val => { setFilters(f => ({...f, [steps[stepIdx].key]: val})); setStepIdx(i => i+1); }}
+                  onSelect={val => setAnswer(steps[stepIdx].key, val)}
                   onSkip={() => setStepIdx(i => i+1)}
                   onBack={() => setStepIdx(i => Math.max(i-1,0))}
                 />
@@ -458,9 +484,24 @@ export default function TrendsPage() {
                   </div>
                   <Card title="State Distribution (Australia map — hover for stats, click to filter)">
                     {auMapReady ? (
-                      <ReactECharts style={{ height: 560 }} option={auMapOption} onEvents={{ click: onMapClick }} notMerge />
+                      <ReactECharts
+                        style={{ height: 560 }}
+                        option={auMapOption}
+                        onEvents={{ click: onMapClick }}
+                        notMerge
+                      />
                     ) : (
-                      <ReactECharts style={{ height: 420 }} option={stateBarOpt} onEvents={{ click: onStateClick }} />
+                      <ReactECharts
+                        style={{ height: 420 }}
+                        option={{
+                          tooltip: { trigger: "item" },
+                          grid: { left: 70, right: 40, bottom: 40, top: 20 },
+                          xAxis: { type: "category", data: byState.map(x => x.code) },
+                          yAxis: [{ type: "value", name: "Reports" }],
+                          series: [{ type: "bar", itemStyle: { color: COLORS.gold }, data: byState.map(x => x.reports) }],
+                        }}
+                        onEvents={{ click: onStateClick }}
+                      />
                     )}
                   </Card>
                 </>
@@ -468,7 +509,7 @@ export default function TrendsPage() {
             </Card>
           )}
 
-          {/* ====================== DATA TABLE MODE ====================== */}
+          {/* ================= TABLE ================= */}
           {mode === "table" && (
             <Card title={`Job Scam Data (${data.length} records)`}>
               <p style={{ margin:"4px 0 12px", color:"#666", fontSize:14 }}>
@@ -494,7 +535,7 @@ export default function TrendsPage() {
                         <td style={td}>{row.contact_method || "N/A"}</td>
                         <td style={td}>{row.gender || "N/A"}</td>
                         <td style={{ ...td, textAlign:"right" }}>{currency(row.amount_lost_aud)}</td>
-                        <td style={{ ...td, textAlign:"right" }}>{row.report_count?.toLocaleString() || "0"}</td>
+                        <td style={{ ...td, textAlign:"right" }}>{nfmt(row.report_count)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -562,9 +603,7 @@ function Select({ label, value, onChange, options }) {
     <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
       <span style={{ fontSize: 12 }}>{label}</span>
       <select value={value} onChange={(e) => onChange(e.target.value)}>
-        {options.map((o) => (
-          <option key={o} value={o}>{o}</option>
-        ))}
+        {options.map((o) => (<option key={o} value={o}>{o}</option>))}
       </select>
     </label>
   );
@@ -572,26 +611,45 @@ function Select({ label, value, onChange, options }) {
 
 function Question({ title, options, value, onSelect, onSkip, onBack }) {
   return (
-    <div className="question-wrap">
-      <div className="question-title">❓ {title}</div>
-      <div className="question-choices">
-        {options.map((opt) => (
-          <button
-            key={opt}
-            className={`choice ${value === opt ? "active" : ""}`}
-            onClick={() => onSelect(opt)}
-          >
-            {opt}
-          </button>
-        ))}
+    <div className="question-wrap" style={{ padding:"12px 4px" }}>
+      <div className="question-title" style={{ fontSize:22, fontWeight:700, marginBottom:10 }}>
+        ❓ {title}
       </div>
-      <div className="qa-ctrls">
+
+      <div className="question-choices" style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:12 }}>
+        {options.map((opt) => {
+          const isActive = value === opt;
+          return (
+            <button
+              key={opt}
+              onClick={() => onSelect(opt)}
+              style={{
+                padding:"10px 14px",
+                borderRadius:999,
+                border: isActive ? "2px solid #012169" : "1px solid #cfd7ea",
+                background: isActive ? "#012169" : "#ffffff",
+                color: isActive ? "#ffffff" : "#012169",
+                fontWeight:700,
+                minWidth: 56,
+                transition:"all .15s ease",
+                boxShadow: isActive ? "0 2px 8px rgba(1,33,105,.25)" : "none",
+                cursor: "pointer"
+              }}
+            >
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="qa-ctrls" style={{ display:"flex", gap:8 }}>
         <button onClick={onBack}>← Back</button>
         <button onClick={onSkip}>Skip →</button>
       </div>
     </div>
   );
 }
+
 
 function Chip({ children, onClear }) {
   return (
@@ -644,6 +702,35 @@ function LegendDot({ color, label }) {
   );
 }
 
+function IntroHero() {
+  return (
+    <div style={{
+      padding:"12px 14px",
+      borderRadius:12,
+      background:"linear-gradient(90deg,#eef3ff,#ffffff)",
+      display:"flex",
+      gap:12,
+      alignItems:"center",
+      marginBottom:8
+    }}>
+      <div style={{ fontSize:26, animation:"pulse 1.6s ease-in-out infinite" }}>🛡️</div>
+      <div style={{ color:"#2c3e50" }}>
+        <div style={{ fontWeight:700, fontSize:16, marginBottom:4 }}>
+          Let’s spot suspicious patterns before they spot you.
+        </div>
+        <div style={{ fontSize:13.5, opacity:.9 }}>
+          We’ll ask a few quick questions and show simple trends —
+          no jargon, just what matters for staying safe while job-hunting.
+        </div>
+      </div>
+      <style>{`
+        @keyframes pulse { 0%{ transform:scale(1)} 50%{ transform:scale(1.08)} 100%{ transform:scale(1)} }
+        @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+      `}</style>
+    </div>
+  );
+}
+
 function labelOf(key) {
   return ({ year: "Year", state: "State", contact: "Contact", gender: "Gender" }[key] || key);
 }
@@ -676,18 +763,18 @@ function makeInsights(data, monthly, byState) {
   if (peakCnt) {
     out.push({
       icon: "📈",
-      text: `Most reports landed in ${prettyMonth(peakCnt.month)} (~${peakCnt.count.toLocaleString()}). Seasonal hiring bursts (grads/holidays) tend to drive this.`,
+      text: `Most reports landed in ${prettyMonth(peakCnt.month)} (~${nfmt(peakCnt.count)}). Seasonal hiring bursts (grads/holidays) tend to drive this.`,
     });
   }
   if (leadState) {
     out.push({
       icon: "🗺️",
-      text: `Reports concentrate in ${leadState.code} (~${leadState.reports.toLocaleString()}). Population + job market size + awareness usually explain the skew.`,
+      text: `Reports concentrate in ${leadState.code} (~${nfmt(leadState.reports)}). Population + job market size + awareness usually explain the skew.`,
     });
   } else if (byContact[0]) {
     out.push({
       icon: "☎️",
-      text: `Top contact channel: ${byContact[0].k} (~${byContact[0].n.toLocaleString()} reports). Treat upfront fees / “verify ID” links as red flags.`,
+      text: `Top contact channel: ${byContact[0].k} (~${nfmt(byContact[0].n)} reports). Treat upfront fees / “verify ID” links as red flags.`,
     });
   }
 
