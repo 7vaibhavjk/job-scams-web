@@ -12,9 +12,9 @@ function EducationPage({onNavigate}) {
                         <i className="fas fa-arrow-left"></i> Back to Home
                     </div>
 
-                    <h2 className="section-title magical-title">Magical Job Hunting Adventure</h2>
+                    <h2 className="section-title magical-title">Job Hunting Adventure</h2>
                     <p className="section-subtitle magical-subtitle">
-                        Learn to identify and avoid job scams through a magical adventure
+                        Learn to identify and avoid job scams through an adventure
                     </p>
 
                     <div className="tab-container magical-tabs">
@@ -22,13 +22,13 @@ function EducationPage({onNavigate}) {
                             className={`tab ${activeTab === 'maze' ? 'active' : ''} magical-tab`}
                             onClick={() => setActiveTab('maze')}
                         >
-                            <i className="fas fa-dragon"></i> Magical Adventure Game
+                            <i className="fas fa-dragon"></i> Adventure Game
                         </div>
                         <div
                             className={`tab ${activeTab === 'flashcards' ? 'active' : ''} magical-tab`}
                             onClick={() => setActiveTab('flashcards')}
                         >
-                            <i className="fas fa-scroll"></i> Magical Knowledge Scrolls
+                            <i className="fas fa-scroll"></i> Knowledge Scrolls
                         </div>
                     </div>
 
@@ -41,14 +41,14 @@ function EducationPage({onNavigate}) {
 
                     <div className="card magical-card" style={{marginTop: '40px'}}>
                         <h3 className="card-title magical-card-title">
-                            <i className="fas fa-info-circle"></i> Magical Guide
+                            <i className="fas fa-info-circle"></i> Guide
                         </h3>
                         <p>
-                            <strong>Magical Warning:</strong> These educational games are based on common scam patterns but may not cover all situations.
+                            <strong>Warning:</strong> These educational games are based on common scam patterns but may not cover all situations.
                             Always exercise caution when sharing personal information online.
                         </p>
                         <p>
-                            <strong>Magical Privacy:</strong> We do not collect any personal data from these games. Your progress is stored only on your device.
+                            <strong>Privacy:</strong> We do not collect any personal data from these games. Your progress is stored only on your device.
                         </p>
                         <p>
                             <strong>Knowledge Sources:</strong> Information is based on reports from the Australian Cyber Security Centre, Scamwatch, and other cybersecurity organizations.
@@ -610,7 +610,7 @@ const AdventureGame = () => {
                 {/* 右侧：说明卡片 */}
                 <div className="right-section">
                     <div className="maze-info-card">
-                    <h3 className="maze-title">Magical Maze Adventure</h3>
+                    <h3 className="maze-title">Maze Adventure</h3>
                     <p className="maze-desc">Use your wisdom to navigate the maze and reach the exit!</p>
                     <p className="maze-desc">Avoid traps, face challenges, and learn how to detect scams through gameplay.</p>
 
@@ -767,7 +767,7 @@ const AdventureGame = () => {
                             <div className="celebration-animation">
                                 <i className="fas fa-trophy celebration-icon"></i>
                                 <h2>🎉 Congratulations! 🎉</h2>
-                                <p>You've successfully completed the magical maze!</p>
+                                <p>You've successfully completed the maze!</p>
                                 <p>You defeated {enemies.length} enemies and reached the exit!</p>
                                 <button className="btn btn-primary magical-btn" onClick={restartGame}>
                                     <i className="fas fa-redo"></i> Play Again
@@ -895,7 +895,7 @@ const FlashCardGame = () => {
         <div className="flashcard-game magical-flashcard-game">
             <div className="game-stats card magical-card">
                 <div className="stat">
-                    <span className="stat-label">Magical Score:</span>
+                    <span className="stat-label">Score:</span>
                     <span className="stat-value">{score}</span> {/* 25 points per question accumulated */}
                 </div>
                 <div className="stat">
@@ -920,7 +920,7 @@ const FlashCardGame = () => {
                     className={`flashcard ${showAnswer ? 'flipped' : ''} ${isFlipping ? 'flipping' : ''} magical-flashcard`}>
                     <div className="flashcard-front magical-card-front">
                         <div className="card-header magical-card-header">
-                            <span className="card-number">Magical Question {currentCardIndex + 1}</span>
+                            <span className="card-number">Question {currentCardIndex + 1}</span>
                             <div className="card-category">Scam Prevention Knowledge</div>
                         </div>
 
@@ -954,14 +954,14 @@ const FlashCardGame = () => {
                                     }, 300);
                                 }}
                             >
-                                <i className="fas fa-eye"></i> Reveal Magical Answer
+                                <i className="fas fa-eye"></i> Reveal Answer
                             </button>
                         )}
                     </div>
 
                     <div className="flashcard-back magical-card-back">
                         <div className="card-header magical-card-header">
-                            <span className="card-number">Magical Analysis</span>
+                            <span className="card-number">Analysis</span>
                             <div className="card-category">Scam Prevention Knowledge</div>
                         </div>
 
@@ -985,7 +985,7 @@ const FlashCardGame = () => {
                         </div>
 
                         <div className="correct-answer magical-correct-answer">
-                            <div className="correct-label">Recommended Magical Strategy:</div>
+                            <div className="correct-label">Recommended Strategy:</div>
                             <div className="correct-text">{currentCard.options[currentCard.correctAnswer]}</div>
                         </div>
 
@@ -995,8 +995,8 @@ const FlashCardGame = () => {
                             </button>
                         ) : (
                             <div className="game-complete magical-game-complete">
-                                <h4>Magical Trial Complete!</h4>
-                                <p>Your final magical score: {score}/100</p>
+                                <h4>Trial Complete!</h4>
+                                <p>Your final score: {score}/100</p>
                                 <button className="btn btn-primary magical-btn" onClick={resetGame}>
                                     <i className="fas fa-redo"></i> Challenge Again
                                 </button>
@@ -1008,7 +1008,7 @@ const FlashCardGame = () => {
 
             <div className="knowledge-center card magical-card">
                 <h4>
-                    <i className="fas fa-lightbulb"></i> Magical Scam Prevention Guide
+                    <i className="fas fa-lightbulb"></i> Scam Prevention Guide
                 </h4>
                 <div className="tips-grid magical-tips-grid">
                     <div className="tip-item magical-tip-item">
@@ -1017,7 +1017,7 @@ const FlashCardGame = () => {
                         </div>
                         <div className="tip-content">
                             <h5>No Advance Payment</h5>
-                            <p>Legitimate magical employers will never ask you to pay before starting work</p>
+                            <p>Legitimate employers will never ask you to pay before starting work</p>
                         </div>
                     </div>
                     <div className="tip-item magical-tip-item">
@@ -1025,7 +1025,7 @@ const FlashCardGame = () => {
                             <i className="fas fa-shield-alt"></i>
                         </div>
                         <div className="tip-content">
-                            <h5>Verify Magical Contacts</h5>
+                            <h5>Verify Contacts</h5>
                             <p>Always verify company contact information through official Ministry of Magic</p>
                         </div>
                     </div>
@@ -1034,7 +1034,7 @@ const FlashCardGame = () => {
                             <i className="fas fa-search"></i>
                         </div>
                         <div className="tip-content">
-                            <h5>Research Magical Companies</h5>
+                            <h5>Research Companies</h5>
                             <p>Thoroughly research company background before sharing personal information</p>
                         </div>
                     </div>
@@ -1043,8 +1043,8 @@ const FlashCardGame = () => {
                             <i className="fas fa-exclamation-triangle"></i>
                         </div>
                         <div className="tip-content">
-                            <h5>Watch for Magical Red Flags</h5>
-                            <p>Be cautious of interviews conducted only through owls or magical messengers</p>
+                            <h5>Watch for Red Flags</h5>
+                            <p>Be cautious of interviews conducted only through owls or messengers</p>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,476 @@
+html, body, #root, #home-page {
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.page.active {
+  display: block;
+}
+
+section {
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===========================
+   Hero Section
+=========================== */
+.hero-image-section {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-bottom: 0;
+  padding: 0;
+  left: 0;
+  right: 0;
+  max-width: none;
+}
+
+.hero-image-container {
+  position: relative;
+  width: 100vw;
+  height: 90vh;
+  min-height: 500px;
+  max-height: 900px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-content-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgba(0, 0, 0, 0);
+  padding-left: 10%;
+}
+
+.hero-content {
+  text-align: left;
+  color: white;
+  max-width: 55%;
+  padding: 0;
+  z-index: 2;
+  margin: 0;
+}
+
+.hero-title {
+  font-size: 60px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  color: #ffffff;
+  font-family: 'Montserrat Alternates', 'Source Sans Pro', sans-serif;
+}
+
+.green-text {
+  color: #0d47a1;
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  color: #0d47a1; /* dark blue to match the new theme */
+  margin-bottom: 30px;
+  line-height: 1.4;
+}
+
+
+@media (max-width: 768px) {
+  .hero-image-container {
+    height: 90vh;
+    min-height: 400px;
+  }
+  .hero-content {
+    max-width: 90%;
+    padding: 0 20px;
+  }
+  .hero-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+    line-height: 1.3;
+  }
+  .hero-subtitle {
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+}
+
+/* ===========================
+   Page Wrapper & Title
+=========================== */
+.home-content-wrapper {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding: 0;
+  background: none;
+}
+
+/* === What Protegrad Offers Section === */
+.title-section {
+  width: 100%;
+  padding: 60px 0;
+  background: #002147; /* deep dark background (same tone as GitHub dark mode) */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.title-container {
+  width: 100%;
+}
+
+.title-section .section-title {
+  font-family: 'Poppins', 'Source Sans Pro', sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  line-height: 1.2;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  margin: 0;
+  padding: 0;
+}
+
+
+@media (max-width: 768px) {
+  .title-section .section-title { font-size: 36px; }
+  .title-section { padding: 25px 0; }
+}
+@media (max-width: 480px) {
+  .title-section .section-title { font-size: 28px; }
+  .title-section { padding: 20px 0; }
+}
+
+/* ===========================
+   Unified Card Section Styles
+=========================== */
+.second-card-section,
+.third-card-section,
+.fourth-card-section {
+  width: 100vw;
+  min-height: 50vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: transparent;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.second-card-container,
+.third-card-container,
+.fourth-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 60px 0;
+  gap: 60px;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  overflow: hidden;
+  border: none;
+}
+
+/* SECOND */
+.second-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 60px min(8vw, 96px);   /* ← inner left/right padding added */
+  gap: 60px;
+  background-color: #E8EEF8;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(0,0,0,0.05);
+  box-sizing: border-box;
+}
+
+/* THIRD */
+.third-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 60px min(8vw, 96px);   /* ← inner left/right padding added */
+  gap: 60px;
+  background-color: #FFF8E1;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  overflow: hidden;
+  border-bottom: 2px solid rgba(0,0,0,0.05);
+  box-sizing: border-box;
+}
+
+/* FOURTH */
+.fourth-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 60px min(8vw, 96px);   /* ← inner left/right padding added */
+  gap: 60px;
+  background-color: #E8F5E8;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+
+/* ===========================
+   Second Card
+=========================== */
+.second-card-image { flex: 0 0 400px; display: flex; justify-content: center; align-items: center; }
+.second-card-png { width: 100%; max-width: 360px; height: auto; object-fit: contain; }
+.second-card-content { flex: 1; padding: 0 20px; }
+.second-card-title { font-family: 'Times New Roman', serif; font-size: 36px; font-weight: 700; color: #000; margin-bottom: 20px; line-height: 1.2; }
+.second-card-description { font-size: 16px; color: #333; line-height: 1.6; margin-bottom: 30px; }
+.second-card-features { display: flex; flex-direction: column; gap: 15px; }
+.feature-item { display: flex; align-items: flex-start; gap: 12px; }
+.check-icon { color: var(--blue); font-size: 18px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
+.feature-text { font-size: 17px; color: #000; line-height: 1.4; }
+.second-card-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 35px; 
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+.second-card-actions button {
+  font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 36px;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-check-url { background: #148E6C; }
+.btn-report-scams { background: #F2A84B; }
+.second-card-actions button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14); }
+
+/* ===========================
+   Third Card
+=========================== */
+.third-card-content { flex: 1; padding: 0 20px; }
+.third-card-title { font-family: 'Times New Roman', serif; font-size: 36px; font-weight: 700; color: #000; margin-bottom: 20px; line-height: 1.2; }
+.third-card-description { font-size: 16px; color: #333; line-height: 1.6; margin-bottom: 30px; }
+.third-card-features { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+.third-card-buttons { display: flex; align-items: center; flex-wrap: wrap; gap: 40px; margin-top: 28px; }
+.third-card-buttons button {
+  font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 36px;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn-download-extension { background-color: #148E6C; }
+.btn-support { background-color: #F2A84B; color: #fff; }
+.third-card-buttons button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14); filter: brightness(1.05); }
+.third-card-buttons button:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); filter: brightness(0.98); }
+.third-card-image { flex: 1; display: flex; justify-content: center; align-items: center; }
+.third-card-png { width: 100%; max-width: 400px; height: auto; object-fit: contain; }
+
+/* ===========================
+   Fourth Card
+=========================== */
+.fourth-card-image { flex: 1; display: flex; justify-content: center; align-items: center; }
+.fourth-card-gif { width: 100%; max-width: 400px; height: auto; object-fit: contain; }
+.fourth-card-content { flex: 1; padding: 0 20px; }
+.fourth-card-title { font-family: 'Times New Roman', serif; font-size: 36px; font-weight: 700; color: #000; margin-bottom: 20px; line-height: 1.2; }
+.fourth-card-description { font-size: 16px; color: #333; line-height: 1.6; margin-bottom: 30px; }
+.fourth-card-features { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+.fourth-card-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
+.btn-start-learning { background-color: var(--blue); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; min-width: 150px; }
+.btn-start-learning:hover { background-color: var(--dark-blue); transform: translateY(-2px); }
+
+/* ===========================
+   Responsive Adjustments
+=========================== */
+@media (max-width: 768px) {
+  .second-card-container, .third-card-container, .fourth-card-container {
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px 0;
+  }
+  .second-card-title, .third-card-title, .fourth-card-title {
+    font-size: 24px;
+    text-align: center;
+  }
+  .second-card-description, .third-card-description, .fourth-card-description {
+    font-size: 14px;
+    text-align: center;
+  }
+  .third-card-buttons { justify-content: center; flex-direction: column; gap: 15px; }
+  .btn-download-extension, .btn-support { min-width: 200px; width: 100%; }
+  .fourth-card-title { font-size: 24px; text-align: center; }
+  .fourth-card-description { font-size: 14px; text-align: center; }
+  .btn-start-learning { min-width: 200px; width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .second-card-title, .third-card-title, .fourth-card-title { font-size: 20px; }
+  .second-card-description, .third-card-description, .fourth-card-description { font-size: 13px; }
+  .feature-text { font-size: 13px; }
+}
+
+/* ===========================
+   Theme Alignment
+=========================== */
+
+/* === FIX: Make all cards stretch full width (no side margins) === */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* prevent any horizontal scrollbars */
+}
+
+/* Full-bleed sections, but don't zero out container padding */
+#home-page,
+.home-content-wrapper,
+.second-card-section,
+.third-card-section,
+.fourth-card-section,
+.second-card-container,
+.third-card-container,
+.fourth-card-container {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding-left: 0 !important;   /* ← this kills your inner spacing */
+  padding-right: 0 !important;  /* ← this kills your inner spacing */
+  left: 0 !important;
+  right: 0 !important;
+  position: relative;
+}
+
+
+/* Remove wrapper padding that was centering the cards */
+.home-content-wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+}
+
+/* === REMOVE HOVER EFFECTS FROM CARD CONTAINERS === */
+
+.second-card-container:hover,
+.third-card-container:hover,
+.fourth-card-container:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+/* Ensure base cards stay flat always */
+.second-card-container,
+.third-card-container,
+.fourth-card-container {
+  box-shadow: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.third-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 60px 0;
+  gap: 60px;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  overflow: hidden;
+  border: none;
+}
+
+.second-card-section .second-card-container,
+.third-card-section .third-card-container,
+.fourth-card-section .fourth-card-container {
+  padding-left: min(8vw, 96px) !important;
+  padding-right: min(8vw, 96px) !important;
+  box-sizing: border-box !important;
+}
+
+.second-card-title,
+.third-card-title,
+.fourth-card-title {
+  font-family: 'Poppins', 'Source Sans Pro', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: #000;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.second-card-description,
+.third-card-description,
+.fourth-card-description,
+.feature-text {
+  font-family: 'Poppins', 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Force hero subtitle dark blue */
+/* Force hero subtitle to dark blue and slightly bolder */
+.hero-image-section .hero-content .hero-subtitle {
+  color: #0d47a1 !important;
+  font-weight: 600; /* slightly bolder but not too heavy */
+  letter-spacing: 0.2px; /* optional – improves clarity */
+}
+
+

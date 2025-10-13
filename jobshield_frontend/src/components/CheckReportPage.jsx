@@ -465,7 +465,7 @@ const highlightJobText = (text, phrases, verdict) => {
                     </button>
                 </div>
             </div>
-            {renderJobAnalyzer()}
+            
         </div>
     );
 
@@ -894,17 +894,45 @@ const highlightJobText = (text, phrases, verdict) => {
     );
 
     const renderContent = () => {
-        switch (layoutMode) {
-            case 'check-result':
-                return renderSplitLayout();
-            case 'report-result':
-                return renderMainContent();
-            case 'both':
-                return renderBothLayout();
-            default:
-                return renderMainContent();
-        }
-    };
+  switch (layoutMode) {
+    case 'check-result':
+      return (
+        <div className="stacked-layout">
+          {renderCheckForm()}        {/* URL Check Form */}
+          {renderCheckResults()}     {/* ✅ Results come right below it */}
+          {renderJobAnalyzer()}      {/* ✅ Job Analyzer stays below results */}
+        </div>
+      );
+
+    case 'both':
+      return (
+        <div className="stacked-layout">
+          {renderCheckForm()}
+          {renderCheckResults()}
+          {renderReportForm()}
+          {renderJobAnalyzer()}
+        </div>
+      );
+
+    case 'report-result':
+      return (
+        <div className="stacked-layout">
+          {renderCheckForm()}
+          {renderReportForm()}
+          {renderJobAnalyzer()}
+        </div>
+      );
+
+    default:
+      return (
+        <div className="stacked-layout">
+          {renderCheckForm()}
+          {renderJobAnalyzer()}
+        </div>
+      );
+  }
+};
+
 
     return (
         <div id="check-report-page" className="page active">
