@@ -76,6 +76,16 @@ class ApiService {
         }
     }
 
+    static async analyzeJobAd(text) {
+    try {
+        const response = await apiClient.post(API_CONFIG.ENDPOINTS.JOB_ANALYZE, { text });
+        return response.data;
+    } catch (error) {
+        throw this.handleError(error);
+    }
+}
+
+
     // Query All Links
     static async queryAllLinks(params = {}) {
         try {

@@ -11,7 +11,8 @@ const API_CONFIG = {
         RECORDS: '/api/v1/record/query',
 
         // Report Related
-        REPORT_URL: '/api/v1/report/portal/add'
+        REPORT_URL: '/api/v1/report/portal/add',
+        JOB_ANALYZE: '/api/v1/job/analyze'
     },
 
     // Request Timeout (milliseconds)

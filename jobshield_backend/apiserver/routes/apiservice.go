@@ -22,6 +22,11 @@ func ApiService(g *gin.Engine) *gin.Engine {
 		{
 			record.GET("/query", v1.GetScamRecords)
 		}
+		job := api.Group("job")
+		{
+			job.POST("/analyze", v1.CheckJobAd)
+		}
+
 	}
 	return g
 }

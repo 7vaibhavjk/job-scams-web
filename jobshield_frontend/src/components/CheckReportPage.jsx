@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ApiService from '../services/api';
+import { motion } from "framer-motion";
 
 const SOURCE_LABELS = {
     source_kaggle: 'PhiUSIIL Phishing URL Dataset',
@@ -8,6 +9,73 @@ const SOURCE_LABELS = {
 };
 
 const formatSourceName = (code) => (code && SOURCE_LABELS[code]) || code || 'unknown';
+
+const AnimatedHighlightedText = ({ text, phrases = [], verdict }) => {
+  const [html, setHtml] = useState(text || "");
+
+  const HIGHLIGHT_FILL_MS = 1000; // duration of the fill animation per phrase
+
+  const escapeReg = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const buildHtml = (base, phrases, progress) => {
+    let working = base;
+    phrases.forEach(({ phrase }) => {
+      const escaped = escapeReg(phrase);
+      const regex = new RegExp(escaped, "gi");
+      working = working.replace(
+        regex,
+        `<span class="animated-highlight" style="--fill:${progress}%;">$&</span>`
+      );
+    });
+    return working;
+  };
+
+  useEffect(() => {
+    if (!text) {
+      setHtml("");
+      return;
+    }
+    if (!phrases || phrases.length === 0) {
+      setHtml(text);
+      return;
+    }
+
+    let startTime = null;
+    let frameId;
+
+    const animate = (time) => {
+      if (!startTime) startTime = time;
+      const elapsed = time - startTime;
+      const progress = Math.min((elapsed / HIGHLIGHT_FILL_MS) * 100, 100);
+      setHtml(buildHtml(text, phrases, progress));
+
+      if (elapsed < HIGHLIGHT_FILL_MS) {
+        frameId = requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [text, phrases, verdict]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="analyzed-text"
+      style={{
+        background: "#fff",
+        borderRadius: "8px",
+        padding: "1rem",
+        lineHeight: "1.6",
+        whiteSpace: "pre-wrap",
+        fontSize: "0.95rem",
+      }}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+};
 
 function CheckReportPage({ onNavigate }) {
     // URL检查相关状态
@@ -33,6 +101,57 @@ function CheckReportPage({ onNavigate }) {
     
     // 布局状态
     const [layoutMode, setLayoutMode] = useState('normal'); // 'normal', 'check-result', 'report-result', 'both'
+
+    // ---- Add Job Ad Analyzer ----
+    const [jobText, setJobText] = useState('');
+    const [jobResult, setJobResult] = useState(null);
+    const [jobLoading, setJobLoading] = useState(false);
+    const [displayText, setDisplayText] = useState('');
+
+  const analyzeJobAd = async () => {
+  if (!jobText.trim()) return;
+  setJobLoading(true);
+  setJobResult(null);
+
+  try {
+    const response = await ApiService.analyzeJobAd(jobText);
+    if (response && response.data) {
+      setJobResult(response.data);
+      setDisplayText(jobText);
+      setJobText('');
+    } else {
+      setJobResult({ Verdict: "Error", Message: "Invalid server response" });
+    }
+  } catch (error) {
+    setJobResult({ Verdict: "Error", Message: error.message });
+  } finally {
+    setJobLoading(false);
+  }
+};
+
+
+
+    // Highlight high-risk phrases in the job ad text
+const highlightJobText = (text, phrases, verdict) => {
+    if (!text || verdict?.toLowerCase().includes('real')) return text; // no highlights if real
+    if (!phrases || phrases.length === 0) return text;
+
+    // Sort phrases by length (to avoid nested highlight issues)
+    const sortedPhrases = [...phrases].sort((a, b) => b.phrase.length - a.phrase.length);
+
+    let highlighted = text;
+    sortedPhrases.forEach(({ phrase }) => {
+        const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escaped, 'gi');
+        highlighted = highlighted.replace(
+            regex,
+            `<span style="background-color: rgba(255, 99, 71, 0.3); border-radius: 3px; padding: 1px 2px;">$&</span>`
+        );
+    });
+
+    return highlighted;
+};
+
 
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
@@ -346,6 +465,7 @@ function CheckReportPage({ onNavigate }) {
                     </button>
                 </div>
             </div>
+            {renderJobAnalyzer()}
         </div>
     );
 
@@ -483,6 +603,106 @@ function CheckReportPage({ onNavigate }) {
             </div>
         </div>
     );
+
+    const renderJobAnalyzer = () => (
+  <div className="job-analyzer-section" style={{ marginTop: '3rem' }}>
+    <h2 className="section-title">Job Ad Analyzer</h2>
+    <p className="section-subtitle">
+      Paste a job advertisement to detect if it's safe or suspicious.
+    </p>
+
+    <textarea
+      className="form-input"
+      style={{ resize: 'none' }}
+      placeholder="Paste job ad text here..."
+      value={jobText}
+      onChange={(e) => setJobText(e.target.value)}
+      disabled={jobLoading}
+      rows={6}
+    />
+
+    <div className="form-actions">
+      <button
+        className="btn btn-primary"
+        onClick={analyzeJobAd}
+        disabled={jobLoading || !jobText.trim()}
+      >
+        {jobLoading ? 'Analyzing...' : 'Analyze Job Ad'}
+      </button>
+    </div>
+
+    {jobResult && (
+      <div
+        className="job-result-card"
+        style={{
+          marginTop: '2rem',
+          border: '1px solid #ddd',
+          borderRadius: '10px',
+          padding: '1.5rem',
+          backgroundColor: '#fafafa',
+          boxShadow: '0 3px 8px rgba(0,0,0,0.05)',
+        }}
+      >
+        <div
+          style={{
+            borderBottom: '1px solid #eee',
+            paddingBottom: '0.75rem',
+            marginBottom: '1rem',
+          }}
+        >
+          <h3
+            style={{
+              fontWeight: '600',
+              color: jobResult.Verdict?.includes('FAKE') ? '#d9534f' : '#28a745',
+              marginBottom: '0.3rem',
+            }}
+          >
+            {jobResult.Verdict?.includes('FAKE')
+              ? '⚠️ Unsafe — Proceed with Caution'
+              : '✅ Safe — Likely Legitimate'}
+          </h3>
+
+          <p style={{ margin: 0, fontSize: '0.95rem', color: '#666' }}>
+            Trust Score:
+            <strong> {jobResult.Score?.toFixed(1) || 0}/100</strong>
+          </p>
+
+          <div
+            style={{
+              width: '100%',
+              height: '8px',
+              borderRadius: '4px',
+              backgroundColor: '#e9ecef',
+              marginTop: '6px',
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                width: `${jobResult.Score}%`,
+                height: '100%',
+                backgroundColor: jobResult.Verdict?.includes('FAKE')
+                  ? '#dc3545'
+                  : '#28a745',
+                transition: 'width 0.5s ease',
+              }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Highlighted Job Ad */}
+        <AnimatedHighlightedText
+  text={displayText}
+  phrases={jobResult['Important Phrases']}
+  verdict={jobResult.Verdict}
+/>
+
+      </div>
+    )}
+  </div>
+);
+
+
 
     const renderCheckResults = () => {
         if (!checkResult) {

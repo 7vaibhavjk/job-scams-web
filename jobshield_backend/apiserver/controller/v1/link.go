@@ -127,3 +127,26 @@ func GetScamRecords(c *gin.Context) {
 	// 使用 c.File 返回 JSON 文件
 	c.File(csvPath)
 }
+
+// CheckJobAd analyzes job text for scam likelihood
+func CheckJobAd(c *gin.Context) {
+	type Input struct {
+		Text string `json:"text"`
+	}
+	var in Input
+	if err := c.ShouldBindJSON(&in); err != nil {
+		ginutil.WriteResponseErr(c, err, nil)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(c, 60*time.Second)
+	defer cancel()
+
+	result, err := ai.AnalyzeJobAd(ctx, in.Text)
+	if err != nil {
+		ginutil.WriteResponseErr(c, err, nil)
+		return
+	}
+
+	ginutil.WriteResponse(c, nil, result)
+}

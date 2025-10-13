@@ -196,7 +196,7 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
                 className={currentPage === 'check-report' ? 'active' : ''}
                 onClick={(e) => { e.preventDefault(); handleNavClick('check-report'); }}
               >
-                Check&Report
+                Analyze
               </a>
             </li>
 
