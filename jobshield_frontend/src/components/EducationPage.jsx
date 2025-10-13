@@ -4,58 +4,64 @@ function EducationPage({onNavigate}) {
     const [activeTab, setActiveTab] = useState('maze');
 
     return (
-        <div id="education-page" className="page active magical-theme">
-            <div className="page-content-wrapper">
-                <div className="container">
-                <div className="back-btn magical-btn" onClick={() => onNavigate('home')}>
-                    <i className="fas fa-arrow-left"></i> Back to Home
-                </div>
-
-                <h2 className="section-title magical-title">Magical Job Hunting Adventure</h2>
-                <p className="section-subtitle magical-subtitle">
-                    Learn to identify and avoid job scams through a magical adventure
-                </p>
-
-                <div className="tab-container magical-tabs">
-                    <div
-                        className={`tab ${activeTab === 'maze' ? 'active' : ''} magical-tab`}
-                        onClick={() => setActiveTab('maze')}
-                    >
-                        <i className="fas fa-dragon"></i> Magical Adventure Game
+        <div className="maze-game-scale">
+            <div id="education-page" className="page active magical-theme">
+                <div className="page-content-wrapper">
+                    <div className="container">
+                    <div className="back-btn magical-btn" onClick={() => onNavigate('home')}>
+                        <i className="fas fa-arrow-left"></i> Back to Home
                     </div>
-                    <div
-                        className={`tab ${activeTab === 'flashcards' ? 'active' : ''} magical-tab`}
-                        onClick={() => setActiveTab('flashcards')}
-                    >
-                        <i className="fas fa-scroll"></i> Magical Knowledge Scrolls
+
+                    <h2 className="section-title magical-title">Magical Job Hunting Adventure</h2>
+                    <p className="section-subtitle magical-subtitle">
+                        Learn to identify and avoid job scams through a magical adventure
+                    </p>
+
+                    <div className="tab-container magical-tabs">
+                        <div
+                            className={`tab ${activeTab === 'maze' ? 'active' : ''} magical-tab`}
+                            onClick={() => setActiveTab('maze')}
+                        >
+                            <i className="fas fa-dragon"></i> Magical Adventure Game
+                        </div>
+                        <div
+                            className={`tab ${activeTab === 'flashcards' ? 'active' : ''} magical-tab`}
+                            onClick={() => setActiveTab('flashcards')}
+                        >
+                            <i className="fas fa-scroll"></i> Magical Knowledge Scrolls
+                        </div>
                     </div>
-                </div>
 
-                {activeTab === 'maze' && <AdventureGame/>}
-                {activeTab === 'flashcards' && <FlashCardGame/>}
+                    {activeTab === 'maze' && (
+                        <div className="game-card">
+                            <AdventureGame />
+                        </div>
+                        )}
+                    {activeTab === 'flashcards' && <FlashCardGame/>}
 
-                <div className="card magical-card" style={{marginTop: '40px'}}>
-                    <h3 className="card-title magical-card-title">
-                        <i className="fas fa-info-circle"></i> Magical Guide
-                    </h3>
-                    <p>
-                        <strong>Magical Warning:</strong> These educational games are based on common scam patterns but may not cover all situations.
-                        Always exercise caution when sharing personal information online.
-                    </p>
-                    <p>
-                        <strong>Magical Privacy:</strong> We do not collect any personal data from these games. Your progress is stored only on your device.
-                    </p>
-                    <p>
-                        <strong>Knowledge Sources:</strong> Information is based on reports from the Australian Cyber Security Centre, Scamwatch, and other cybersecurity organizations.
-                        Last updated: {new Date().toLocaleDateString()}
-                    </p>
-                </div>
+                    <div className="card magical-card" style={{marginTop: '40px'}}>
+                        <h3 className="card-title magical-card-title">
+                            <i className="fas fa-info-circle"></i> Magical Guide
+                        </h3>
+                        <p>
+                            <strong>Magical Warning:</strong> These educational games are based on common scam patterns but may not cover all situations.
+                            Always exercise caution when sharing personal information online.
+                        </p>
+                        <p>
+                            <strong>Magical Privacy:</strong> We do not collect any personal data from these games. Your progress is stored only on your device.
+                        </p>
+                        <p>
+                            <strong>Knowledge Sources:</strong> Information is based on reports from the Australian Cyber Security Centre, Scamwatch, and other cybersecurity organizations.
+                            Last updated: {new Date().toLocaleDateString()}
+                        </p>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
-
+const SCALE = 0.66; // 控制迷宫整体缩放比例
 // Adventure Game Component - Maze Version
 const AdventureGame = () => {
     // 迷宫配置 - 更大的迷宫
@@ -535,9 +541,12 @@ const AdventureGame = () => {
     };
     
     return (
-        <div className="maze-game magical-maze-game">
+        <div className="maze-game magical-maze-game"
+        style={{ height: 'auto', minHeight: 'unset', overflow: 'visible', padding: '0 0 8px 0'}}>
+            
+            {/*}
             <div className="game-header magical-header" style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <h3>Magical Maze Adventure</h3>
+                <h3>Magical Maze Adventu</h3>
                 <div className="game-info" style={{ marginBottom: '20px' }}>
                     <p>Use arrow keys to move through the maze!</p>
                     <p>Find the exit while avoiding the magical enemies!</p>
@@ -554,23 +563,67 @@ const AdventureGame = () => {
                     </button>
                 )}
             </div>
-
-            <div className="game-container magical-game-container">
-                <div className="maze-view magical-maze-view">
+            */}
+            {/* ===== 左右两列：左迷宫 + 右说明卡片 ===== */}
+            <div className="game-layout">
+                {/* 左侧：迷宫 */}
+                <div className="left-section">
                     <div
-                        className="maze-container magical-maze-container"
+                        className="maze-frame"
                         style={{
-                            position: 'relative',
-                            width: `${MAZE_SIZE * CELL_SIZE}px`,
-                            height: `${MAZE_SIZE * CELL_SIZE}px`,
-                            backgroundColor: '#2c1810', // 深棕色背景
-                            border: '3px solid #9370DB',
-                            boxShadow: '0 0 20px rgba(147, 112, 219, 0.5)'
+                            width: MAZE_SIZE * CELL_SIZE,   // 外层按“原始尺寸”占位
+                            height: MAZE_SIZE * CELL_SIZE,
+                            overflow: 'visible',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}
                     >
-                        {renderMaze()}
+                        {/* 内层真正的迷宫做缩放 */}
+                        <div
+                            className="maze-scale"
+                            style={{
+                                transform: `scale(${SCALE})`,
+                                transformOrigin: 'top left',
+                                width: `${MAZE_SIZE * CELL_SIZE}px`,
+                                height: `${MAZE_SIZE * CELL_SIZE}px`,
+                                }}
+                            >
+                                <div
+                                className="maze-container magical-maze-container"
+                                style={{
+                                    position: 'relative',
+                                    width: `${MAZE_SIZE * CELL_SIZE}px`,
+                                    height: `${MAZE_SIZE * CELL_SIZE}px`,
+                                    backgroundColor: '#2c1810',
+                                    border: '3px solid #9370DB',
+                                    boxShadow: '0 0 20px rgba(147,112,219,.5)',
+                                    borderRadius: '16px',
+                                }}
+                            >
+                                {renderMaze()}
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                {/* 右侧：说明卡片 */}
+                <div className="right-section">
+                    <div className="maze-info-card">
+                    <h3 className="maze-title">Magical Maze Adventure</h3>
+                    <p className="maze-desc">Use your wisdom to navigate the maze and reach the exit!</p>
+                    <p className="maze-desc">Avoid traps, face challenges, and learn how to detect scams through gameplay.</p>
+
+                    {/* 想和上面的开始按钮共存：随你保留或删除 */}
+                    {!gameStarted ? (
+                        <button className="start-game-btn" onClick={startGame}>Start Adventure</button>
+                    ) : (
+                        <button className="start-game-btn" onClick={restartGame}>Restart</button>
+                    )}
+                    </div>
+                </div>
+            </div>
+            {/* ===== 左右两列结束 ===== */}
 
                 {/* 问题弹窗 - 优化布局 */}
                 {showQuestion && currentQuestion && (
@@ -724,7 +777,7 @@ const AdventureGame = () => {
                     </div>
                 )}
             </div>
-        </div>
+        
     );
 };
 
