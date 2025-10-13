@@ -694,8 +694,8 @@ nav ul li a:hover, nav ul li a.active {
 
 /* 首页内容包装器 */
 .home-content-wrapper {
-    width: 100%;
-    max-width: 1200px;
+    width: 100%; 
+    max-width: 1500px;    /* 调节homepage卡片宽度 */
     margin: 0 auto;
     padding: 0 20px;
 }
