@@ -6009,3 +6009,104 @@ nav ul {
 
 
 
+/* ================================
+   NAVY THEME OVERRIDES (append-only)
+   Place at the very end of app.css
+   ================================ */
+
+/* Palette */
+:root {
+  --navy-900: #0a1433;
+  --navy-800: #0f1e4d;
+  --navy-700: #162b6f;
+  --navy-600: #1d3a8a;
+  --ink-100:  #eaf2ff;
+  --ink-200:  #d6e6ff;
+  --ink-300:  #c0d7ff;
+  --link-az:  #8ec5ff;   /* link default */
+  --link-cy:  #7dd3fc;   /* link hover */
+  --line-nv:  rgba(142, 176, 255, 0.25);
+}
+
+/* ---------------- Header ---------------- */
+/* Support both <header> element and .header class used later in the file */
+header,
+.header {
+  background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%) !important;
+  color: var(--ink-100) !important;
+  border-bottom: 1px solid var(--line-nv) !important;
+  box-shadow: 0 6px 18px rgba(10, 20, 51, 0.18) !important;
+}
+
+header .container,
+.header-inner {
+  max-width: none;
+  width: 100%;
+}
+
+/* Logo text */
+header .logo h1,
+.header .logo h1,
+.header .project-logo-title {
+  color: var(--ink-200) !important;
+  text-shadow: none !important;
+}
+
+/* Desktop nav links */
+header nav ul li a,
+.header .main-nav a,
+nav ul li a {
+  color: var(--ink-100) !important;
+  background: transparent !important;
+  transition: color .2s ease, background .2s ease, transform .12s ease;
+  border-radius: 6px;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active,
+.header .main-nav a:hover,
+.header .main-nav a.active,
+nav ul li a:hover,
+nav ul li a.active {
+  color: var(--link-cy) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+/* Mobile dropdown panel */
+@media (max-width: 768px) {
+  header nav,
+  .header .main-nav,
+  nav.open {
+    background: linear-gradient(180deg, var(--navy-800), var(--navy-900)) !important;
+    border: 1px solid var(--line-nv) !important;
+    box-shadow: 0 16px 34px rgba(10, 20, 51, 0.28) !important;
+  }
+
+  header nav ul li a,
+  .header .main-nav a {
+    color: var(--ink-100) !important;
+  }
+
+  header nav ul li a.active,
+  .header .main-nav a.active {
+    background: rgba(255, 255, 255, 0.10) !important;
+    color: var(--link-az) !important;
+  }
+}
+
+/* Hamburger lines */
+.menu-toggle span {
+  background: var(--ink-200) !important;
+}
+
+
+/* ---------------- Hero harmony tweaks (optional) ---------------- */
+/* Make hero subtitle/link hues align with navy */
+.hero-subtitle {
+  color: var(--link-az) !important;
+}
+.btn-outline:hover {
+  color: var(--navy-800) !important;
+}

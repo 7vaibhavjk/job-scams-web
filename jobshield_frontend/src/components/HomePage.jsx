@@ -45,7 +45,7 @@ function HomePage({ onNavigate }) {
                 from Online Scams
               </h2>
               <p className="hero-subtitle">
-                JobShield helps you identify fraudulent job postings<br />
+                Protegrad helps you identify fraudulent job postings<br />
                 and protect your personal information
               </p>
             </div>
