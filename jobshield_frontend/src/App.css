@@ -160,7 +160,7 @@ nav ul li a:hover, nav ul li a.active {
     width: 100vw;
     height: 90vh;
     min-height: 500px;
-    max-height: 800px;
+    max-height: 900px;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -199,21 +199,21 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .hero-title {
-    font-size: 48px;
-    font-weight: 400;
+    font-size: 60px;
+    font-weight: 600;
     margin-bottom: 20px;
     line-height: 1.2;
-    color: white;
+    color: #ffffff;
     font-family: 'Montserrat Alternates', 'Source Sans Pro', sans-serif;
 }
 
 .green-text {
-    color: #2e7d32;
+    color: #ad4747;
 }
 
 .hero-subtitle {
-    font-size: 20px;
-    color: var(--gold);
+    font-size: 24px;
+    color: #3e64a9;
     margin-bottom: 30px;
     line-height: 1.4;
 }
@@ -1213,7 +1213,7 @@ nav ul li a:hover, nav ul li a.active {
   text-shadow: 0 1px 2px rgba(0,0,0,.45);
 }
 
-/* 右下角“View”按钮固定在地图上 */
+/* 右下角"View"按钮固定在地图上 */
 .fifth-card-button {
   position: absolute;
   right: 200px;
@@ -5714,12 +5714,14 @@ nav ul {
   }
   
   .header-inner {
-    max-width: 1200px;
+    max-width: none;      /* 或者 width: 100%; */
+    width: 100%;
     margin: 0 auto;
-    padding: 0 20px;              /* ✅ 去掉上下 padding，只留左右间距 */
-    height: 52px;                 /* ✅ 总高度非常短，贴近截图比例 */
+    padding: 0 40px;      /* ← 两侧留白，数值越大留白越大 */
+    height: 52px;
     display: flex;
-    align-items: center;          /* ✅ 确保 logo & 菜单垂直居中 */
+    align-items: center;
+    justify-content: space-between;  /* 左右两端对齐 */
   }
   
   /* 左侧 LOGO（含文字） */
@@ -5727,9 +5729,10 @@ nav ul {
     display: inline-flex;
     align-items: center;
     text-decoration: none;
+    margin-left: 0;
   }
   .project-logo img {
-    height: 100px;                 /* ✅ 控制图标高度（与导航栏比例协调） */
+    height: 140px;                 /* ✅ 控制图标高度（与导航栏比例协调） */
     width: auto;
     display: block;
     cursor: pointer;
@@ -5738,7 +5741,7 @@ nav ul {
   
   /* 右侧菜单 */
   .main-nav {
-    margin-left: auto;
+    margin-left: 0;
   }
   .main-nav ul {
     display: flex;
@@ -5970,3 +5973,4 @@ nav ul {
       padding: 30px 20px;
     }
   }
+
