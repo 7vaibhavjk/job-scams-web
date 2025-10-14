@@ -85,7 +85,7 @@ function ReportPage({ onNavigate }) {
                             />
                         </div>
 
-                        {/* Common Job Scam Types 卡片 - 移动到Threat Type输入框下面 */}
+                        {/* Common Job Scam Types card - moved below Threat Type input */}
                         <div className="card" style={{marginTop: '20px', marginBottom: '20px'}}>
                             <h3 className="card-title"><i className="fas fa-exclamation-triangle"></i> Common Job Scam Types</h3>
                             <p style={{marginBottom: '15px', color: '#666'}}>Click on a scam type to automatically fill the threat type:</p>

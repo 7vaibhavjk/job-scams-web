@@ -9,7 +9,7 @@
 
 //     const handleNavClick = (page) => {
 //         onNavigate(page);
-//         setIsMenuOpen(false); // 关闭移动端菜单
+//         setIsMenuOpen(false); // Close mobile menu
 //     };
 
 //     return (
@@ -36,14 +36,14 @@
 //                         src="/project-logo.png"
 //                         alt="project-logo"
 //                         style={{
-//                         width: '140px',      // ← 调整宽度
-//                         height: 'auto',      // 保持比例
-//                         display: 'block'     // 避免图片下方留白
+//                         width: '140px',      // ← Adjust width
+//                         height: 'auto',      // Maintain aspect ratio
+//                         display: 'block'     // Avoid whitespace below image
 //                         }}
 //                     />
 //                 </div>
                 
-//                 {/* 移动端菜单按钮 */}
+//                 {/* Mobile menu button */}
 //                 <button 
 //                     className={`menu-toggle ${isMenuOpen ? 'open' : ''}`}
 //                     onClick={toggleMenu}
@@ -93,7 +93,7 @@
 //                         </a>
 //                     </li>
 
-//                         {/* 只有在 full access 模式下才渲染 */}
+//                         {/* Only render in full access mode */}
 //                         {isFullAccess && (
 //                             <>
 //                                 <li>

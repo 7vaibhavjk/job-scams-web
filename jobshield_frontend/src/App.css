@@ -38,7 +38,7 @@ body {
     padding: 0 20px;
 }
 
-/* 确保header容器也撑满 */
+/* Ensure header container also fills up */
 header .container {
     width: 100%;
     max-width: none;
@@ -142,7 +142,7 @@ nav ul li a:hover, nav ul li a.active {
     to { opacity: 1; }
 }
 
-/* 新的图片背景样式 */
+/* New image background styles */
 .hero-image-section {
     position: relative;
     width: 100vw;
@@ -219,7 +219,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .hero-image-container {
         height: 90vh;
@@ -243,7 +243,7 @@ nav ul li a:hover, nav ul li a.active {
         line-height: 1.4;
     }
 
-    /* 移动端导航栏优化 */
+    /* Mobile navigation bar optimization */
     .header-content {
         flex-wrap: wrap;
         gap: 10px;
@@ -263,7 +263,7 @@ nav ul li a:hover, nav ul li a.active {
     }
 }
 
-/* 页面内容包装器 - 统一所有页面的左右留白 */
+/* Page content wrapper - unified left and right margins for all pages */
 .page-content-wrapper {
     width: 100%;
     max-width: 1200px;
@@ -271,7 +271,7 @@ nav ul li a:hover, nav ul li a.active {
     padding: 0 20px;
 }
 
-/* CheckReport页面样式 */
+/* CheckReport page styles */
 .split-layout {
     display: flex;
     gap: 30px;
@@ -439,7 +439,7 @@ nav ul li a:hover, nav ul li a.active {
     margin-bottom: 0;
 }
 
-/* 举报表单中的Common Job Scam Types样式 */
+/* Common Job Scam Types styles in report form */
 .scam-types-card {
     background: #f8f9fa;
     padding: 20px;
@@ -513,7 +513,7 @@ nav ul li a:hover, nav ul li a.active {
     100% { transform: rotate(360deg); }
 }
 
-/* URL校验错误样式 */
+/* URL validation error styles */
 .form-input.error {
     border-color: #dc3545;
     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
@@ -528,7 +528,7 @@ nav ul li a:hover, nav ul li a.active {
     gap: 5px;
 }
 
-/* Threat Type智能联想样式 */
+/* Threat Type intelligent suggestion styles */
 .autocomplete-container {
     position: relative;
 }
@@ -563,7 +563,7 @@ nav ul li a:hover, nav ul li a.active {
     border-bottom: none;
 }
 
-/* 安全冲突确认对话框样式 */
+/* Safety conflict confirmation dialog styles */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -637,7 +637,7 @@ nav ul li a:hover, nav ul li a.active {
     font-size: 14px;
 }
 
-/* ChatAssistant页面样式 */
+/* ChatAssistant page styles */
 
 #assistant-page .right-panel {
     min-width: 280px;
@@ -692,15 +692,15 @@ nav ul li a:hover, nav ul li a.active {
     line-height: 1.3;
 }
 
-/* 首页内容包装器 */
+/* Homepage content wrapper */
 .home-content-wrapper {
     width: 100%; 
-    max-width: 1500px;    /* 调节homepage卡片宽度 */
+    max-width: 1500px;    /* Adjust homepage card width */
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* 标题部分样式 */
+/* Title section styles */
 .title-section {
     width: 100%;
     padding: 0; /* remove vertical padding so it touches adjacent sections */
@@ -731,7 +731,7 @@ nav ul li a:hover, nav ul li a.active {
     display: none;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .title-section .section-title {
         font-size: 36px;
@@ -752,7 +752,7 @@ nav ul li a:hover, nav ul li a.active {
     }
 }
 
-/* 第二张卡片样式 */
+/* Second card styles */
 .second-card-section {
     width: 100%;
     padding: 0;
@@ -778,7 +778,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .second-card-image {
-  flex: 0 0 400px; /* 图片区域宽度 */
+  flex: 0 0 400px; /* Image area width */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -786,7 +786,7 @@ nav ul li a:hover, nav ul li a.active {
 
 .second-card-gif {
   width: 100%;
-  max-width: 360px;  /* 实际图片大小 */
+  max-width: 360px;  /* Actual image size */
   height: auto;
   object-fit: contain;
 }
@@ -840,7 +840,7 @@ nav ul li a:hover, nav ul li a.active {
 .second-card-actions {
   margin-top: 28px;
   display: flex;
-  gap: 100px; /* 增加按钮间距 */
+  gap: 100px; /* Increase button spacing */
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start; 
@@ -852,24 +852,24 @@ nav ul li a:hover, nav ul li a.active {
   font-size: 16px;
   padding: 14px 36px;
   border: none;
-  border-radius: 999px; /* 改成圆角一致 */
+  border-radius: 999px; /* Change to consistent rounded corners */
   color: #fff;
   cursor: pointer;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* 绿色按钮（替换原蓝色） */
+/* Green button (replace original blue) */
 .btn-check-url {
   background: #148E6C;
 }
 
-/* 橙色按钮保留 */
+/* Orange button retained */
 .btn-report-scams {
   background: #F2A84B;
 }
 
-/* hover 动效：轻微浮起 */
+/* hover effect: slight lift */
 .second-card-actions button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
@@ -885,7 +885,7 @@ nav ul li a:hover, nav ul li a.active {
     max-width: 280px;
   }
 }
-/* 第三张卡片样式 */
+/* Third card styles */
 .third-card-section {
   width: 100%;
   padding: 0;
@@ -938,7 +938,7 @@ nav ul li a:hover, nav ul li a.active {
   margin-bottom: 40px;
 }
 
-/* 统一按钮容器风格（与第2/4张卡片一致） */
+/* Unified button container style (consistent with 2nd/4th cards) */
 .third-card-buttons {
   display: flex;
   align-items: center;
@@ -1244,7 +1244,7 @@ nav ul li a:hover, nav ul li a.active {
   box-shadow: 0 10px 34px rgba(0,0,0,.32);
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .second-card-container {
         flex-direction: column;
@@ -3205,7 +3205,7 @@ select {
     padding: 20px;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .magical-game-container {
         flex-direction: column;
@@ -3387,7 +3387,7 @@ select {
     transition: width 0.5s ease;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .game-container {
         flex-direction: column;
@@ -3912,7 +3912,7 @@ select {
     line-height: 1.2 !important;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .magical-tabs {
         flex-direction: column;
@@ -5035,7 +5035,7 @@ h3 { margin-bottom: 15px; color: #333; }
     justify-content: space-between;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .question-modal .modal-content {
         max-width: 95%;

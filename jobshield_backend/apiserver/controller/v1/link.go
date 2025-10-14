@@ -17,7 +17,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// 对前端的统一返回
+// Unified response to frontend
 type UnifiedResp struct {
 	URL        string      `json:"url"`
 	BasicCheck interface{} `json:"basicCheck"`
@@ -41,7 +41,7 @@ func QueryLinkIsSafe(c *gin.Context) {
 
 	g, _ := errgroup.WithContext(ctx)
 
-	// 原有数据库查询
+	// Original database query
 	g.Go(func() error {
 		res, err := data.CheckLinkStatus(in)
 		if err != nil {
@@ -51,9 +51,9 @@ func QueryLinkIsSafe(c *gin.Context) {
 		return nil
 	})
 
-	// 新增 AI 模型调用
+	// New AI model call
 	g.Go(func() error {
-		if in.Search == "" { // 兼容你的 req 结构，没传 url 时跳过
+		if in.Search == "" { // Compatible with your req structure, skip when no url is passed
 			return nil
 		}
 		r, err := ai.Predict(ctx, in.Search)
@@ -69,7 +69,7 @@ func QueryLinkIsSafe(c *gin.Context) {
 		return
 	}
 
-	// 合并结果
+	// Merge results
 	out := UnifiedResp{
 		URL:        in.Search,
 		BasicCheck: basicRes,
@@ -114,17 +114,17 @@ func GetScamRecords(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get current directory"})
 		return
 	}
-	// 拼接 JSON 文件的路径
+	// Concatenate JSON file path
 	csvPath := filepath.Join(currentDir, "scams_records_normalized_2020_2025.json")
-	// 设置响应头
+	// Set response headers
 	c.Header("Content-Type", "application/json")
-	// 返回文件
+	// Return file
 	if _, err := os.Stat(csvPath); os.IsNotExist(err) {
-		// 如果文件不存在
+		// If file does not exist
 		c.JSON(http.StatusNotFound, gin.H{"error": "File not found"})
 		return
 	}
-	// 使用 c.File 返回 JSON 文件
+	// Use c.File to return JSON file
 	c.File(csvPath)
 }
 

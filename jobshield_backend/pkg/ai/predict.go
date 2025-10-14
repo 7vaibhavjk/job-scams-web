@@ -9,12 +9,12 @@ import (
 	"time"
 )
 
-// 请求体
+// Request body
 type PredictReq struct {
 	URL string `json:"url"`
 }
 
-// 响应体（和你的 Python 模型返回结构对应）
+// Response body (corresponds to your Python model return structure)
 type PredictResp struct {
 	URL            string             `json:"url"`
 	Prediction     string             `json:"prediction"`
@@ -26,7 +26,7 @@ type PredictResp struct {
 	SummaryReasons []string           `json:"summary_reasons"`
 }
 
-// 调用 Render 上的模型
+// Call model on Render
 func Predict(ctx context.Context, url string) (*PredictResp, error) {
 	body, _ := json.Marshal(PredictReq{URL: url})
 	req, _ := http.NewRequestWithContext(ctx, "POST",

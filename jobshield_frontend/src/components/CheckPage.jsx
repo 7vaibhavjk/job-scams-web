@@ -51,13 +51,13 @@ function CheckPage({ onNavigate }) {
                 return;
             }
 
-            const apiData = response.data; // 这里直接拿到 basicCheck 和 aiCheck
+            const apiData = response.data; // Get basicCheck and aiCheck directly here
 
             setBasicCheckData(apiData.basicCheck || null);
             setAiCheckData(apiData.aiCheck || null);
             setLinkDataList(apiData.basicCheck?.linkDataList || []);
 
-            // 设置总体结果状态（优先使用AI检测结果）
+            // Set overall result status (prioritize AI detection results)
             let overallStatus = 'unknown';
             let overallMessage = '';
 
