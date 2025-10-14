@@ -943,43 +943,43 @@ nav ul li a:hover, nav ul li a.active {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 40px;            /* 与其它卡片一致的按钮间距 */
+  gap: 40px;            /* Button spacing consistent with other cards */
   margin-top: 28px;
 }
 
-/* 统一按钮底层样式（与第2/4张卡片一致） */
+/* Unified button base styles (consistent with 2nd/4th cards) */
 .third-card-buttons button {
   font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   font-weight: 700;
   font-size: 16px;
   padding: 14px 36px;
   border: none;
-  border-radius: 999px; /* 胶囊 */
+  border-radius: 999px; /* Capsule */
   color: #fff;
   cursor: pointer;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
 }
 
-/* 主按钮：绿色（Download Extension） */
+/* Primary button: green (Download Extension) */
 .btn-download-extension {
   background-color: #148E6C;
 }
 
-/* 次按钮：橙色（Support） */
+/* Secondary button: orange (Support) */
 .btn-support {
   background-color: #F2A84B;
-  color: #fff; /* 与整体一致，使用白字 */
+  color: #fff; /* Consistent with overall design, use white text */
 }
 
-/* hover 效果统一 */
+/* Unified hover effects */
 .third-card-buttons button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
   filter: brightness(1.05);
 }
 
-/* active（按下）反馈 */
+/* Active (pressed) feedback */
 .third-card-buttons button:active {
   transform: translateY(0);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
@@ -1000,7 +1000,7 @@ nav ul li a:hover, nav ul li a.active {
   object-fit: contain;
 }
 
-/* 响应式：移动端按钮自动居中并控制最大宽度 */
+/* Responsive: mobile buttons auto-center and control max width */
 @media (max-width: 768px) {
   .third-card-buttons {
     justify-content: center;
@@ -1013,7 +1013,7 @@ nav ul li a:hover, nav ul li a.active {
   }
 }
 
-/* 第四张卡片样式 */
+/* Fourth card styles */
 .fourth-card-section {
     width: 100%;
     padding: 0;
@@ -1104,10 +1104,10 @@ nav ul li a:hover, nav ul li a.active {
     transform: translateY(-2px);
 }
 
-/* 第五张卡片样式 */
-/* 第五张卡片（全屏地图，左右0边距，无圆角） */
+/* Fifth card styles */
+/* Fifth card (full-screen map, 0 left/right margins, no rounded corners) */
 .fifth-card-section {
-  /* 彻底全宽：突破外层容器的 max-width / padding */
+  /* Completely full width: break through outer container max-width / padding */
   width: 100vw;
   position: relative;
   left: 50%;
@@ -1115,8 +1115,8 @@ nav ul li a:hover, nav ul li a.active {
   margin-left: -50vw;
   margin-right: -50vw;
 
-  padding: 0;             /* 上下左右均0 */
-  min-height: 60vh;       /* 自行调高/调低可视高度 */
+  padding: 0;             /* Top, bottom, left, right all 0 */
+  min-height: 60vh;       /* Adjust viewable height up/down as needed */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1124,27 +1124,27 @@ nav ul li a:hover, nav ul li a.active {
 
 .fifth-card-container {
   width: 100%;
-  padding: 0;             /* 去掉内边距，左右贴边 */
+  padding: 0;             /* Remove padding, left/right edge-to-edge */
 }
 
 .fifth-card-background {
   position: relative;
   width: 100%;
-  height: 60vh;           /* 区域高度，可按需调整 */
+  height: 60vh;           /* Area height, adjustable as needed */
   min-height: 420px;
-  border-radius: 0;       /* 不要圆角 */
+  border-radius: 0;       /* No rounded corners */
   overflow: hidden;
-  box-shadow: none;       /* 不要阴影 */
+  box-shadow: none;       /* No shadow */
 }
 
 .fifth-card-bg-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;      /* 关键：不拉伸，按比例裁切铺满 */
+  object-fit: cover;      /* Key: no stretching, crop proportionally to fill */
   object-position: center;
 }
 
-/* 轻微渐变，提升文字可读性；不需要可删 */
+/* Subtle gradient to improve text readability; can be deleted if not needed */
 .fifth-card-overlay {
   position: absolute;
   inset: 0;
@@ -1162,7 +1162,7 @@ nav ul li a:hover, nav ul li a.active {
 .fifth-card-content {
   width: 100%;
   height: 100%;
-  max-width: 1350px;        /* 内部内容宽度限制 */
+  max-width: 1350px;        /* Internal content width limit */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1200,7 +1200,7 @@ nav ul li a:hover, nav ul li a.active {
 .stat-number {
   font-size: 56px;
   font-weight: 700;
-  color: #9bc5ff;            /* 清爽蓝 */
+  color: #9bc5ff;            /* Fresh blue */
   line-height: 1;
   margin-bottom: 10px;
   text-shadow: 0 2px 4px rgba(0,0,0,.35);
@@ -1213,7 +1213,7 @@ nav ul li a:hover, nav ul li a.active {
   text-shadow: 0 1px 2px rgba(0,0,0,.45);
 }
 
-/* 右下角"View"按钮固定在地图上 */
+/* Bottom-right "View" button fixed on map */
 .fifth-card-button {
   position: absolute;
   right: 200px;
@@ -1224,7 +1224,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .btn-view {
-  background-color: rgba(23, 143, 102, 0.52);  /* 原来的绿色，52% 不透明 */
+  background-color: rgba(23, 143, 102, 0.52);  /* Original green, 52% opacity */
   color: #fff;
   border: none;
   padding: 14px 28px;
