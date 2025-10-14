@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './HomePage.css';
 
 function HomePage({ onNavigate }) {
+  const videoRef = useRef(null);
+
+  // Respect reduced-motion preferences
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const vid = videoRef.current;
+    if (!vid) return;
+
+    const apply = () => {
+      if (mq.matches) {
+        vid.pause();
+        vid.removeAttribute('autoplay');
+        vid.currentTime = 0;
+      } else {
+        vid.setAttribute('autoplay', 'true');
+        // Try to play if allowed by browser policy
+        vid.play().catch(() => {});
+      }
+    };
+
+    apply();
+    mq.addEventListener?.('change', apply);
+    return () => mq.removeEventListener?.('change', apply);
+  }, []);
+
   const handleDownloadExtension = () => {
     window.open('https://chrome.google.com/webstore', '_blank');
   };
@@ -25,28 +50,43 @@ function HomePage({ onNavigate }) {
   return (
     <div id="home-page" className="page active">
       <div className="home-content-wrapper">
-        {/* Hero Section */}
-        <section className="hero-image-section">
-          <div className="hero-image-container">
-            <img
-              src="/9130 A2 - Page 1.png"
-              alt="Protegrad Background"
-              className="hero-background-image"
-            />
-            <div className="hero-content-overlay">
-              <div className="hero-content">
-                <h2 className="hero-title">
-                  Protecting <span className="green-text">Job Seekers</span>
-                  <br />
-                  from Online Scams
-                </h2>
-                <p className="hero-subtitle">
-                  Protegrad helps you identify fraudulent job postings
-                  <br />
-                  and protect your personal information
-                </p>
-              </div>
-            </div>
+        {/* ===== Hero: Video Background (Option 1) ===== */}
+        <section
+          className="hero-video-section"
+          role="img"
+          aria-label="Abstract cyber security circuit background video"
+        >
+          {/* Fallback poster shows immediately while video buffers */}
+          <video
+            ref={videoRef}
+            className="hero-video"
+            poster="/hero/protegrad-hero-poster.jpg"
+            muted
+            loop
+            playsInline
+            autoPlay
+          >
+            {/* Provide both sources for better compatibility */}
+            <source src="/hero/protegrad-hero.webm" type="video/webm" />
+            <source src="/hero/protegrad-hero.mp4" type="video/mp4" />
+            {/* If video can't play, the poster + overlay still show */}
+          </video>
+
+          {/* Soft gradient overlay to improve text contrast */}
+          <div className="hero-video-overlay" />
+
+          {/* Your existing hero copy */}
+          <div className="hero-video__content container">
+            <h2 className="hero-title">
+              Protecting <span className="green-text">Job Seekers</span>
+              <br />
+              from Online Scams
+            </h2>
+            <p className="hero-subtitle">
+              Protegrad helps you identify fraudulent job postings
+              <br />
+              and protect your personal information
+            </p>
           </div>
         </section>
 

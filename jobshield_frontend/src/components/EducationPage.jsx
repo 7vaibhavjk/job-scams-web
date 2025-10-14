@@ -61,16 +61,16 @@ function EducationPage({onNavigate}) {
         </div>
     );
 }
-const SCALE = 0.66; // 控制迷宫整体缩放比例
+const SCALE = 0.66; // Control overall maze scaling ratio
 // Adventure Game Component - Maze Version
 const AdventureGame = () => {
-    // 迷宫配置 - 更大的迷宫
-    const MAZE_SIZE = 25; // 25x25 迷宫
-    const CELL_SIZE = 40; // 每个格子40px (放大地图)
-    const PLAYER_SIZE = 45; // 玩家大小 (放大图片)
-    const ENEMY_SIZE = 48; // 坏蛋大小 (放大图片)
+    // Maze configuration - larger maze
+    const MAZE_SIZE = 25; // 25x25 maze
+    const CELL_SIZE = 40; // Each cell 40px (enlarged map)
+    const PLAYER_SIZE = 45; // Player size (enlarged image)
+    const ENEMY_SIZE = 48; // Enemy size (enlarged image)
     
-    // 迷宫墙壁布局 (1=墙, 0=通道) - 25x25复杂不对称迷宫
+    // Maze wall layout (1=wall, 0=passage) - 25x25 complex asymmetric maze
     const mazeLayout = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
@@ -99,7 +99,7 @@ const AdventureGame = () => {
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ];
     
-    // 游戏状态
+    // Game state
     const [playerPosition, setPlayerPosition] = useState({ x: 1, y: 1 });
     const [gameStarted, setGameStarted] = useState(false);
     const [gameCompleted, setGameCompleted] = useState(false);
@@ -114,10 +114,10 @@ const AdventureGame = () => {
     const [answerFeedback, setAnswerFeedback] = useState('');
     const [isAnswerWrong, setIsAnswerWrong] = useState(false);
     
-    // 出口位置
+    // Exit position
     const EXIT_POSITION = { x: 23, y: 23 };
 
-    // 坏蛋位置
+    // Enemy position
     const enemyPositions = [
         { x: 3, y: 3 },
         { x: 5, y: 5 },
@@ -131,7 +131,7 @@ const AdventureGame = () => {
         { x: 21, y: 21 }
     ];
 
-    // 问题数据库
+    // Question database
     const questionDatabase = [
         {
             id: 1,
@@ -195,7 +195,7 @@ const AdventureGame = () => {
         }
     ];
 
-    // 开始游戏
+    // Start game
     const startGame = () => {
         setGameStarted(true);
         setGameCompleted(false);
@@ -208,7 +208,7 @@ const AdventureGame = () => {
         setAnswerFeedback('');
     };
 
-    // 重新开始游戏
+    // Restart game
     const restartGame = () => {
         setGameStarted(false);
         setGameCompleted(false);
@@ -225,7 +225,7 @@ const AdventureGame = () => {
         setIsAnswerWrong(false);
     };
 
-    // 移动玩家
+    // Move player
     const movePlayer = (direction) => {
             if (!gameStarted || gameCompleted || showQuestion) return;
             
@@ -248,39 +248,39 @@ const AdventureGame = () => {
                     return;
             }
             
-            // 检查是否撞墙
+            // Check if hitting wall
         if (mazeLayout[newPosition.y][newPosition.x] === 1) {
             return;
         }
 
                 setPlayerPosition(newPosition);
         
-        // 检查是否遇到坏蛋
+        // Check if encountering enemy
                 checkEnemyEncounter(newPosition);
         
-        // 检查是否到达出口
+        // Check if reached exit
                 checkExit(newPosition);
         };
     
-    // 检查是否遇到坏蛋
+    // Check if encountering enemy
     const checkEnemyEncounter = (position) => {
         const enemyIndex = enemyPositions.findIndex(enemy => 
             enemy.x === position.x && enemy.y === position.y
         );
         
         if (enemyIndex !== -1 && !enemies.includes(enemyIndex)) {
-            // 获取已使用的问题ID
+            // Get used question IDs
             const usedQuestionIds = decisionLog.map(log => log.questionId);
             
-            // 从未使用的问题中选择
+            // Select from unused questions
             const availableQuestions = questionDatabase.filter(q => !usedQuestionIds.includes(q.id));
             
             let selectedQuestion;
             if (availableQuestions.length > 0) {
-                // 如果还有未使用的问题，随机选择一个
+                // If there are still unused questions, randomly select one
                 selectedQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
             } else {
-                // 如果所有问题都用过了，重新开始问题池
+                // If all questions have been used, restart the question pool
                 selectedQuestion = questionDatabase[Math.floor(Math.random() * questionDatabase.length)];
             }
             
@@ -291,7 +291,7 @@ const AdventureGame = () => {
         }
     };
     
-    // 检查是否到达出口
+    // Check if reached exit
     const checkExit = (position) => {
         if (position.x === EXIT_POSITION.x && position.y === EXIT_POSITION.y) {
             setGameCompleted(true);
@@ -301,14 +301,14 @@ const AdventureGame = () => {
         }
     };
     
-    // 处理问题回答
+    // Handle question answers
     const handleAnswer = (selectedAnswer) => {
         if (!currentQuestion) return;
         
         const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
         const newWrongAnswers = isCorrect ? wrongAnswers : wrongAnswers + 1;
         
-        // 记录决策
+        // Record decision
         setDecisionLog(prev => [...prev, {
             questionId: currentQuestion.id,
             question: currentQuestion.question,
@@ -319,7 +319,7 @@ const AdventureGame = () => {
         }]);
         
         if (isCorrect) {
-            // 答对了，继续游戏
+            // Correct answer, continue game
             setIsAnswerWrong(false);
             setAnswerFeedback('✅ Correct! You can continue your journey!');
             setShowAnswerFeedback(true);
@@ -330,12 +330,12 @@ const AdventureGame = () => {
                 setCurrentEnemy(null);
             }, 2000);
         } else {
-            // 答错了
+            // Wrong answer
             setIsAnswerWrong(true);
             setWrongAnswers(newWrongAnswers);
             
             if (newWrongAnswers >= 3) {
-                // 游戏结束，回到起点
+                // Game over, return to starting point
                 setAnswerFeedback('❌ Game Over! Too many wrong answers. The magical creatures have captured you!');
                 setShowAnswerFeedback(true);
                 setTimeout(() => {
@@ -343,7 +343,7 @@ const AdventureGame = () => {
                     setShowQuestion(false);
                     setCurrentQuestion(null);
                     setCurrentEnemy(null);
-                    // 回到起点
+                    // Return to starting point
                     setPlayerPosition({ x: 1, y: 1 });
                     setWrongAnswers(0);
                     setEnemies([]);
@@ -351,12 +351,12 @@ const AdventureGame = () => {
                     setIsAnswerWrong(false);
                 }, 3000);
             } else {
-                // 显示错误提示，然后继续下一个问题
+                // Show error message, then continue to next question
                 setAnswerFeedback(`❌ Wrong answer! ${3 - newWrongAnswers} chances left. Next question...`);
                 setShowAnswerFeedback(true);
                 setTimeout(() => {
                     setShowAnswerFeedback(false);
-                    // 继续下一个问题（不重复已问过的问题）
+                    // Continue to next question (don't repeat already asked questions)
                     const usedQuestionIds = decisionLog.map(log => log.questionId);
                     const availableQuestions = questionDatabase.filter(q => !usedQuestionIds.includes(q.id));
                     
@@ -364,7 +364,7 @@ const AdventureGame = () => {
                         const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
                         setCurrentQuestion(randomQuestion);
                     } else {
-                        // 如果所有问题都问过了，重新开始问题池
+                        // If all questions have been asked, restart question pool
                         const randomQuestion = questionDatabase[Math.floor(Math.random() * questionDatabase.length)];
                         setCurrentQuestion(randomQuestion);
                     }
@@ -373,7 +373,7 @@ const AdventureGame = () => {
         }
     };
     
-    // 键盘事件监听
+    // Keyboard event listener
     useEffect(() => {
         const handleKeyPress = (event) => {
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
@@ -386,7 +386,7 @@ const AdventureGame = () => {
         return () => window.removeEventListener('keydown', handleKeyPress);
     }, [playerPosition, gameStarted, gameCompleted, showQuestion]);
     
-    // 渲染迷宫
+    // Render maze
     const renderMaze = () => {
         const maze = [];
         
@@ -400,7 +400,7 @@ const AdventureGame = () => {
                 );
                 
                 if (isPlayer) {
-                    // 玩家
+                    // Player
                     maze.push(
                         <div
                             key={`player-${x}-${y}`}
@@ -432,7 +432,7 @@ const AdventureGame = () => {
                         </div>
                     );
                 } else if (isExit) {
-                    // 出口
+                    // Exit
                     maze.push(
                         <div
                             key={`exit-${x}-${y}`}
@@ -455,7 +455,7 @@ const AdventureGame = () => {
                         </div>
                     );
                 } else if (hasEnemy) {
-                    // 有坏蛋的格子 - 显示为白色背景
+                    // Grid with enemy - display as white background
                     maze.push(
                         <div
                             key={`enemy-cell-${x}-${y}`}
@@ -465,12 +465,12 @@ const AdventureGame = () => {
                                 top: y * CELL_SIZE,
                                 width: CELL_SIZE,
                                 height: CELL_SIZE,
-                                backgroundColor: '#ffffff' // 白色背景
+                                backgroundColor: '#ffffff' // White background
                 }}
             />
         );
         
-                    // 敌人 - 只在玩家走到那个格子时才显示
+                    // Enemy - only show when player reaches that grid
                     const isPlayerOnEnemy = playerPosition.x === x && playerPosition.y === y;
                     if (isPlayerOnEnemy) {
                         const enemyIndex = enemyPositions.findIndex(enemy => enemy.x === x && enemy.y === y);
@@ -504,7 +504,7 @@ const AdventureGame = () => {
                 );
             }
                 } else if (isWall) {
-                    // 墙体 - 金色，无边框
+                    // Wall - gold color, no border
         maze.push(
             <div
                             key={`wall-${x}-${y}`}
@@ -514,12 +514,12 @@ const AdventureGame = () => {
                                 top: y * CELL_SIZE,
                                 width: CELL_SIZE,
                                 height: CELL_SIZE,
-                                backgroundColor: '#FFD700' // 金色
+                                backgroundColor: '#FFD700' // Gold color
                             }}
                         />
                     );
                 } else {
-                    // 通道 - 白色，无边框
+                    // Passage - white, no border
                     maze.push(
                         <div
                             key={`path-${x}-${y}`}
@@ -564,9 +564,9 @@ const AdventureGame = () => {
                 )}
             </div>
             */}
-            {/* ===== 左右两列：左迷宫 + 右说明卡片 ===== */}
+            {/* ===== Left and right columns: left maze + right instruction card ===== */}
             <div className="game-layout">
-                {/* 左侧：迷宫 */}
+                {/* Left side: maze */}
                 <div className="left-section">
                     <div
                         className="maze-frame"
@@ -623,7 +623,7 @@ const AdventureGame = () => {
                     </div>
                 </div>
             </div>
-            {/* ===== 左右两列结束 ===== */}
+            {/* ===== End of left and right columns ===== */}
 
                 {/* 问题弹窗 - 优化布局 */}
                 {showQuestion && currentQuestion && (
@@ -736,7 +736,7 @@ const AdventureGame = () => {
                     </div>
                 )}
 
-                {/* 答案反馈 */}
+                {/* Answer Feedback */}
                 {showAnswerFeedback && (
                     <div className="answer-feedback" style={{
                         position: 'fixed',
@@ -760,7 +760,7 @@ const AdventureGame = () => {
                     </div>
                 )}
 
-                {/* 庆祝动画 */}
+                {/* Celebration Animation */}
                 {showCelebration && (
                     <div className="celebration-modal magical-celebration-modal">
                         <div className="celebration-content magical-celebration-content">
@@ -790,7 +790,7 @@ const FlashCardGame = () => {
     const [isFlipping, setIsFlipping] = useState(false);
     const [shuffledCards, setShuffledCards] = useState([]);
 
-    // 问题数据库
+    // Question database
     const questionDatabase = [
         {
             id: 1,
@@ -842,7 +842,7 @@ const FlashCardGame = () => {
         }
     ];
 
-    // 初始化游戏
+ 
     useEffect(() => {
         const shuffled = [...questionDatabase].sort(() => Math.random() - 0.5);
         setShuffledCards(shuffled);
@@ -850,16 +850,16 @@ const FlashCardGame = () => {
 
     const handleOptionSelect = (optionIndex) => {
         setSelectedOption(optionIndex);
-        // 显示答案是否正确
+      
         const isCorrect = optionIndex === shuffledCards[currentCardIndex].correctAnswer;
         if (isCorrect) {
             setScore(prev => prev + 25);
         }
-        // 显示答案反馈
+       
         setShowAnswer(true);
-        // 如果是最后一张卡片，直接完成游戏
+      
         if (currentCardIndex >= shuffledCards.length - 1) {
-            // 游戏完成，不需要更新 currentCardIndex
+          
         }
     };
 

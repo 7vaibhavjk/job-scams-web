@@ -38,7 +38,7 @@ body {
     padding: 0 20px;
 }
 
-/* 确保header容器也撑满 */
+/* Ensure header container also fills up */
 header .container {
     width: 100%;
     max-width: none;
@@ -142,7 +142,7 @@ nav ul li a:hover, nav ul li a.active {
     to { opacity: 1; }
 }
 
-/* 新的图片背景样式 */
+/* New image background styles */
 .hero-image-section {
     position: relative;
     width: 100vw;
@@ -219,7 +219,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .hero-image-container {
         height: 90vh;
@@ -243,7 +243,7 @@ nav ul li a:hover, nav ul li a.active {
         line-height: 1.4;
     }
 
-    /* 移动端导航栏优化 */
+    /* Mobile navigation bar optimization */
     .header-content {
         flex-wrap: wrap;
         gap: 10px;
@@ -263,7 +263,7 @@ nav ul li a:hover, nav ul li a.active {
     }
 }
 
-/* 页面内容包装器 - 统一所有页面的左右留白 */
+/* Page content wrapper - unified left and right margins for all pages */
 .page-content-wrapper {
     width: 100%;
     max-width: 1200px;
@@ -271,7 +271,7 @@ nav ul li a:hover, nav ul li a.active {
     padding: 0 20px;
 }
 
-/* CheckReport页面样式 */
+/* CheckReport page styles */
 .split-layout {
     display: flex;
     gap: 30px;
@@ -439,7 +439,7 @@ nav ul li a:hover, nav ul li a.active {
     margin-bottom: 0;
 }
 
-/* 举报表单中的Common Job Scam Types样式 */
+/* Common Job Scam Types styles in report form */
 .scam-types-card {
     background: #f8f9fa;
     padding: 20px;
@@ -513,7 +513,7 @@ nav ul li a:hover, nav ul li a.active {
     100% { transform: rotate(360deg); }
 }
 
-/* URL校验错误样式 */
+/* URL validation error styles */
 .form-input.error {
     border-color: #dc3545;
     box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
@@ -528,7 +528,7 @@ nav ul li a:hover, nav ul li a.active {
     gap: 5px;
 }
 
-/* Threat Type智能联想样式 */
+/* Threat Type intelligent suggestion styles */
 .autocomplete-container {
     position: relative;
 }
@@ -563,7 +563,7 @@ nav ul li a:hover, nav ul li a.active {
     border-bottom: none;
 }
 
-/* 安全冲突确认对话框样式 */
+/* Safety conflict confirmation dialog styles */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -637,7 +637,7 @@ nav ul li a:hover, nav ul li a.active {
     font-size: 14px;
 }
 
-/* ChatAssistant页面样式 */
+/* ChatAssistant page styles */
 
 #assistant-page .right-panel {
     min-width: 280px;
@@ -692,15 +692,15 @@ nav ul li a:hover, nav ul li a.active {
     line-height: 1.3;
 }
 
-/* 首页内容包装器 */
+/* Homepage content wrapper */
 .home-content-wrapper {
     width: 100%; 
-    max-width: 1500px;    /* 调节homepage卡片宽度 */
+    max-width: 1500px;    /* Adjust homepage card width */
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* 标题部分样式 */
+/* Title section styles */
 .title-section {
     width: 100%;
     padding: 0; /* remove vertical padding so it touches adjacent sections */
@@ -731,7 +731,7 @@ nav ul li a:hover, nav ul li a.active {
     display: none;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .title-section .section-title {
         font-size: 36px;
@@ -752,7 +752,7 @@ nav ul li a:hover, nav ul li a.active {
     }
 }
 
-/* 第二张卡片样式 */
+/* Second card styles */
 .second-card-section {
     width: 100%;
     padding: 0;
@@ -778,7 +778,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .second-card-image {
-  flex: 0 0 400px; /* 图片区域宽度 */
+  flex: 0 0 400px; /* Image area width */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -786,7 +786,7 @@ nav ul li a:hover, nav ul li a.active {
 
 .second-card-gif {
   width: 100%;
-  max-width: 360px;  /* 实际图片大小 */
+  max-width: 360px;  /* Actual image size */
   height: auto;
   object-fit: contain;
 }
@@ -840,7 +840,7 @@ nav ul li a:hover, nav ul li a.active {
 .second-card-actions {
   margin-top: 28px;
   display: flex;
-  gap: 100px; /* 增加按钮间距 */
+  gap: 100px; /* Increase button spacing */
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start; 
@@ -852,24 +852,24 @@ nav ul li a:hover, nav ul li a.active {
   font-size: 16px;
   padding: 14px 36px;
   border: none;
-  border-radius: 999px; /* 改成圆角一致 */
+  border-radius: 999px; /* Change to consistent rounded corners */
   color: #fff;
   cursor: pointer;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* 绿色按钮（替换原蓝色） */
+/* Green button (replace original blue) */
 .btn-check-url {
   background: #148E6C;
 }
 
-/* 橙色按钮保留 */
+/* Orange button retained */
 .btn-report-scams {
   background: #F2A84B;
 }
 
-/* hover 动效：轻微浮起 */
+/* hover effect: slight lift */
 .second-card-actions button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
@@ -885,7 +885,7 @@ nav ul li a:hover, nav ul li a.active {
     max-width: 280px;
   }
 }
-/* 第三张卡片样式 */
+/* Third card styles */
 .third-card-section {
   width: 100%;
   padding: 0;
@@ -938,48 +938,48 @@ nav ul li a:hover, nav ul li a.active {
   margin-bottom: 40px;
 }
 
-/* 统一按钮容器风格（与第2/4张卡片一致） */
+/* Unified button container style (consistent with 2nd/4th cards) */
 .third-card-buttons {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 40px;            /* 与其它卡片一致的按钮间距 */
+  gap: 40px;            /* Button spacing consistent with other cards */
   margin-top: 28px;
 }
 
-/* 统一按钮底层样式（与第2/4张卡片一致） */
+/* Unified button base styles (consistent with 2nd/4th cards) */
 .third-card-buttons button {
   font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
   font-weight: 700;
   font-size: 16px;
   padding: 14px 36px;
   border: none;
-  border-radius: 999px; /* 胶囊 */
+  border-radius: 999px; /* Capsule */
   color: #fff;
   cursor: pointer;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
 }
 
-/* 主按钮：绿色（Download Extension） */
+/* Primary button: green (Download Extension) */
 .btn-download-extension {
   background-color: #148E6C;
 }
 
-/* 次按钮：橙色（Support） */
+/* Secondary button: orange (Support) */
 .btn-support {
   background-color: #F2A84B;
-  color: #fff; /* 与整体一致，使用白字 */
+  color: #fff; /* Consistent with overall design, use white text */
 }
 
-/* hover 效果统一 */
+/* Unified hover effects */
 .third-card-buttons button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
   filter: brightness(1.05);
 }
 
-/* active（按下）反馈 */
+/* Active (pressed) feedback */
 .third-card-buttons button:active {
   transform: translateY(0);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
@@ -1000,7 +1000,7 @@ nav ul li a:hover, nav ul li a.active {
   object-fit: contain;
 }
 
-/* 响应式：移动端按钮自动居中并控制最大宽度 */
+/* Responsive: mobile buttons auto-center and control max width */
 @media (max-width: 768px) {
   .third-card-buttons {
     justify-content: center;
@@ -1013,7 +1013,7 @@ nav ul li a:hover, nav ul li a.active {
   }
 }
 
-/* 第四张卡片样式 */
+/* Fourth card styles */
 .fourth-card-section {
     width: 100%;
     padding: 0;
@@ -1104,10 +1104,10 @@ nav ul li a:hover, nav ul li a.active {
     transform: translateY(-2px);
 }
 
-/* 第五张卡片样式 */
-/* 第五张卡片（全屏地图，左右0边距，无圆角） */
+/* Fifth card styles */
+/* Fifth card (full-screen map, 0 left/right margins, no rounded corners) */
 .fifth-card-section {
-  /* 彻底全宽：突破外层容器的 max-width / padding */
+  /* Completely full width: break through outer container max-width / padding */
   width: 100vw;
   position: relative;
   left: 50%;
@@ -1115,8 +1115,8 @@ nav ul li a:hover, nav ul li a.active {
   margin-left: -50vw;
   margin-right: -50vw;
 
-  padding: 0;             /* 上下左右均0 */
-  min-height: 60vh;       /* 自行调高/调低可视高度 */
+  padding: 0;             /* Top, bottom, left, right all 0 */
+  min-height: 60vh;       /* Adjust viewable height up/down as needed */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1124,27 +1124,27 @@ nav ul li a:hover, nav ul li a.active {
 
 .fifth-card-container {
   width: 100%;
-  padding: 0;             /* 去掉内边距，左右贴边 */
+  padding: 0;             /* Remove padding, left/right edge-to-edge */
 }
 
 .fifth-card-background {
   position: relative;
   width: 100%;
-  height: 60vh;           /* 区域高度，可按需调整 */
+  height: 60vh;           /* Area height, adjustable as needed */
   min-height: 420px;
-  border-radius: 0;       /* 不要圆角 */
+  border-radius: 0;       /* No rounded corners */
   overflow: hidden;
-  box-shadow: none;       /* 不要阴影 */
+  box-shadow: none;       /* No shadow */
 }
 
 .fifth-card-bg-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;      /* 关键：不拉伸，按比例裁切铺满 */
+  object-fit: cover;      /* Key: no stretching, crop proportionally to fill */
   object-position: center;
 }
 
-/* 轻微渐变，提升文字可读性；不需要可删 */
+/* Subtle gradient to improve text readability; can be deleted if not needed */
 .fifth-card-overlay {
   position: absolute;
   inset: 0;
@@ -1162,7 +1162,7 @@ nav ul li a:hover, nav ul li a.active {
 .fifth-card-content {
   width: 100%;
   height: 100%;
-  max-width: 1350px;        /* 内部内容宽度限制 */
+  max-width: 1350px;        /* Internal content width limit */
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1200,7 +1200,7 @@ nav ul li a:hover, nav ul li a.active {
 .stat-number {
   font-size: 56px;
   font-weight: 700;
-  color: #9bc5ff;            /* 清爽蓝 */
+  color: #9bc5ff;            /* Fresh blue */
   line-height: 1;
   margin-bottom: 10px;
   text-shadow: 0 2px 4px rgba(0,0,0,.35);
@@ -1213,7 +1213,7 @@ nav ul li a:hover, nav ul li a.active {
   text-shadow: 0 1px 2px rgba(0,0,0,.45);
 }
 
-/* 右下角"View"按钮固定在地图上 */
+/* Bottom-right "View" button fixed on map */
 .fifth-card-button {
   position: absolute;
   right: 200px;
@@ -1224,7 +1224,7 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .btn-view {
-  background-color: rgba(23, 143, 102, 0.52);  /* 原来的绿色，52% 不透明 */
+  background-color: rgba(23, 143, 102, 0.52);  /* Original green, 52% opacity */
   color: #fff;
   border: none;
   padding: 14px 28px;
@@ -1239,12 +1239,12 @@ nav ul li a:hover, nav ul li a.active {
 }
 
 .btn-view:hover {
-  background-color: rgba(17, 122, 86, 0.8); /* hover 时稍微不透明一点，看起来更亮 */
+  background-color: rgba(17, 122, 86, 0.8); 
   transform: translateY(-1.5px);
   box-shadow: 0 10px 34px rgba(0,0,0,.32);
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .second-card-container {
         flex-direction: column;
@@ -1391,7 +1391,7 @@ nav ul li a:hover, nav ul li a.active {
         padding: 0 10px;
     }
 
-    /* 移动端标题优化 */
+ 
     .title-section .section-title {
         font-size: 24px;
     }
@@ -1400,7 +1400,7 @@ nav ul li a:hover, nav ul li a.active {
         padding: 15px 0;
     }
 
-    /* 移动端卡片进一步优化 */
+   
     .second-card-title,
     .third-card-title,
     .fourth-card-title {
@@ -1417,7 +1417,7 @@ nav ul li a:hover, nav ul li a.active {
         font-size: 13px;
     }
     
-    /* ChatAssistant移动端适配 */
+ 
     #assistant-page .deepseek-container {
         flex-direction: column;
     }
@@ -1428,7 +1428,7 @@ nav ul li a:hover, nav ul li a.active {
         border-top: 1px solid #e9ecef;
     }
     
-    /* CheckReport页面移动端适配 */
+
     .split-layout,
     .both-layout {
         flex-direction: column;
@@ -1440,11 +1440,11 @@ nav ul li a:hover, nav ul li a.active {
         order: -1;
     }
 
-    /* 移动端表单优化 */
+   
     .form-control,
     .form-input,
     .form-textarea {
-        font-size: 16px; /* 防止iOS缩放 */
+        font-size: 16px; 
     }
 
     .btn {
@@ -1452,7 +1452,7 @@ nav ul li a:hover, nav ul li a.active {
         font-size: 16px;
     }
 
-    /* 移动端卡片间距优化 */
+  
     .card {
         padding: 20px;
         margin-bottom: 20px;
@@ -1464,7 +1464,7 @@ nav ul li a:hover, nav ul li a.active {
     
 }
 
-/* 保留原有的hero样式作为备用 */
+
 .hero {
     background: url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
     height: 500px;
@@ -2214,7 +2214,7 @@ nav ul li a:hover, nav ul li a.active {
         margin: 15px 0;
     }
 
-    /* 移动端表格优化 */
+
     .table-responsive {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -2224,7 +2224,7 @@ nav ul li a:hover, nav ul li a.active {
         min-width: 600px;
     }
 
-    /* 移动端卡片优化 */
+   
     .card {
         margin-bottom: 15px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -2235,7 +2235,7 @@ nav ul li a:hover, nav ul li a.active {
         margin-bottom: 15px;
     }
 
-    /* 移动端按钮优化 */
+  
     .btn {
         width: 100%;
         margin-bottom: 10px;
@@ -2278,7 +2278,6 @@ nav ul li a:hover, nav ul li a.active {
     line-height: 1.3;
   }
 
-  /* 超小屏幕优化 */
   .container {
     padding: 0 10px;
   }
@@ -2301,7 +2300,7 @@ nav ul li a:hover, nav ul li a.active {
     margin-bottom: 25px;
   }
 
-  /* 移动端导航进一步优化 */
+
   .logo h1 {
     font-size: 20px;
   }
@@ -2310,7 +2309,7 @@ nav ul li a:hover, nav ul li a.active {
     height: 35px;
   }
 
-  /* 移动端表单进一步优化 */
+
   .form-group {
     margin-bottom: 15px;
   }
@@ -2328,7 +2327,7 @@ nav ul li a:hover, nav ul li a.active {
     border-radius: 6px;
   }
 
-  /* 移动端卡片进一步优化 */
+
   .card {
     padding: 15px;
     margin-bottom: 15px;
@@ -2340,7 +2339,7 @@ nav ul li a:hover, nav ul li a.active {
     margin-bottom: 12px;
   }
 
-  /* 移动端按钮组优化 */
+
   .form-actions {
     flex-direction: column;
     gap: 10px;
@@ -2510,7 +2509,7 @@ select {
 
 
 
-/* 新增的AI检测和基础检测结果样式 */
+
 .check-result-card {
     margin-top: 25px;
     padding: 25px;
@@ -2569,7 +2568,7 @@ select {
     font-size: 15px;
 }
 
-/* 预测值样式 */
+
 .prediction-value {
     font-weight: bold;
     padding: 8px 16px;
@@ -2592,7 +2591,7 @@ select {
     border: 1px solid #a3d4a3;
 }
 
-/* 数值显示样式 */
+
 .confidence-value {
     font-weight: bold;
     color: var(--blue);
@@ -2616,7 +2615,7 @@ select {
     color: var(--green);
 }
 
-/* 风险等级样式 */
+
 .risk-level {
     font-weight: bold;
     padding: 8px 16px;
@@ -2646,7 +2645,6 @@ select {
     color: white;
 }
 
-/* 安全分数样式 */
 .safety-score {
     font-weight: bold;
     font-size: 16px;
@@ -2663,7 +2661,7 @@ select {
 .score-4 { background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); color: var(--green); }
 .score-5 { background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); color: var(--green); }
 
-/* 原因列表样式 */
+
 .reasons-list {
     flex: 1;
     display: flex;
@@ -2687,7 +2685,6 @@ select {
     flex-shrink: 0;
 }
 
-/* 总体结果样式 */
 .overall-result {
     margin-top: 25px;
     padding: 25px;
@@ -2728,7 +2725,6 @@ select {
     margin: 0;
 }
 
-/* 无记录样式 */
 .no-records {
     color: var(--dark-grey);
     font-style: italic;
@@ -2752,7 +2748,7 @@ select {
     font-size: 18px;
 }
 
-/* 响应式调整 */
+
 @media (max-width: 768px) {
     .check-result-card {
         padding: 20px;
@@ -2795,7 +2791,6 @@ select {
     }
 }
 
-/* EducationPage.css - 魔幻风格主题 */
 
 .magical-theme {
     background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #ffffff 100%);
@@ -2875,7 +2870,7 @@ select {
     margin-bottom: 15px;
 }
 
-/* 冒险游戏样式 */
+
 .magical-adventure {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 12px;
@@ -3063,7 +3058,7 @@ select {
     margin-bottom: 10px;
 }
 
-/* 翻卡游戏样式 */
+
 .magical-flashcard-game {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 12px;
@@ -3205,7 +3200,7 @@ select {
     padding: 20px;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .magical-game-container {
         flex-direction: column;
@@ -3223,7 +3218,7 @@ select {
 }
 
 
-/* 超级玛丽风格背景 */
+
 .super-mario-bg {
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%2365b5e8" width="100" height="60"/><rect fill="%2374d188" y="60" width="100" height="40"/><circle fill="%23ffeb3b" cx="20" cy="20" r="10"/></svg>');
     background-size: 200px 200px;
@@ -3245,7 +3240,7 @@ select {
     opacity: 0.3;
 }
 
-/* 怪物样式 */
+
 .monsters-container {
     display: flex;
     gap: 10px;
@@ -3387,7 +3382,7 @@ select {
     transition: width 0.5s ease;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .game-container {
         flex-direction: column;
@@ -3492,7 +3487,7 @@ select {
     margin-bottom: 15px;
 }
 
-/* 冒险游戏样式 */
+
 .magical-adventure {
     background: rgba(12, 10, 29, 0.7);
     border-radius: 12px;
@@ -3716,7 +3711,7 @@ select {
     flex-wrap: wrap;
 }
 
-/* 怪物样式 */
+
 .monsters-container {
     display: flex;
     gap: 10px;
@@ -3759,7 +3754,7 @@ select {
     to { transform: translateY(-5px); }
 }
 
-/* 翻卡游戏样式 */
+
 .magical-flashcard-game {
     background: rgba(255, 255, 255, 0.7);
     border-radius: 12px;
@@ -3805,9 +3800,9 @@ select {
 }
 
 .magical-card-front {
-    background: #ffffff !important;                /* 改为纯白底 */
-    border: 1px solid #cfd8e3 !important;        /* 金黄色边框（更贴近按钮） */
-    border-radius: 12px !important;                /* 圆角柔和一点 */
+    background: #ffffff !important;              
+    border: 1px solid #cfd8e3 !important;       
+    border-radius: 12px !important;               
     border: 1px solid #cfd8e3 !important;
     box-shadow: 0 6px 16px rgba(0,0,0,0.06) !important;
 }
@@ -3912,7 +3907,7 @@ select {
     line-height: 1.2 !important;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .magical-tabs {
         flex-direction: column;
@@ -3940,7 +3935,7 @@ select {
     }
 }
 
-/* 辅助样式 */
+
 .back-btn {
     margin-bottom: 20px;
     display: inline-block;
@@ -4137,38 +4132,37 @@ h3 { margin-bottom: 15px; color: #333; }
     border-radius: 2px;
 }
 
-/* ===== 覆盖：整体缩小 + 蓝白主题（放在 App.css 最底部） ===== */
 
-/* 1) 整块冒险区域整体变小并居中 */
+
+
 .magical-adventure {
-  width: 70% !important;           /* 100% → 70%（需要更小就 60%/55%） */
-  margin: 12px auto !important;    /* 居中 */
-  transform: scale(0.9);           /* 0.9 倍整体缩放（需要更小改 0.85/0.8） */
+  width: 70% !important;      
+  margin: 12px auto !important;    
+  transform: scale(0.9);        
   transform-origin: top center;
-  background: #ffffff !important;  /* 去深色底 */
+  background: #ffffff !important;  
   border: 1px solid #cfd8e3 !important;
   box-shadow: 0 6px 16px rgba(0,0,0,0.06) !important;
 }
 
-/* 2) 地图容器与地图本体缩小、白底 */
+
 .magical-map-view {
   background: #ffffff !important;
   border: 1px solid #cfd8e3 !important;
 }
 
 .magical-game-map {
-  width: 80% !important;      /* 相对外层再缩小一点 */
-  height: 340px !important;   /* 400px → 340px（随意改 300/320） */
+  width: 80% !important;    
+  height: 340px !important;   
   margin: 0 auto !important;
-  background: #ffffff !important;   /* 覆盖内联 SVG 深色纹理 */
-  border: 1px solid #cfd8e3 !important;
+  background: #ffffff !important;   
   border-radius: 10px !important;
 }
 
-/* 让地图里角色也按比例显得更小（可调） */
+
 .magical-player { transform: scale(0.9); }
 
-/* 3) 图1：选项区域改为白底+蓝字主题 */
+
 .magical-scenario-card {
   background: #ffffff !important;
   border: 1px solid #cfd8e3 !important;
@@ -4179,21 +4173,20 @@ h3 { margin-bottom: 15px; color: #333; }
   border-bottom: 1px solid #000000 !important;
 }
 
-/* 选项按钮（A/B/C/D） */
+
 .magical-option-btn {
-  background: #f5f7fa !important;          /* 白/浅灰底 */
-  color: #000000 !important;                /* 深蓝字 */
-  border: 1px solid #cfd8e3 !important;
+  background: #f5f7fa !important;         
+  color: #000000 !important;             
   box-shadow: none !important;
-  font-size: 1rem !important;        /* 默认 16px，清晰易读 */
-  font-weight: 500 !important;       /* 稍微加粗一点 */
-  line-height: 1 !important;       /* 字距更舒适 */
-  letter-spacing: 0.3px !important;  /* 微调字间距 */
-  padding: 14px 18px !important;     /* 让按钮高度更平衡 */
+  font-size: 1rem !important;       
+  font-weight: 500 !important;     
+  line-height: 1 !important;       
+  letter-spacing: 0.3px !important;  
+  padding: 14px 18px !important;    
 }
 .magical-option-btn:hover {
   background: #e6ebf3 !important;
-  transform: translateX(2px) !important;    /* 轻微位移，保留动效感 */
+  transform: translateX(2px) !important;  
 }
 .magical-option-btn.selected,
 .magical-option-btn[aria-pressed="true"] {
@@ -4206,14 +4199,14 @@ h3 { margin-bottom: 15px; color: #333; }
   color: #9aa4b2 !important;
 }
 
-/* 小标题/提示条也切到蓝白 */
+
 .magical-title,
 .magical-header h3 {
-  color: #ffbb0f !important;           /* 金黄色 */
-  text-shadow: 0 0 10px rgba(255, 249, 227, 0.6) !important; /* 柔和发光效果 */
+  color: #ffbb0f !important;        
+  text-shadow: 0 0 10px rgba(255, 249, 227, 0.6) !important; 
 }
 
-/* 其它深色容器统一成白底以保持风格一致 */
+
 .magical-card,
 .magical-risk-meter {
   background: #ffffff !important;
@@ -4221,12 +4214,12 @@ h3 { margin-bottom: 15px; color: #333; }
   box-shadow: 0 6px 16px rgba(0,0,0,0.06) !important;
 }
 
-/* 进度/风险条配色微调为蓝金 */
+
 .magical-risk-bar { background: #ffffff !important; border: 1px solid #cfd8e3 !important; }
 .magical-risk-fill,
 .magical-progress-fill { background: linear-gradient(90deg, #ffd876, #fdbe1f) !important; }
 
-/* 顶部 Tabs 的激活和未激活状态与蓝白统一 */
+
 .magical-tabs { border-bottom: 2px solid #000000 !important; }
 .magical-tab {
   background: #f5f7fa !important;
@@ -4241,67 +4234,65 @@ h3 { margin-bottom: 15px; color: #333; }
   box-shadow: 0 -3px 6px rgba(0,0,0,0.08) !important;
 }
 
-/* === 强化答案显示与推荐策略视觉 === */
 
-/* 让回答区更大更醒目 */
 .magical-answer-result {
   width: 75% !important;
-  font-size: 1rem !important;       /* 默认16px，清晰易读 */
+  font-size: 1rem !important;      
   line-height: 1.6 !important;
   font-weight: 500 !important;
-  background: #f8faff !important;   /* 柔和浅蓝背景 */
+  background: #f8faff !important; 
   border: 1px solid #cfd8e3 !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05) !important;
   padding: 15px 20px !important;
   border-radius: 10px !important;
 }
 
-/* 推荐策略卡片 */
+
 .magical-correct-answer {
   background: linear-gradient(180deg, #fff9e5 0%, #fff3c2 100%) !important;
   border: 1px solid #ffd86a !important;
   border-radius: 10px !important;
   margin: 20px auto !important;
-  color: #0D86E3 !important;        /* 金色文字 */
+  color: #0D86E3 !important;       
   font-size: 1rem !important;
   font-weight: 600 !important;
   text-align: center !important;
-  width: 100% !important;            /* 稍微加宽，和上方框对齐 */
+  width: 100% !important;          
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* 响应式：手机端放大回读性更好 */
+
 @media (max-width: 768px) {
   .magical-adventure { width: 95% !important; transform: none; }
   .magical-game-map { width: 95% !important; height: 300px !important; }
 }
 
-/* === 调整 Next Scroll 按钮颜色 === */
+
 .magical-btn,
 .magical-next-btn,
 .next-scroll-btn,
 .reveal-btn {
-  background: linear-gradient(180deg, #FFD85E 0%, #FFC400 100%) !important; /* 改成明亮金色 */
-  color: #000 !important;              /* 黑色文字 */
-  font-weight: 700 !important;         /* 粗体文字 */
+  background: linear-gradient(180deg, #FFD85E 0%, #FFC400 100%) !important;
+  color: #000 !important;            
+  font-weight: 700 !important;       
   border: none !important;
   border-radius: 10px !important;
   box-shadow: 0 3px 8px rgba(255, 200, 0, 0.4) !important;
   margin: 20px auto !important; 
 }
 
-/* 鼠标悬停时的颜色变化 */
+
 .magical-btn:hover,
 .magical-next-btn:hover,
 .next-scroll-btn:hover,
 .reveal-btn:hover {
-  background: linear-gradient(180deg, #FFEE8A 0%, #FFD93A 100%) !important; /* 更亮一点 */
+  background: linear-gradient(180deg, #FFEE8A 0%, #FFD93A 100%) !important;
   box-shadow: 0 5px 10px rgba(255, 220, 50, 0.5) !important;
 }
 
-/* 答案反馈卡片变窄、居中 */
+
 .magical-answer-result{
-  width: 60% !important;          /* 需要更窄就 50% / 更宽 70% */
+  width: 60% !important;         
   margin: 12px auto !important;
   background: #f8faff !important;
   border: 1px solid #cfd8e3 !important;
@@ -4506,7 +4497,7 @@ h3 { margin-bottom: 15px; color: #333; }
 
 
 
-/* 可点击的诈骗类型样式 */
+
 .clickable-scam-type {
     cursor: pointer;
     transition: all 0.3s ease;
@@ -4601,7 +4592,7 @@ h3 { margin-bottom: 15px; color: #333; }
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Extension Page 响应式设计 */
+
 @media (max-width: 768px) {
     .extension-hero {
         padding: 60px 20px;
@@ -4624,7 +4615,7 @@ h3 { margin-bottom: 15px; color: #333; }
     }
 }
 
-/* News Page 样式 */
+
 /* Loading Animation */
 @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -4680,9 +4671,9 @@ h3 { margin-bottom: 15px; color: #333; }
 }
 
 .maze-game .maze-wall {
-    background-color: #428b6d;      /* 主绿色 */
+    background-color: #428b6d;      
     border: 4px solid #428b6d;
-    box-shadow: 0 0 20px rgba(66, 139, 109, 0.6); /* 柔和发光 */
+    box-shadow: 0 0 20px rgba(66, 139, 109, 0.6); 
     border-radius: 0;
 }
 
@@ -4729,19 +4720,19 @@ h3 { margin-bottom: 15px; color: #333; }
 }
 .game-layout {
     display: grid;
-    grid-template-columns: 1fr 400px; /* 左迷宫宽度自适应，右侧固定宽 */
+    grid-template-columns: 1fr 400px;
     gap: 30px;
     align-items: start;
   }
   
-  /* 左侧区域 */
+
   .left-section {
     display: flex;
     justify-content: center;
     align-items: flex-start;
   }
   
-  /* 右侧信息卡片 */
+
   .right-section {
     display: flex;
     justify-content: center;
@@ -4787,7 +4778,7 @@ h3 { margin-bottom: 15px; color: #333; }
     box-shadow: 0 10px 24px rgba(66, 140, 110, 0.45);
   }
   
-  /* 响应式 */
+
   @media (max-width: 1100px) {
     .game-layout {
       grid-template-columns: 1fr;
@@ -4848,7 +4839,7 @@ h3 { margin-bottom: 15px; color: #333; }
     to { opacity: 1; transform: scale(1); }
 }
 
-/* 新布局样式 - 左右布局，左侧上下分区 */
+
 .question-layout {
     display: flex;
     width: 100%;
@@ -4885,17 +4876,17 @@ h3 { margin-bottom: 15px; color: #333; }
     position: relative;
     box-shadow: inset 0 0 50px rgba(0,0,0,0.3);
     animation: monsterGlow 3s ease-in-out infinite alternate;
-    /* 强制缩放图片到相同规格 */
+ 
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-    /* 确保容器尺寸一致 */
+
     min-height: 200px;
     max-height: 300px;
     object-fit: cover;
 }
 
-/* 强制图片缩放规格一致 */
+
 .monster-image::before {
     content: '';
     position: absolute;
@@ -4909,9 +4900,9 @@ h3 { margin-bottom: 15px; color: #333; }
     z-index: -1;
 }
 
-/* 确保图片容器固定尺寸 */
+
 .image-section {
-    height: 250px; /* 恢复固定高度 */
+    height: 250px; 
     overflow: hidden;
     position: relative;
 }
@@ -4925,7 +4916,7 @@ h3 { margin-bottom: 15px; color: #333; }
     }
 }
 
-/* 装饰性效果 */
+
 .monster-effects {
     position: absolute;
     top: 0;
@@ -4975,7 +4966,7 @@ h3 { margin-bottom: 15px; color: #333; }
     }
 }
 
-/* 文字区域样式 */
+
 .challenge-text {
     text-align: center;
     animation: textPulse 3s ease-in-out infinite;
@@ -5035,7 +5026,7 @@ h3 { margin-bottom: 15px; color: #333; }
     justify-content: space-between;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
     .question-modal .modal-content {
         max-width: 95%;
@@ -5082,7 +5073,7 @@ h3 { margin-bottom: 15px; color: #333; }
     
     .image-section {
         flex: 0 0 70%;
-        height: 200px; /* 移动端恢复固定高度 */
+        height: 200px; 
     }
     
     .question-section {
@@ -5285,29 +5276,29 @@ h3 { margin-bottom: 15px; color: #333; }
 .maze-scale-wrapper {
     display: flex;
     justify-content: center;
-    transform: scale(0.6);        /* 只缩小游戏，改成 0.5 或 0.45 可以更小 */
-    transform-origin: top center; /* 从上方中间缩放 */
+    transform: scale(0.6);        
+    transform-origin: top center; 
   }
-  /* ====== 紫色半透明卡片样式 ====== */
+ 
   .game-card {
-    background: rgba(208, 0, 255, 0.15); /* 紫色透明底 (#d000ff, 15% 透明) */
+    background: rgba(208, 0, 255, 0.15); 
     border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(208, 0, 255, 0.25); /* 柔和紫色阴影 */
+    box-shadow: 0 8px 24px rgba(208, 0, 255, 0.25); 
     padding: 24px 24px 28px;
     max-width: 1200px;
-    margin: 0 auto; /* 居中 */
-    backdrop-filter: blur(10px); /* 毛玻璃效果 */
+    margin: 0 auto; 
+    backdrop-filter: blur(10px); 
     border: 1px solid rgba(208, 0, 255, 0.3);
   }
   
-  /* 让背景不要再是整屏紫色，而是透明衬底 */
+
   .maze-game {
     background: transparent !important;
     padding: 0 !important;
     min-height: auto;
   }
   
-  /* 卡片内的滚动区 */
+  
   .maze-scroll {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
@@ -5315,27 +5306,25 @@ h3 { margin-bottom: 15px; color: #333; }
     overflow: auto;
   }
   
-  /* 迷宫主体圆角 & 微阴影 */
+  
   .maze-container {
     border-radius: 16px;
     border: none;
     box-shadow: 0 0 10px rgba(208, 0, 255, 0.3);
   }
-  
-  /* 卡片里的标题和按钮间距 */
-  /* ====== 紫色半透明卡片（无边框） ====== */
+
   .game-card {
-    background: rgba(66, 140, 110, 0.20); /* 绿色调 */
-    box-shadow: 0 8px 24px rgba(66, 140, 110, 0.25); /* 柔和绿色阴影 */
+    background: rgba(66, 140, 110, 0.20); 
+    box-shadow: 0 8px 24px rgba(66, 140, 110, 0.25); 
     padding: 24px 24px 28px;
     width: 200%;
     max-width: 1200px;
-    height: 715px;          /* 更改紫色卡片高度 */
+    height: 715px;         
     margin: 0 auto;
-    backdrop-filter: blur(10px); /* 毛玻璃效果 */
-    border: none; /* ✅ 去掉边框 */
+    backdrop-filter: blur(10px); 
+    border: none; 
   }
-  /* 响应式适配不同屏幕 */
+  
   @media (max-width: 1400px) {
     .maze-scale-wrapper {
       transform: scale(0.55);
@@ -5549,7 +5538,7 @@ h3 { margin-bottom: 15px; color: #333; }
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* News Page 响应式设计 */
+
 @media (max-width: 768px) {
     .news-grid {
         grid-template-columns: 1fr;
@@ -5686,13 +5675,13 @@ nav ul {
         color: white;
     }
 
-    /* 确保移动端导航栏不会遮挡内容 */
+
     .header-content {
         position: relative;
     }
 }
 
-/* 开始游戏按钮特殊样式 */
+
 .start-game-btn {
     font-size: 1.2rem;
     padding: 15px 30px;
@@ -5731,7 +5720,7 @@ nav ul {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-/* 顶部栏 */
+
 
 .header {
     background: #fff;
@@ -5739,17 +5728,17 @@ nav ul {
   }
   
   .header-inner {
-    max-width: none;      /* 或者 width: 100%; */
+    max-width: none;   
     width: 100%;
     margin: 0 auto;
-    padding: 0 40px;      /* ← 两侧留白，数值越大留白越大 */
+    padding: 0 40px;    
     height: 52px;
     display: flex;
     align-items: center;
-    justify-content: space-between;  /* 左右两端对齐 */
+    justify-content: space-between; 
   }
   
-  /* 左侧 LOGO（含文字） */
+
   .project-logo {
     display: inline-flex;
     align-items: center;
@@ -5757,22 +5746,21 @@ nav ul {
     margin-left: 0;
   }
   .project-logo img {
-    height: 140px;                 /* ✅ 控制图标高度（与导航栏比例协调） */
+    height: 140px;                
     width: auto;
     display: block;
     cursor: pointer;
-    transform: translateY(1px);   /* ✅ 光学微调，使 logo 与文字水平线更对齐 */
+    transform: translateY(1px);  
   }
   
-  /* 右侧菜单 */
+
   .main-nav {
     margin-left: 0;
   }
   .main-nav ul {
     display: flex;
     align-items: center;
-    gap: 16px;                    /* ✅ 菜单间距适中 */
-    margin: 0;
+    gap: 16px;               
     padding: 0;
     list-style: none;
   }
@@ -5780,8 +5768,8 @@ nav ul {
     text-decoration: none;
     color: #111;
     font-weight: 400;
-    font-size: 18px;         /* 字号变大 */
-    line-height: 1.4;        /*提升可读性，避免字被挤*/
+    font-size: 18px;       
+    line-height: 1.4;       
     padding-bottom: 4px;
     transition: all 0.2s ease;
   }
@@ -5795,7 +5783,7 @@ nav ul {
     text-underline-offset: 5px;
   }
   
-  /* 移动端菜单 */
+
   .menu-toggle {
     display: none;
     margin-left: auto;
@@ -5833,7 +5821,7 @@ nav ul {
       gap: 12px;
     }
   }
-  /* 三个卡片通用样式（保持原有颜色）*/
+ 
   .second-card-container,
   .third-card-container,
   .fourth-card-container {
@@ -5843,7 +5831,7 @@ nav ul {
     transform: translateY(0);
   }
   
-  /* 🟩 悬停动效：轻微上浮 + 阴影加深 */
+
   .second-card-container:hover,
   .third-card-container:hover,
   .fourth-card-container:hover {
@@ -5851,7 +5839,7 @@ nav ul {
     box-shadow: 0 10px 25px rgba(0, 140, 255, 0.25);
   }
   
-  /* 🌀 图片与文字平滑过渡 */
+
   .second-card-container img,
   .third-card-container img,
   .fourth-card-container img,
@@ -5861,14 +5849,13 @@ nav ul {
     transition: all 0.3s ease;
   }
   
-  /* 📈 图片轻微放大动效 */
+
   .second-card-container:hover img,
   .third-card-container:hover img,
   .fourth-card-container:hover img {
     transform: scale(1.05);
   }
-  
-  /* ✨ 呼吸式光晕动画，让科技感更强 */
+
   .second-card-container:hover,
   .third-card-container:hover,
   .fourth-card-container:hover {
@@ -5883,26 +5870,26 @@ nav ul {
       box-shadow: 0 10px 25px rgba(0, 120, 255, 0.35);
     }
   }
-  /* 三张卡片的图片统一样式 */
+ 
   .second-card-image img,
   .third-card-image img,
   .fourth-card-image img {
-    width: 100%;             /* 宽度占满容器 */
-    max-width: 350px;        /* 控制最大宽度（调整比例时可改）*/
-    height: auto;            /* 自动保持原始比例 */
+    width: 100%;            
+    max-width: 350px;        
+    height: auto;           
     display: block;
-    margin: 0 auto;          /* 居中对齐 */
+    margin: 0 auto;     
     transition: transform 0.3s ease;
-    border-radius: 12px;     /* 保持圆角风格一致 */
+    border-radius: 12px;  
   }
   
-  /* 🪄 悬停时微放大（保持一致动效） */
+
   .second-card-image img:hover,
   .third-card-image img:hover,
   .fourth-card-image img:hover {
     transform: scale(1.05);
   }
-  /* === 卡片标题（Bitter 字体）=== */
+ 
   .second-card-title,
   .third-card-title,
   .fourth-card-title {
@@ -5914,7 +5901,7 @@ nav ul {
     line-height: 1.2;
   }
   
-  /* === 描述文本（Open Sans 字体）=== */
+ 
   .second-card-description,
   .third-card-description,
   .fourth-card-description {
@@ -5925,7 +5912,7 @@ nav ul {
     margin-bottom: 20px;
   }
   
-  /* === 特性列表 === */
+
   .second-card-features .feature-item,
   .third-card-features .feature-item,
   .fourth-card-features .feature-item {
@@ -5938,23 +5925,22 @@ nav ul {
     margin: 8px 0;
   }
   
-  /* ✅ 蓝色打勾图标统一样式 */
+ 
   .check-icon {
     color: #3b82f6;
     font-size: 1rem;
     margin-right: 10px;
   }
   
-  /* === 按钮样式 === */
+ 
   .second-card-buttons button,
   .third-card-buttons button,
   .fourth-card-buttons button {
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
     font-size: 1rem;
-    padding: 14px 36px;              /* 改成更饱满的按钮尺寸 */
-    border-radius: 999px;            /* 椭圆 */
-    border: none;
+    padding: 14px 36px;            
+    border-radius: 999px;            
     cursor: pointer;
     transition: all 0.2s ease-in-out;
   }
@@ -5978,7 +5964,7 @@ nav ul {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
-  /*卡片容器统一间距与宽度*/
+
   .second-card-container,
   .third-card-container,
   .fourth-card-container {

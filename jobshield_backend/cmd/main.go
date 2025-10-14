@@ -24,11 +24,11 @@ func main() {
 	g = gin.Default()
 
 	corsConfig := cors.Config{
-		AllowOrigins:     []string{"*"},                                       // 允许所有来源，或者指定特定来源如 http://example.com
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, // 允许的 HTTP 方法
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // 允许的头部字段
-		AllowCredentials: true,                                                // 允许带凭证请求
-		MaxAge:           12 * time.Hour,                                      // 设置缓存预检请求的时间
+		AllowOrigins:     []string{"*"},                                       // Allow all origins, or specify specific origins like http://example.com
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}, // Allowed HTTP methods
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Allowed header fields
+		AllowCredentials: true,                                                // Allow requests with credentials
+		MaxAge:           12 * time.Hour,                                      // Set cache preflight request time
 	}
 
 	// Setup CORS middleware

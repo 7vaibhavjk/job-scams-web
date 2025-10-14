@@ -32,9 +32,9 @@ apiClient.interceptors.response.use(
     }
 );
 
-// API服务类
+// API service class
 class ApiService {
-    // 获取所有记录
+    // Get all records
     static async getRecords() {
         try {
             const response = await apiClient.get(API_CONFIG.ENDPOINTS.RECORDS);
@@ -47,7 +47,7 @@ class ApiService {
             }
         } catch (error) {
             console.error("Failed to fetch records:", error);
-            throw error;  // 向外抛出错误，后续可以处理
+            throw error;  // Throw error outward for later handling
         }
     }
 

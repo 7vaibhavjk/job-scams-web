@@ -19,7 +19,7 @@ function AppContent({ isFullAccess }) {
     const [currentPage, setCurrentPage] = useState('home');
 
     const navigateTo = (page) => {
-        // 检查权限：如果是受限页面且没有完整权限，不允许导航
+        // Check permissions: if it's a restricted page and no full access, disallow navigation
         if (['education', 'ChatAssistant'].includes(page) && !isFullAccess) {
             return;
         }
@@ -27,7 +27,7 @@ function AppContent({ isFullAccess }) {
         window.scrollTo(0, 0);
     };
 
-    // 基础可访问页面
+    // Basic accessible pages
     const accessiblePages = {
         home: <HomePage onNavigate={navigateTo} />,
         check: <CheckPage onNavigate={navigateTo} />,
@@ -36,7 +36,7 @@ function AppContent({ isFullAccess }) {
         trends: <TrendsPage />,
     };
 
-    // 只有在完整权限下才添加教育页面和聊天助手
+    // Only add education page and chat assistant with full permissions
     if (isFullAccess) {
         accessiblePages.education = <EducationPage onNavigate={navigateTo} />;
         accessiblePages.ChatAssistant = <ChatAssistant onNavigate={navigateTo} />;
@@ -67,13 +67,13 @@ function AppContent({ isFullAccess }) {
 export default function App() {
     const [authorized, setAuthorized] = useState(false);
     const [pwd, setPwd] = useState('');
-    const [isFullAccess, setIsFullAccess] = useState(false); // 默认没有完整权限
+    const [isFullAccess, setIsFullAccess] = useState(false); // Default no full access
 
     useEffect(() => {
         if (sessionStorage.getItem('test_auth_ok') === '1') {
             setAuthorized(true);
 
-            setIsFullAccess(true); // 不分端口，统一完整权限
+            setIsFullAccess(true); // No port distinction, unified full access
         }
     }, []);
 
@@ -83,7 +83,7 @@ export default function App() {
             sessionStorage.setItem('test_auth_ok', '1');
             setAuthorized(true);
 
-            setIsFullAccess(true); // 不分端口，统一完整权限
+            setIsFullAccess(true); // No port distinction, unified full access
         } else {
             alert('Wrong password!');
         }

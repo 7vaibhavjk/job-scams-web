@@ -28,3 +28,4 @@ dist-ssr
 # Build directories
 jobshield_frontend/build/
 jobshield_backend/build/
+jobshield_backend/*.tar.gz

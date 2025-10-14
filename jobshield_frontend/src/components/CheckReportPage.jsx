@@ -105,7 +105,7 @@ const sanitizeText = (input) => {
 
 
 function CheckReportPage({ onNavigate }) {
-    // URL检查相关状态
+    // URL check related state
     const [urlToCheck, setUrlToCheck] = useState('');
     const [checkResult, setCheckResult] = useState(null);
     const [checkLoading, setCheckLoading] = useState(false);
@@ -114,7 +114,7 @@ function CheckReportPage({ onNavigate }) {
     const [basicCheckData, setBasicCheckData] = useState(null);
     const [urlError, setUrlError] = useState('');
     
-    // 举报相关状态
+    // Report related state
     const [urlToReport, setUrlToReport] = useState('');
     const [scamType, setScamType] = useState('');
     const [reportSuccess, setReportSuccess] = useState(false);
@@ -126,7 +126,7 @@ function CheckReportPage({ onNavigate }) {
     const [showSafetyConflictModal, setShowSafetyConflictModal] = useState(false);
     const [safetyCheckData, setSafetyCheckData] = useState(null);
     
-    // 布局状态
+    // Layout state
     const [layoutMode, setLayoutMode] = useState('normal'); // 'normal', 'check-result', 'report-result', 'both'
 
     // ---- Add Job Ad Analyzer ----
@@ -198,13 +198,13 @@ const highlightJobText = (text, phrases, verdict) => {
         }
     };
 
-    // URL校验函数
+    // URL validation function
     const validateUrl = (url) => {
         if (!url.trim()) {
             return 'Please enter a URL';
         }
         
-        // 基本的URL格式校验
+        // Basic URL format validation
         const urlPattern = /^https?:\/\/.+/i;
         if (!urlPattern.test(url)) {
             return 'Please enter a valid URL starting with http:// or https://';
@@ -218,7 +218,7 @@ const highlightJobText = (text, phrases, verdict) => {
         }
     };
 
-    // Threat Type联想数据
+    // Threat Type suggestion data
     const threatTypeOptions = [
         'Phishing Scams',
         'Advance Fee Scams',
@@ -235,7 +235,7 @@ const highlightJobText = (text, phrases, verdict) => {
         'Other types of fraud'
     ];
 
-    // 处理Threat Type输入变化
+    // Handle Threat Type input changes
     const handleThreatTypeChange = (value) => {
         setScamType(value);
         if (value.length > 0) {
@@ -250,26 +250,26 @@ const highlightJobText = (text, phrases, verdict) => {
         }
     };
 
-    // 选择建议项
+    // Select suggestion item
     const selectSuggestion = (suggestion) => {
         setScamType(suggestion);
         setShowSuggestions(false);
         setThreatTypeSuggestions([]);
     };
 
-    // 检查安全冲突
+    // Check safety conflict
     const checkSafetyConflict = (checkData) => {
         if (!checkData) return false;
 
         const { aiCheck } = checkData;
 
-        // 只有AI模型显示链接是安全的，才需要确认
+        // Only when AI model shows the link is safe, confirmation is needed
         const isAISafe = aiCheck && !aiCheck.is_phishing && aiCheck.prediction === 'legitimate';
         
         return isAISafe;
     };
 
-    // 处理安全冲突确认
+    // Handle safety conflict confirmation
     const handleSafetyConflictConfirm = async () => {
         setShowSafetyConflictModal(false);
         setReportLoading(true);
@@ -293,7 +293,7 @@ const highlightJobText = (text, phrases, verdict) => {
         }
     };
 
-    // 处理安全冲突取消
+    // Handle safety conflict cancellation
     const handleSafetyConflictCancel = () => {
         setShowSafetyConflictModal(false);
         setSafetyCheckData(null);
@@ -301,14 +301,14 @@ const highlightJobText = (text, phrases, verdict) => {
     };
 
     const checkUrl = async () => {
-        // 校验URL格式
+        // Validate URL format
         const urlValidationError = validateUrl(urlToCheck);
         if (urlValidationError) {
             setUrlError(urlValidationError);
             return;
         }
         
-        setUrlError(''); // 清除之前的错误
+        setUrlError(''); // Clear previous errors
 
         setCheckLoading(true);
         setCheckResult(null);
@@ -324,14 +324,14 @@ const highlightJobText = (text, phrases, verdict) => {
                 return;
             }
 
-            const apiData = response.data; // 这里直接拿到 basicCheck 和 aiCheck
-            console.log('API Response Data:', apiData); // 调试日志
+            const apiData = response.data; // Get basicCheck and aiCheck directly here
+            console.log('API Response Data:', apiData); // Debug log
 
             setBasicCheckData(apiData.basicCheck || null);
             setAiCheckData(apiData.aiCheck || null);
             setLinkDataList(apiData.basicCheck?.linkDataList || []);
 
-            // 设置总体结果状态（优先使用AI检测结果）
+            // Set overall result status (prioritize AI detection results)
             let overallStatus = 'unknown';
             let overallMessage = '';
 
@@ -349,7 +349,7 @@ const highlightJobText = (text, phrases, verdict) => {
 
             setCheckResult({ status: overallStatus, message: overallMessage });
 
-            // 切换到检查结果布局
+            // Switch to check result layout
             setLayoutMode('check-result');
 
         } catch (error) {
@@ -365,7 +365,7 @@ const highlightJobText = (text, phrases, verdict) => {
     };
 
     const reportUrl = async () => {
-        // 校验举报URL格式
+        // Validate report URL format
         const reportUrlValidationError = validateUrl(urlToReport);
         if (reportUrlValidationError) {
             setReportUrlError(reportUrlValidationError);
@@ -377,14 +377,14 @@ const highlightJobText = (text, phrases, verdict) => {
             return;
         }
         
-        setReportUrlError(''); // 清除URL错误
+        setReportUrlError(''); // Clear URL error
 
         setReportLoading(true);
         setReportSuccess(false);
         setReportError('');
 
         try {
-            // 先调用Check Safety接口检查链接状态
+            // First call Check Safety API to check link status
             console.log('Checking URL safety before reporting...');
             const checkResponse = await ApiService.checkUrl(urlToReport);
             
@@ -392,7 +392,7 @@ const highlightJobText = (text, phrases, verdict) => {
                 const checkData = checkResponse.data;
                 console.log('Safety check result:', checkData);
                 
-                // 检查是否需要确认
+                // Check if confirmation is needed
                 const needsConfirmation = checkSafetyConflict(checkData);
                 
                 if (needsConfirmation) {
@@ -404,7 +404,7 @@ const highlightJobText = (text, phrases, verdict) => {
             }
         } catch (error) {
             console.log('Safety check failed, proceeding with report:', error);
-            // 安全检查失败不影响举报流程，继续执行
+            // Safety check failure does not affect report flow, continue execution
         }
 
         try {
@@ -415,7 +415,7 @@ const highlightJobText = (text, phrases, verdict) => {
                 setUrlToReport('');
                 setScamType('');
                 
-                // 切换到举报结果布局
+                // Switch to report result layout
                 if (layoutMode === 'check-result') {
                     setLayoutMode('both');
                 } else {
@@ -461,7 +461,7 @@ const highlightJobText = (text, phrases, verdict) => {
                         value={urlToCheck}
                         onChange={(e) => {
                             setUrlToCheck(e.target.value);
-                            setUrlError(''); // 清除错误信息
+                            setUrlError(''); // Clear error message
                         }}
                         disabled={checkLoading}
                     />
@@ -483,11 +483,11 @@ const highlightJobText = (text, phrases, verdict) => {
                     <button
                         className="btn btn-secondary"
                         onClick={() => {
-                            // 如果已经有检查结果，切换到both模式
+                            // If there are already check results, switch to both mode
                             if (layoutMode === 'check-result') {
                                 setLayoutMode('both');
                             } else {
-                                // 否则切换到report模式
+                                // Otherwise switch to report mode
                                 setLayoutMode('report-result');
                             }
                         }}
@@ -518,7 +518,7 @@ const highlightJobText = (text, phrases, verdict) => {
                         value={urlToReport}
                         onChange={(e) => {
                             setUrlToReport(e.target.value);
-                            setReportUrlError(''); // 清除错误信息
+                            setReportUrlError(''); // Clear error message
                         }}
                         disabled={reportLoading}
                     />
@@ -545,7 +545,7 @@ const highlightJobText = (text, phrases, verdict) => {
                                 }
                             }}
                             onBlur={() => {
-                                // 延迟隐藏，让用户有时间点击建议项
+                                // Delay hiding to give user time to click suggestions
                                 setTimeout(() => setShowSuggestions(false), 200);
                             }}
                             disabled={reportLoading}
@@ -566,7 +566,7 @@ const highlightJobText = (text, phrases, verdict) => {
                     </div>
                 </div>
 
-                {/* Common Job Scam Types 选择器 */}
+                {/* Common Job Scam Types selector */}
                 <div className="scam-types-card">
                     <h4 className="scam-types-title">
                         <i className="fas fa-exclamation-triangle"></i> Common Job Scam Types
@@ -979,7 +979,7 @@ const highlightJobText = (text, phrases, verdict) => {
                 </section>
             </div>
 
-            {/* 安全冲突确认对话框 */}
+            {/* Safety conflict confirmation dialog */}
             {showSafetyConflictModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">
