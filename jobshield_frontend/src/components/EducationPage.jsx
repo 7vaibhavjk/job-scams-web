@@ -623,7 +623,7 @@ const AdventureGame = () => {
                     </div>
                 </div>
             </div>
-            {/* ===== 左右两列结束 ===== */}
+            {/* ===== End of left and right columns ===== */}
 
                 {/* 问题弹窗 - 优化布局 */}
                 {showQuestion && currentQuestion && (
@@ -736,7 +736,7 @@ const AdventureGame = () => {
                     </div>
                 )}
 
-                {/* 答案反馈 */}
+                {/* Answer Feedback */}
                 {showAnswerFeedback && (
                     <div className="answer-feedback" style={{
                         position: 'fixed',
@@ -760,7 +760,7 @@ const AdventureGame = () => {
                     </div>
                 )}
 
-                {/* 庆祝动画 */}
+                {/* Celebration Animation */}
                 {showCelebration && (
                     <div className="celebration-modal magical-celebration-modal">
                         <div className="celebration-content magical-celebration-content">
@@ -842,7 +842,7 @@ const FlashCardGame = () => {
         }
     ];
 
-    // 初始化游戏
+ 
     useEffect(() => {
         const shuffled = [...questionDatabase].sort(() => Math.random() - 0.5);
         setShuffledCards(shuffled);
@@ -850,16 +850,16 @@ const FlashCardGame = () => {
 
     const handleOptionSelect = (optionIndex) => {
         setSelectedOption(optionIndex);
-        // 显示答案是否正确
+      
         const isCorrect = optionIndex === shuffledCards[currentCardIndex].correctAnswer;
         if (isCorrect) {
             setScore(prev => prev + 25);
         }
-        // 显示答案反馈
+       
         setShowAnswer(true);
-        // 如果是最后一张卡片，直接完成游戏
+      
         if (currentCardIndex >= shuffledCards.length - 1) {
-            // 游戏完成，不需要更新 currentCardIndex
+          
         }
     };
 
