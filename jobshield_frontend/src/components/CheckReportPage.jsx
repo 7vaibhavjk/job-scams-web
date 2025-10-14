@@ -83,6 +83,27 @@ const AnimatedHighlightedText = ({ text, phrases = [], verdict }) => {
   );
 };
 
+// --- Basic PII Sanitizer ---
+const sanitizeText = (input) => {
+  if (!input) return input;
+
+  const patterns = [
+    { type: 'EMAIL', regex: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g },
+    { type: 'PHONE', regex: /\b(\+?\d{1,3}[-.\s]?)?(\(?\d{1,4}\)?[-.\s]?)?\d{3,4}[-.\s]?\d{3,4}\b/g },
+    { type: 'URL', regex: /\bhttps?:\/\/[^\s]+/gi },
+    { type: 'SSN_LIKE', regex: /\b\d{3}-\d{2}-\d{4}\b/g },
+    { type: 'ADDRESS_LIKE', regex: /\b\d{1,5}\s+[A-Za-z0-9]+\s+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct)\b/gi },
+  ];
+
+  let text = input;
+  patterns.forEach(({ regex, type }) => {
+    text = text.replace(regex, `[${type}]`);
+  });
+
+  return text;
+};
+
+
 function CheckReportPage({ onNavigate }) {
     // URL检查相关状态
     const [urlToCheck, setUrlToCheck] = useState('');
@@ -116,14 +137,17 @@ function CheckReportPage({ onNavigate }) {
 
   const analyzeJobAd = async () => {
   if (!jobText.trim()) return;
+
+  // Sanitize before sending anywhere
+  const sanitizedText = sanitizeText(jobText);
   setJobLoading(true);
   setJobResult(null);
 
   try {
-    const response = await ApiService.analyzeJobAd(jobText);
+    const response = await ApiService.analyzeJobAd(sanitizedText); // use sanitized text
     if (response && response.data) {
       setJobResult(response.data);
-      setDisplayText(jobText);
+      setDisplayText(sanitizedText); // display sanitized text to user
       setJobText('');
     } else {
       setJobResult({ Verdict: "Error", Message: "Invalid server response" });
@@ -134,6 +158,7 @@ function CheckReportPage({ onNavigate }) {
     setJobLoading(false);
   }
 };
+
 
 
 
@@ -615,6 +640,10 @@ const highlightJobText = (text, phrases, verdict) => {
     <h2 className="section-title">Job Ad Analyzer</h2>
     <p className="section-subtitle">
       Paste a job advertisement to detect if it's safe or suspicious.
+    </p>
+
+    <p style={{ color: '#a94442', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+       Please do not paste personal info (emails, phone numbers, addresses, names). We'll automatically redact common ones.
     </p>
 
     <textarea
