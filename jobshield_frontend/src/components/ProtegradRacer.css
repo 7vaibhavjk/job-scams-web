@@ -79,3 +79,36 @@
 
 /* small utility to stop any accidental overflow */
 .racer-card *{ box-sizing:border-box; }
+
+/* Game Over spacing */
+.menu-card .score-wrap{ 
+  margin: 10px 0 22px;
+}
+
+.menu-card .score-line{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;   /* pushes number to the right */
+  gap: 16px;                        /* space between label and number */
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0,0,0,.06);
+}
+
+.menu-card .score-line .label{
+  font-weight: 700;
+  color: #233;
+  letter-spacing: .2px;
+}
+
+.menu-card .score-line .value{
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;                         /* space before “New best!” */
+  font-variant-numeric: tabular-nums; /* aligned digits */
+}
+
+.menu-card .newbest{
+  color: #0d6efd;
+  font-weight: 700;
+  font-style: normal;
+}

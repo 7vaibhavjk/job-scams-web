@@ -8,11 +8,24 @@ export default function ProtegradRacer() {
   const [paused, setPaused] = useState(false);
   const [gameOver, setGameOver] = useState(false);
 
-  const [score, setScore] = useState(0);
+  // score: state for UI + ref for game loop (no stale closure)
+  const [score, _setScore] = useState(0);
+  const scoreRef = useRef(0);
+  const setScoreValue = (v) => { scoreRef.current = v; _setScore(v); };
+
   const [best, setBest] = useState(() => Number(localStorage.getItem("racer_best") || 0));
+
+  // risk: state for UI + ref for loop
   const [, _setRisk] = useState(0);
   const riskRef = useRef(0);
+  const setRiskValue = (val) => {
+    const v = Math.max(0, Math.min(100, val));
+    riskRef.current = v;
+    _setRisk(v);
+  };
+  const addRisk = (delta) => setRiskValue(riskRef.current + delta);
 
+  // canvas/loop
   const wrapRef = useRef(null);
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
@@ -28,6 +41,7 @@ export default function ProtegradRacer() {
   const helpFlashUntil = useRef(0);
   const lastToolRef = useRef(-1);
 
+  // audio
   const audioCtxRef = useRef(null);
   const beep = (freq = 440, dur = 0.08, type = "sine", vol = 0.06) => {
     try {
@@ -41,13 +55,6 @@ export default function ProtegradRacer() {
     } catch {}
   };
 
-  const setRiskValue = (val) => {
-    const v = Math.max(0, Math.min(100, val));
-    riskRef.current = v;
-    _setRisk(v);
-  };
-  const addRisk = (delta) => setRiskValue(riskRef.current + delta);
-
   const DIFF = {
     easy:   { base: 1.8, max: 4.6, accel: 0.028, spawn: 1100 },
     medium: { base: 2.4, max: 5.8, accel: 0.042, spawn:  900 },
@@ -55,23 +62,23 @@ export default function ProtegradRacer() {
   };
   const { base, max, accel, spawn } = DIFF[difficulty];
 
-  // --- red flags with short label (shown on triangle) + long tip (shown in banner)
   const RED_ITEMS = [
-    { label: "UPFRONT",     tip: "Upfront payment requested. Legit employers don’t charge you." },
-    { label: "GIFT",        tip: "Gift cards as payment = classic scam method." },
-    { label: "WIRE",        tip: "Asked to wire money. Never wire funds to ‘employers’." },
-    { label: "CRYPTO",      tip: "Upfront crypto request? That’s a major red flag." },
-    { label: "FAKE CHECK",  tip: "Cheque overpay scam: you’ll be asked to ‘refund’ later." },
-    { label: "TRAINING $",  tip: "Paying for training or onboarding fees is not normal." },
-    { label: "GEAR $",      tip: "They demand buying equipment from a ‘preferred’ vendor." },
-    { label: "NO INTERVIEW",tip: "Instant hire with no interview? Be cautious and verify." },
-    { label: "TOO GOOD",    tip: "Pay looks too good to be true — research before engaging." },
-    { label: "URGENT",      tip: "Manufactured urgency pressures bad decisions. Slow down." },
-    { label: "BANK DETAILS",tip: "Bank details requested pre-hire — don’t share." },
-    { label: "ID PHOTO",    tip: "ID selfie/documents requested over chat — risky." },
-    { label: "DM ONLY",     tip: "Hiring via direct messages only? Verify independently." },
+    { label: "UPFRONT",      tip: "Upfront payment requested. Legit employers don’t charge you." },
+    { label: "GIFT",         tip: "Gift cards as payment = classic scam method." },
+    { label: "WIRE",         tip: "Asked to wire money. Never wire funds to ‘employers’." },
+    { label: "CRYPTO",       tip: "Upfront crypto request? That’s a major red flag." },
+    { label: "FAKE CHECK",   tip: "Cheque overpay scam: you’ll be asked to ‘refund’ later." },
+    { label: "TRAINING $",   tip: "Paying for training or onboarding fees is not normal." },
+    { label: "GEAR $",       tip: "They demand buying equipment from a ‘preferred’ vendor." },
+    { label: "NO INTERVIEW", tip: "Instant hire with no interview? Be cautious and verify." },
+    { label: "TOO GOOD",     tip: "Pay looks too good to be true — research before engaging." },
+    { label: "URGENT",       tip: "Manufactured urgency pressures bad decisions. Slow down." },
+    { label: "BANK DETAILS", tip: "Bank details requested pre-hire — don’t share." },
+    { label: "ID PHOTO",     tip: "ID selfie/documents requested over chat — risky." },
+    { label: "DM ONLY",      tip: "Hiring via direct messages only? Verify independently." },
   ];
 
+  // size to 16:9 and prevent overlap with footer
   useEffect(() => {
     const c = canvasRef.current, wrap = wrapRef.current;
     const resize = () => {
@@ -120,7 +127,7 @@ export default function ProtegradRacer() {
     lastTs.current = 0;
     lastSpawn.current = 0;
     objects.current = [];
-    setScore(0);
+    setScoreValue(0);
     setRiskValue(0);
     helpFlashUntil.current = performance.now() + 3500;
 
@@ -132,6 +139,7 @@ export default function ProtegradRacer() {
       const dt = Math.min(64, ts - lastTs.current);
       lastTs.current = ts;
 
+      // speed ramp
       speedRef.current = Math.min(max, speedRef.current + accel * (dt / 16.666));
 
       const { width: W, height: H } = ctx.canvas;
@@ -168,16 +176,13 @@ export default function ProtegradRacer() {
       for (const o of objects.current) {
         o.y += vy;
 
-        if (o.type === "flag") {
-          drawRedTriangle(ctx, laneX(o.lane), o.y, o.h, o.item.label);
-        } else {
-          drawGreenCheckFlag(ctx, laneX(o.lane), o.y);
-        }
+        if (o.type === "flag") drawRedTriangle(ctx, laneX(o.lane), o.y, o.h, o.item.label);
+        else drawGreenCheckFlag(ctx, laneX(o.lane), o.y);
 
         if (collide(o, avX, avY, AV_W, AV_H, laneX)) {
           if (o.type === "flag") {
             addRisk(+22);
-            showTip(`${o.item.tip} — Risk +22`, "danger");   // contextual message ✅
+            showTip(`${o.item.tip} — Risk +22`, "danger");
             beep(240, 0.1, "square", 0.07);
             if (riskRef.current >= 100) { endGame(); return; }
           } else {
@@ -186,7 +191,7 @@ export default function ProtegradRacer() {
             let idx = Math.floor(Math.random() * tools.length);
             if (idx === lastToolRef.current) idx = (idx + 1) % tools.length;
             lastToolRef.current = idx;
-            showTip(`Protegrad Verification Tool used: ${tools[idx]} — Risk −16`, "info");
+            showTip(`Protegrad Verification used: ${tools[idx]} — Risk −16`, "info");
             beep(720, 0.08, "triangle", 0.06);
           }
         } else if (o.y < H + 60) {
@@ -195,22 +200,26 @@ export default function ProtegradRacer() {
       }
       objects.current = keep;
 
-      drawHud(ctx, { score, best, risk: riskRef.current, speed: speedRef.current, W });
-      setScore((s) => Math.floor(s + (speedRef.current * dt) / 16.666));
-      if (ts < helpFlashUntil.current) drawHelp(ctx, W);
+      // HUD uses refs to avoid stale values
+      drawHud(ctx, { score: scoreRef.current, best, risk: riskRef.current, speed: speedRef.current, W });
 
+      // update running score (ref + state)
+      const inc = (speedRef.current * dt) / 16.666;
+      setScoreValue(Math.floor(scoreRef.current + inc));
+
+      if (ts < helpFlashUntil.current) drawHelp(ctx, W);
       rafRef.current = requestAnimationFrame(draw);
     };
 
     rafRef.current = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [running, paused, difficulty, base, max, accel, spawn]);
+  }, [running, paused, difficulty, base, max, accel, spawn, best]);
 
   const endGame = () => {
     setGameOver(true);
     setRunning(false);
     setPaused(false);
-    const newBest = Math.max(best, score);
+    const newBest = Math.max(best, scoreRef.current); // use ref
     setBest(newBest);
     localStorage.setItem("racer_best", String(newBest));
   };
@@ -219,7 +228,7 @@ export default function ProtegradRacer() {
     setMenuOpen(false);
     setGameOver(false);
     setPaused(false);
-    setScore(0);
+    setScoreValue(0);
     setRiskValue(0);
     laneRef.current = 1;
     objects.current = [];
@@ -298,8 +307,8 @@ export default function ProtegradRacer() {
           <div className="menu-card">
             <h4>Game Over</h4>
             <div className="score-wrap">
-              <div className="score-line"><span>Score</span><b>{score}</b></div>
-              <div className="score-line"><span>Best</span><b>{best}</b>{score===best && <em className="newbest">New best!</em>}</div>
+              <div className="score-line"><span>Score: </span><b>{scoreRef.current}</b></div>
+              <div className="score-line"><span>Best Score: </span><b>{best}</b>{scoreRef.current===best && <em className="newbest">New best!</em>}</div>
             </div>
             <div className="cta"><button className="start" onClick={startGame}>Play Again</button></div>
           </div>
@@ -309,7 +318,7 @@ export default function ProtegradRacer() {
   );
 }
 
-/* ---------- drawing helpers ---------- */
+/* ---------------- drawing helpers (unchanged) ---------------- */
 function drawGridBackground(ctx, W, H){
   const bg = ctx.createLinearGradient(0,0,0,H);
   bg.addColorStop(0, "#f5fbff"); bg.addColorStop(1, "#eef6ff");
@@ -355,7 +364,9 @@ function drawGreenCheckFlag(ctx,cx,top){
 function drawHud(ctx,{score,best,risk,speed,W}){
   ctx.fillStyle="rgba(0,60,130,.20)"; roundRect(ctx,18,18,190,74,12,true);
   ctx.fillStyle="#08203a"; ctx.font="bold 16px system-ui";
-  ctx.fillText(`Score: ${score}`, 28, 42); ctx.fillText(`Best:  ${best}`, 28, 62); ctx.fillText(`Speed: ${speed.toFixed(1)}`, 28, 82);
+  ctx.fillText(`Score: ${score}`, 28, 42);
+  ctx.fillText(`Best:  ${best}`, 28, 62);
+  ctx.fillText(`Speed: ${speed.toFixed(1)}`, 28, 82);
   const w=240,h=14,x=W-w-28,y=22;
   ctx.fillStyle="rgba(0,60,130,.20)"; roundRect(ctx,x-10,y-6,w+20,44,12,true);
   ctx.fillStyle="#08203a"; ctx.font="bold 12px system-ui"; ctx.fillText("Risk", x-2, y+8);
