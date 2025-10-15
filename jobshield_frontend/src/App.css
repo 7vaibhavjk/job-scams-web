@@ -6208,3 +6208,50 @@ nav ul li a.active {
   color: #0d47a1;
   margin-bottom: 0.8rem;
 }
+
+
+
+/* Put the Racer as a first-class tab beside Adventure/Scrolls */
+.tab-container { display: flex; border-bottom: 1px solid var(--mid-grey); }
+.tab { padding: 10px 20px; cursor: pointer; font-weight: 700; color: var(--dark-grey);
+       border-bottom: 3px solid transparent; transition: .2s; }
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* (If that “Protegrad Quick Tools” block exists) nuke it beneath the racer */
+.protegrad-quick-tools,
+.protegrad-quick-tools * { display: none !important; }
+
+.tab-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #dbe4ff;
+  background: #f6f9ff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #0D86E3;
+  color: #fff;
+  border-color: #0D86E3;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Keep the racer neatly contained and leave breathing room below */
+.racer-wrap { max-width: 100%; overflow: hidden; margin-bottom: 24px; }
+
+/* Keeps the game from visually “covering” the card below */
+.racer-wrap + * {
+  scroll-margin-top: 40px;
+}

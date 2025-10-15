@@ -1,0 +1,81 @@
+/* Card container – light mode, extra bottom margin so it never overlaps content */
+.racer-card.light{
+  background: linear-gradient(180deg,#f7fbff,#eef5ff);
+  border: 1px solid #d9e7ff;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 14px 34px rgba(15, 60, 130, 0.10);
+  margin-bottom: 48px;          /* <-- keeps off the guide section */
+}
+
+/* Header */
+.racer-head{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; margin-bottom:10px;
+}
+.racer-brand { margin:0; color:#0c7bdc; font-weight:800; letter-spacing:.2px; }
+.racer-hints{ display:flex; gap:12px; flex-wrap:wrap; color:#335; font-weight:600; font-size:14px; }
+.r-btn{
+  background: #0c7bdc; color:#fff; border:none; padding:8px 12px; border-radius:10px;
+  font-weight:800; cursor:pointer; box-shadow: 0 6px 16px rgba(12,123,220,.25);
+}
+.r-btn:hover{ filter:brightness(1.05); }
+
+/* Stage: canvas keeps 16:9 by JS sizing; hidden overflow prevents bleed */
+.stage{ position:relative; border-radius:16px; overflow:hidden; background:#eaf4ff; }
+.stage canvas{ width:100%; display:block; }
+
+/* Tip bubble – longer show time via CSS animation (3.5s) */
+.tip{
+  position:absolute; left:50%; top:16px; transform:translateX(-50%) translateY(-8px);
+  background:#08203a; color:#fff; padding:10px 14px; border-radius:10px; font-weight:800;
+  opacity:0; pointer-events:none;
+}
+.tip.show{
+  animation: tipHold 3.6s ease forwards;
+}
+@keyframes tipHold{
+  0%{ opacity:0; transform:translateX(-50%) translateY(-8px); }
+  10%,90%{ opacity:1; transform:translateX(-50%) translateY(0); }
+  100%{ opacity:0; transform:translateX(-50%) translateY(-8px); }
+}
+
+/* footer text */
+.stage-note{ padding-top:12px; margin-bottom:8px; text-align:center; color:#446; }
+.stage-note .danger{ color:#e83f3f; font-weight:800; }
+.stage-note .verify{ color:#2aa84a; font-weight:800; }
+
+/* ---------- Menus (start + game over) ---------- */
+.menu-overlay{
+  position:absolute; inset:0; display:grid; place-items:center;
+  background: rgba(10, 40, 100, 0.25);
+  backdrop-filter: blur(2px);
+}
+.menu-card{
+  width:min(760px,92vw); background:#ffffff; border-radius:18px; padding:22px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.18); border:1px solid #e7eefc;
+}
+.menu-card h4{ margin:4px 0 6px; font-size:22px; color:#0c7bdc; }
+.menu-card .tag{ margin:0 0 12px; color:#345; }
+.menu-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+.box .label{ font-weight:900; color:#233; margin-bottom:6px; }
+.pills{ display:flex; gap:8px; flex-wrap:wrap; }
+.pill{
+  border:1px solid #cfe; background:#f7fbff; color:#123; padding:8px 12px; border-radius:999px;
+  font-weight:800; cursor:pointer; transition:.15s ease;
+}
+.pill:hover{ background:#eef7ff; }
+.pill.active{ background:#0c7bdc; color:#fff; border-color:#0c7bdc; }
+.hint{ font-size:12px; color:#556; margin-top:6px; }
+.bullets{ margin:6px 0 0 18px; color:#334; }
+.bullets li{ margin:4px 0; }
+
+.cta{ display:flex; justify-content:center; margin-top:12px; }
+.start{
+  background: linear-gradient(90deg,#0c7bdc,#1a73e8); color:#fff; border:none; padding:12px 24px;
+  border-radius:12px; font-weight:900; cursor:pointer; box-shadow: 0 10px 24px rgba(12,123,220,.28);
+}
+.start:hover{ filter:brightness(1.05); }
+
+/* small utility to stop any accidental overflow */
+.racer-card *{ box-sizing:border-box; }
