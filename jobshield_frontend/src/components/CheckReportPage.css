@@ -1,0 +1,616 @@
+/* ========= Base Layout ========= */
+.page-wrap {
+  background: radial-gradient(1200px 600px at 100% -10%, #eef2ff 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, #ecfeff 0%, transparent 55%),
+    #ffffff;
+  min-height: 100vh;
+  padding: 1.5rem 1rem 3rem;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #0f172a;
+}
+
+/* ========= Intro Section ========= */
+.app-title {
+  color: #1e3a8a;
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+  text-align: center;
+}
+
+.app-subtitle {
+  color: #475569;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.info-section {
+  max-width: 850px;
+  margin: 0.5rem auto 2rem;
+  text-align: center;
+}
+
+.info-text {
+  color: #334155;
+  font-size: 0.98rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.feature-badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Badge colors */
+.badge:nth-child(1) {
+  background: #2563eb;
+}
+.badge:nth-child(2) {
+  background: #16a34a;
+}
+.badge:nth-child(3) {
+  background: #f59e0b;
+}
+
+/* ========= Input Form ========= */
+.form-hero {
+  max-width: 900px;
+  margin: 0 auto;
+  transition: opacity 0.2s ease;
+}
+
+.form-hero.dimmed {
+  opacity: 0.7;
+}
+
+.form-card {
+  background: #e6edff; /* darker tint for analyze form */
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.2rem 1.25rem;
+  border: 1px solid #e2e8f0;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.8rem;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.3rem;
+}
+
+.input-group input,
+.input-group textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.96rem;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.input-warning {
+  color: #7c2d12;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+textarea {
+  resize: vertical !important;
+}
+
+/* Analyze buttons */
+.btn.analyze,
+.btn.again {
+  width: 100%;
+  background: linear-gradient(90deg, #2563eb, #1e3a8a);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.22);
+}
+
+.btn.analyze:hover,
+.btn.again:hover {
+  background: linear-gradient(90deg, #1d4ed8, #1e3a8a);
+}
+
+.btn.analyze:focus-visible,
+.btn.again:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 2px;
+}
+
+/* Make the "Analyze Again" button a normal-sized inline button in the report header */
+.btn.again {
+  width: auto;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-left: 8px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========= Report Layout ========= */
+.report-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 0.5rem;
+}
+
+.report-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.report-title {
+  color: #1e3a8a;
+  font-weight: 800;
+  font-size: 1.7rem;
+  margin: 0;
+}
+
+.report-subtitle {
+  text-align: center;
+  color: #475569;
+  font-size: 0.95rem;
+  margin-top: -0.2rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* Gauges */
+.overall-gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  margin: 1.5rem auto 2rem;
+}
+
+/* New report hero */
+.report-hero {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-gauge {
+  width: 180px;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  color: #0f172a;
+  background: #eef2ff;
+  border: 1px solid #dbeafe;
+}
+
+.badge-pill.safe {
+  color: #065f46;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.badge-pill.unsafe {
+  color: #7f1d1d;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.badge-pill.caution {
+  color: #78350f;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.badge-pill.outline {
+  background: #ffffff;
+}
+
+.hero-copy {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.small-gauge {
+  width: 90px;
+  margin-top: 15px;
+  margin-left: 100px; /* nudge gauges further to the right */
+}
+
+.gauge-label {
+  color: #334155;
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+  text-align: center;
+}
+
+/* ========= Card General ========= */
+.colored-card {
+  background: linear-gradient(180deg, #f6f8ff, #eef4ff);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+  border: 1px solid #dbeafe;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+}
+/* specific card color accents */
+.job-card.colored-card {
+  background: linear-gradient(180deg, #f6fffb, #ecfffa);
+  border-color: #b7f7e2;
+}
+
+.web-card.colored-card {
+  background: linear-gradient(180deg, #fff7f7, #ffefef);
+  border-color: #fecaca;
+}
+
+.db-card.colored-card {
+  background: linear-gradient(180deg, #f7f9ff, #eef3ff);
+  border-color: #c7d2fe;
+}
+
+.report-submit.colored-card {
+  background: linear-gradient(180deg, #fffaf6, #fff2e6);
+  border-color: #fed7aa;
+}
+
+/* ========= Verdicts ========= */
+.verdict {
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 0.3rem;
+  white-space: nowrap; /* keep verdict on one line */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.verdict.safe {
+  color: #16a34a;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.verdict.unsafe {
+  color: #dc2626;
+}
+
+/* ========= Job Ad Section ========= */
+.job-card h2 {
+  color: #1e3a8a;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.job-grid {
+  display: grid;
+  grid-template-columns: 0.35fr 0.65fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.job-grid .left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.job-grid .right .hl-container {
+  margin-left: -0.5rem;
+  width: 105%;
+}
+
+.hl-container {
+  background: #fbfdff;
+  padding: 1rem;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 0.96rem;
+  color: #0f172a;
+  white-space: pre-wrap;
+  border: 1px solid #e2e8f0;
+}
+
+.hl-phrase {
+  background: rgba(255, 99, 71, 0.2);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 99, 71, 0.5);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+/* ========= Website Section ========= */
+.web-card h2 {
+  color: #1e3a8a;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.web-layout {
+  display: grid;
+  grid-template-columns: 0.35fr 0.65fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.web-layout .left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Collage */
+.web-collage {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.tile {
+  background: linear-gradient(180deg, #f5f7ff, #edf3ff);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.9rem;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+  text-align: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tile.prediction {
+  grid-column: span 2;
+  font-weight: 700;
+  transition: background 0.3s ease;
+}
+
+.tile:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+}
+
+/* Prediction backgrounds */
+.tile.prediction.phish {
+  background: #fee2e2 !important;
+}
+.tile.prediction.safe {
+  background: #ffffff !important;
+}
+.tile.prediction.neutral {
+  background: #fef9c3 !important;
+}
+
+.tile h3 {
+  font-size: 0.85rem;
+  color: #475569;
+  margin-bottom: 0.3rem;
+}
+
+.tile p {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1e293b;
+  margin: 0;
+}
+
+.phish {
+  color: #dc2626;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.safe {
+  color: #16a34a;
+  font-weight: 800;
+  font-size: 1.05rem;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* ========= Database Section ========= */
+.db-card h2 {
+  color: #1e3a8a;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.db-card p {
+  color: #0f172a;
+  margin: 0.25rem 0;
+  font-size: 0.96rem;
+}
+
+.db-card p.url span {
+  color: #1e3a8a;
+  word-break: break-all;
+  font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ========= Responsive ========= */
+@media (max-width: 900px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .job-grid,
+  .web-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .report-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .web-collage {
+    grid-template-columns: 1fr;
+  }
+
+  .overall-gauge-wrap {
+    width: 120px;
+  }
+
+  .job-grid .left,
+  .web-layout .left {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ========= Report Submit Section ========= */
+.report-submit h2 {
+  color: #1e3a8a;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.report-hint {
+  color: #475569;
+  margin-top: -0.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.scam-type-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.scam-type-item {
+  border: 1px solid #dbeafe;
+  background: #f5f7ff;
+  color: #1e3a8a;
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.scam-type-item:hover {
+  background: #e9efff;
+  transform: translateY(-1px);
+}
+/* red variant for report button */
+.btn.report {
+  width: 100%;
+  background: linear-gradient(90deg, #ef4444, #b91c1c);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.22);
+}
+
+.btn.report:hover {
+  background: linear-gradient(90deg, #dc2626, #991b1b);
+}
+
+/* Style select similar to inputs */
+select {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.96rem;
+  background: #ffffff;
+}
+
+select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+
