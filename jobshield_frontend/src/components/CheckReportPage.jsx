@@ -229,6 +229,9 @@ function CheckReportPage() {
                 placeholder="Paste the job description here..."
                 rows={5}
               />
+              <p className="input-warning">
+                Please do not include personal information (e.g., full name, address, ID numbers). We automatically remove emails, phone numbers, and URLs before analysis, but avoid posting sensitive details as the sanitization is limited.
+              </p>
             </div>
 
             <div className="input-group">
