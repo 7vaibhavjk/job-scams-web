@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 
 function HomePage({ onNavigate }) {
   const videoRef = useRef(null);
+  const navigate = useNavigate();
 
   // Respect reduced-motion preferences
   useEffect(() => {
@@ -17,7 +19,6 @@ function HomePage({ onNavigate }) {
         vid.currentTime = 0;
       } else {
         vid.setAttribute('autoplay', 'true');
-        // Try to play if allowed by browser policy
         vid.play().catch(() => {});
       }
     };
@@ -27,40 +28,27 @@ function HomePage({ onNavigate }) {
     return () => mq.removeEventListener?.('change', apply);
   }, []);
 
+  // ✅ Updated Chrome Web Store link
   const handleDownloadExtension = () => {
-    window.open('https://chrome.google.com/webstore', '_blank');
+    window.open(
+      'https://chromewebstore.google.com/detail/ehdbmciejphjjdolmdbfphhidkbgibjb?utm_source=item-share-cb',
+      '_blank'
+    );
   };
 
-  const handleSupport = () => {
-    onNavigate('ChatAssistant');
-  };
+  const handleSupport = () => onNavigate?.('ChatAssistant');
+  const handleStartLearning = () => onNavigate?.('education');
+  const handleReportScams = () => onNavigate?.('report');
 
-  const handleStartLearning = () => {
-    onNavigate('education');
-  };
-
-  const handleCheckURL = () => {
-    onNavigate && onNavigate('check');
-  };
-
-  const handleReportScams = () => {
-    onNavigate && onNavigate('report');
-  };
-
-  const handleAnalyze = () => {
-    onNavigate && onNavigate('check-report');
-  };
+  // ✅ This now navigates to /analyze correctly
+  const handleAnalyze = () => navigate('/analyze');
 
   return (
     <div id="home-page" className="page active">
       <div className="home-content-wrapper">
-        {/* ===== Hero: Video Background (Option 1) ===== */}
-        <section
-          className="hero-video-section"
-          role="img"
-          aria-label="Abstract cyber security circuit background video"
-        >
-          {/* Fallback poster shows immediately while video buffers */}
+
+        {/* ===== Hero: Video Background ===== */}
+        <section className="hero-video-section" role="img" aria-label="Abstract cyber security circuit background video">
           <video
             ref={videoRef}
             className="hero-video"
@@ -70,16 +58,12 @@ function HomePage({ onNavigate }) {
             playsInline
             autoPlay
           >
-            {/* Provide both sources for better compatibility */}
             <source src="/hero/protegrad-hero.webm" type="video/webm" />
             <source src="/hero/protegrad-hero.mp4" type="video/mp4" />
-            {/* If video can't play, the poster + overlay still show */}
           </video>
 
-          {/* Soft gradient overlay to improve text contrast */}
           <div className="hero-video-overlay" />
 
-          {/* Your existing hero copy */}
           <div className="hero-video__content container">
             <h2 className="hero-title">
               Protecting <span className="green-text">Job Seekers</span>
@@ -92,8 +76,14 @@ function HomePage({ onNavigate }) {
               and protect your personal information
             </p>
             <div className="hero-cta">
-              <div className="hero-cta-note" aria-hidden="true">Try our new feature - analyze a job ad or URL</div>
-              <button className="btn-hero-analyze" onClick={handleAnalyze} aria-label="Analyze a job ad or URL">
+              <div className="hero-cta-note" aria-hidden="true">
+                Try our new feature - analyze a job ad or URL
+              </div>
+              <button
+                className="btn-hero-analyze"
+                onClick={handleAnalyze}
+                aria-label="Analyze a job ad or URL"
+              >
                 Analyze URL/Ad
               </button>
             </div>
@@ -121,12 +111,14 @@ function HomePage({ onNavigate }) {
               <h2 className="second-card-title">URL and Job Ad Checker</h2>
               <p className="second-card-description">
                 By entering a website address or a job ad, users can instantly check its safety status and receive clear risk alerts.
-                At the same time, they can report suspicious sites to enrich the shared database and help strengthen collective protection.
+                At the same time, you can report suspicious sites to enrich the shared database and help strengthen collective protection.
               </p>
               <div className="second-card-features">
                 <div className="second-card-actions">
-                  <button className="btn-check-url" onClick={handleCheckURL}>Analyze Url and Job Ads</button>
-                  <button className="btn-report-scams" onClick={handleReportScams}>Report Scams</button>
+                  {/* ✅ Now correctly navigates to /analyze */}
+                  <button className="btn-check-url" onClick={() => navigate('/analyze')}>
+                    Analyze URL and Job Ads
+                  </button>
                 </div>
               </div>
             </div>
@@ -135,7 +127,7 @@ function HomePage({ onNavigate }) {
 
         {/* Support Center */}
         <section className="third-card-section">
-          <div className="third-card-container ">
+          <div className="third-card-container">
             <div className="third-card-content">
               <h2 className="third-card-title">Support Center</h2>
               <p className="third-card-description">
@@ -143,8 +135,13 @@ function HomePage({ onNavigate }) {
                 guidance and URL safety checks directly in the browser.
               </p>
               <div className="third-card-buttons">
-                <button className="btn-download-extension" onClick={handleDownloadExtension}>Download Extension</button>
-                <button className="btn-support" onClick={handleSupport}>Support</button>
+                {/* ✅ Updated to your correct Chrome Web Store link */}
+                <button className="btn-download-extension" onClick={handleDownloadExtension}>
+                  Download Extension
+                </button>
+                <button className="btn-support" onClick={handleSupport}>
+                  Support
+                </button>
               </div>
             </div>
             <div className="third-card-image">
@@ -170,15 +167,18 @@ function HomePage({ onNavigate }) {
             <div className="fourth-card-content">
               <h2 className="fourth-card-title">Educational Cognition</h2>
               <p className="fourth-card-description">
-                Through adventure gameplay and interactive quizzes, users can identify scam scenarios and learn scam-prevention knowledge,
+                Through a fun racing based game and interactive quizzes, users can identify scam scenarios and learn scam-prevention knowledge,
                 combining fun with education to strengthen their ability to recognize and respond to job scams.
               </p>
               <div className="fourth-card-buttons">
-                <button className="btn-start-learning" onClick={handleStartLearning}>Start Learning</button>
+                <button className="btn-start-learning" onClick={handleStartLearning}>
+                  Start Learning
+                </button>
               </div>
             </div>
           </div>
         </section>
+
       </div>
     </div>
   );

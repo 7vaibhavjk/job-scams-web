@@ -354,10 +354,12 @@ textarea {
 }
 
 .verdict.safe {
-  color: #16a34a;
-  background: none !important;
+  color: #16a34a !important;
+  background: transparent !important;
+  border: none !important;
   box-shadow: none !important;
 }
+
 
 .verdict.unsafe {
   color: #dc2626;
@@ -611,4 +613,21 @@ select:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
   outline: none;
+}
+
+/* Dynamic background overrides */
+.safe-bg {
+  background: linear-gradient(180deg, #f6fffb, #ecfffa) !important; /* greenish */
+  border-color: #b7f7e2 !important;
+}
+
+.unsafe-bg {
+  background: linear-gradient(180deg, #fff7f7, #ffefef) !important; /* reddish */
+  border-color: #fecaca !important;
+}
+
+/* Remove any border/outline for legitimate (safe) predictions */
+
+.tile.prediction p {
+  border: none !important;
 }

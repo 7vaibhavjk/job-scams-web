@@ -287,11 +287,12 @@ function CheckReportPage() {
             {/* Job Section (only if analyzed) */}
             {jobResult && (
               <motion.div
-                className="job-card colored-card"
+                className={`job-card colored-card ${jobVerdictText.includes("Safe") ? "safe-bg" : "unsafe-bg"}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
               >
+
                 <h2>Job Advertisement Evaluation</h2>
                 <div className="job-grid">
                   <div className="left small-gauge">
@@ -310,9 +311,14 @@ function CheckReportPage() {
                   </div>
                   <div className="right job-text-box">
                     <AnimatedHighlightedText
-                      text={displayText}
-                      phrases={jobResult?.["Important Phrases"]}
-                    />
+  text={displayText}
+  phrases={
+    jobVerdictText.includes("Safe")
+      ? [] // no highlights when safe
+      : jobResult?.["Important Phrases"]
+  }
+/>
+
                   </div>
                 </div>
               </motion.div>
@@ -321,11 +327,12 @@ function CheckReportPage() {
             {/* Website Section */}
             {checkResult?.aiCheck && (
               <motion.div
-                className="web-card colored-card"
+                className={`web-card colored-card ${isPhishing ? "unsafe-bg" : "safe-bg"}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
+
                 <h2>Website & Link Analysis</h2>
                 <div className="web-layout">
                   <div className="left small-gauge">
@@ -387,7 +394,7 @@ function CheckReportPage() {
               <h2>Database Records Summary</h2>
               {dbCount > 0 ? (
                 <p>
-                  Found <strong>{dbCount}</strong> related entries in public threat databases.
+                  Found <strong>{dbCount}</strong> related entries in our threat databases.
                 </p>
               ) : (
                 <p>No entries found in public threat databases.</p>

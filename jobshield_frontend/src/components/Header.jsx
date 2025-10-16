@@ -1,35 +1,19 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-function Header({ currentPage, onNavigate, isFullAccess }) {
+function Header({ isFullAccess }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { pathname } = useLocation();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
-  const handleNavClick = (page) => {
-    onNavigate(page);
-    setIsMenuOpen(false); // close mobile menu after navigation
-  };
 
   return (
     <header className="header">
       <div className="header-inner">
         {/* Logo → navigate to homepage */}
-        <a
-          href="/"
-          className="project-logo"
-          onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onNavigate('home');
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-label="Go to Home"
-        >
+        <Link to="/" className="project-logo" aria-label="Go to Home" onClick={() => setIsMenuOpen(false)}>
           <img src="/project-logo.png" alt="Protegrad logo" />
-        </a>
+        </Link>
 
         {/* Mobile menu toggle */}
         <button
@@ -42,57 +26,57 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
           <span></span><span></span><span></span>
         </button>
 
-        {/* Right-side nav (no Home, no News, keep Trends) */}
+        {/* Navigation */}
         <nav id="main-nav" className={`main-nav ${isMenuOpen ? 'open' : ''}`} aria-label="Primary">
           <ul>
             <li>
-              <a
-                href="#"
-                className={currentPage === 'check-report' ? 'active' : ''}
-                onClick={(e) => { e.preventDefault(); handleNavClick('check-report'); }}
+              <Link
+                to="/analyze"
+                className={pathname === '/analyze' ? 'active' : ''}
+                onClick={() => setIsMenuOpen(false)}
               >
                 Analyze
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a
-                href="#"
-                className={currentPage === 'trends' ? 'active' : ''}
-                onClick={(e) => { e.preventDefault(); handleNavClick('trends'); }}
+              <Link
+                to="/trends"
+                className={pathname === '/trends' ? 'active' : ''}
+                onClick={() => setIsMenuOpen(false)}
               >
                 Trends
-              </a>
+              </Link>
             </li>
 
             {isFullAccess && (
               <>
                 <li>
-                  <a
-                    href="#"
-                    className={currentPage === 'education' ? 'active' : ''}
-                    onClick={(e) => { e.preventDefault(); handleNavClick('education'); }}
+                  <Link
+                    to="/education"
+                    className={pathname === '/education' ? 'active' : ''}
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     Education and Awareness
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className={currentPage === 'ChatAssistant' ? 'active' : ''}
-                    onClick={(e) => { e.preventDefault(); handleNavClick('ChatAssistant'); }}
+                  <Link
+                    to="/support"
+                    className={pathname === '/support' ? 'active' : ''}
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     Support Center
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className={currentPage === 'ExtensionPage' ? 'active' : ''}
-                    onClick={(e) => { e.preventDefault(); handleNavClick('ExtensionPage'); }}
+                  <Link
+                    to="/extension"
+                    className={pathname === '/extension' ? 'active' : ''}
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     Extension
-                  </a>
+                  </Link>
                 </li>
               </>
             )}
