@@ -235,7 +235,7 @@ function CheckReportPage() {
             </div>
 
             <div className="input-group">
-              <label>Related Website (optional)</label>
+              <label>Related Website URL</label>
               <input
                 type="url"
                 value={urlToCheck}

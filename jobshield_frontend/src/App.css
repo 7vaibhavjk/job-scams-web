@@ -1754,6 +1754,20 @@ nav ul li a:hover, nav ul li a.active {
   color: #68c3ff; /* soft blue hover */
 }
 
+.footer-logos {
+  margin-top: 12px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.footer-logos img {
+  height: 48px;
+  width: auto;
+  opacity: 0.9;
+  image-rendering: auto;
+}
+
 .footer-bottom {
   border-top: 1px solid #3a3b40;
   text-align: center;

@@ -47,6 +47,10 @@ function HomePage({ onNavigate }) {
     onNavigate && onNavigate('report');
   };
 
+  const handleAnalyze = () => {
+    onNavigate && onNavigate('check-report');
+  };
+
   return (
     <div id="home-page" className="page active">
       <div className="home-content-wrapper">
@@ -87,6 +91,12 @@ function HomePage({ onNavigate }) {
               <br />
               and protect your personal information
             </p>
+            <div className="hero-cta">
+              <div className="hero-cta-note" aria-hidden="true">Try our new feature - analyze a job ad or URL</div>
+              <button className="btn-hero-analyze" onClick={handleAnalyze} aria-label="Analyze a job ad or URL">
+                Analyze URL/Ad
+              </button>
+            </div>
           </div>
         </section>
 

@@ -9,6 +9,10 @@ function Footer() {
           <p>
             Protegrad is a non-profit project helping job seekers identify and avoid online job scams.
           </p>
+          <div className="footer-logos" aria-hidden="true">
+            <img src="/project-logo.png" alt="Protegrad project logo" />
+            <img src="/team-logo.png" alt="Protegrad team logo" />
+          </div>
         </div>
 
         <div className="footer-section">
@@ -35,7 +39,7 @@ function Footer() {
         <div className="footer-section">
           <h3>Need Help?</h3>
           <p>
-            If you believe you’ve been a victim of a job scam, contact your bank immediately and report it to the ACCC.
+            If you believe you've been a victim of a job scam, contact your bank immediately and report it to the ACCC.
           </p>
         </div>
       </div>
