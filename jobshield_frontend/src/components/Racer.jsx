@@ -40,6 +40,16 @@ export default function ProtegradRacer() {
   const tipRef = useRef(null);
   const helpFlashUntil = useRef(0);
   const lastToolRef = useRef(-1);
+  const pausedRef = useRef(false);
+useEffect(() => { pausedRef.current = paused; }, [paused]);
+
+const openMenu = () => {
+  setRunning(false);
+  setPaused(false);
+  setGameOver(false);
+  setMenuOpen(true);
+  cancelAnimationFrame(rafRef.current);
+};
 
   // audio
   const audioCtxRef = useRef(null);
@@ -56,10 +66,11 @@ export default function ProtegradRacer() {
   };
 
   const DIFF = {
-    easy:   { base: 1.8, max: 4.6, accel: 0.028, spawn: 1100 },
-    medium: { base: 2.4, max: 5.8, accel: 0.042, spawn:  900 },
-    hard:   { base: 3.0, max: 7.2, accel: 0.060, spawn:  750 }
+    easy:   { base: 1.2, max: 3.2, accel: 0.018, spawn: 1450 },
+    medium: { base: 1.6, max: 4.0, accel: 0.026, spawn: 1200 },
+    hard:   { base: 2.2, max: 5.0, accel: 0.038, spawn: 1000 }
   };
+
   const { base, max, accel, spawn } = DIFF[difficulty];
 
   const RED_ITEMS = [
@@ -102,7 +113,7 @@ export default function ProtegradRacer() {
       if (k === "arrowleft" || k === "a") laneRef.current = Math.max(0, laneRef.current - 1);
       else if (k === "arrowright" || k === "d") laneRef.current = Math.min(2, laneRef.current + 1);
       else if (k === "p") setPaused(p => !p);
-      else if (k === "r" && gameOver) startGame();
+      else if (k === "r") openMenu();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -127,17 +138,24 @@ export default function ProtegradRacer() {
     lastTs.current = 0;
     lastSpawn.current = 0;
     objects.current = [];
-    setScoreValue(0);
-    setRiskValue(0);
     helpFlashUntil.current = performance.now() + 3500;
 
     const ctx = ctxRef.current;
     if (!ctx) return;
 
     const draw = (ts) => {
+      // keep timestamp stable
       if (!lastTs.current) lastTs.current = ts;
       const dt = Math.min(64, ts - lastTs.current);
       lastTs.current = ts;
+
+      // 🟡 if paused, don't update game state — just keep frame alive
+      if (pausedRef.current) {
+  rafRef.current = requestAnimationFrame(draw);
+  return;
+}
+
+
 
       // speed ramp
       speedRef.current = Math.min(max, speedRef.current + accel * (dt / 16.666));
@@ -171,7 +189,7 @@ export default function ProtegradRacer() {
         objects.current.push({ lane, y: -70, type: isGreen ? "verify" : "flag", h: isGreen ? 40 : 56, item });
       }
 
-      const vy = (speedRef.current * dt) / 16.666 * 1.8;
+      const vy = (speedRef.current * dt) / 16.666 * 1.4;
       const keep = [];
       for (const o of objects.current) {
         o.y += vy;
@@ -213,7 +231,7 @@ export default function ProtegradRacer() {
 
     rafRef.current = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [running, paused, difficulty, base, max, accel, spawn, best]);
+  }, [running, difficulty, base, max, accel, spawn, best]);
 
   const endGame = () => {
     setGameOver(true);
@@ -232,6 +250,8 @@ export default function ProtegradRacer() {
     setRiskValue(0);
     laneRef.current = 1;
     objects.current = [];
+    setScoreValue(0);
+    setRiskValue(0);
     speedRef.current = DIFF[difficulty].base;
     beep(520, 0.08, "sine", 0.06);
     setRunning(true);
@@ -250,14 +270,26 @@ export default function ProtegradRacer() {
 
   return (
     <section className="racer-card light" ref={wrapRef}>
-      <header className="racer-head">
-        <h3 className="racer-brand">Protegrad Racer</h3>
-        <div className="racer-hints">
-          <span>←/→ or A/D</span><span>Tap to steer</span><span>Pause: P</span>
-          <button className="r-btn" onClick={() => setPaused(p => !p)}>{running && !paused ? "Pause" : "Resume"}</button>
-          <button className="r-btn" onClick={startGame}>Restart (R)</button>
-        </div>
-      </header>
+<header className="racer-head">
+  <h3 className="racer-brand">Protegrad Racer</h3>
+  <div className="racer-hints">
+    <span>←/→ or A/D</span>
+    <span>Tap to steer</span>
+    {running && (
+      <>
+        <button
+          className="r-btn"
+          onClick={() => setPaused((p) => !p)}
+        >
+          {paused ? "Resume (P)" : "Pause (P)"}
+        </button>
+        <button className="r-btn" onClick={openMenu}>
+          Restart (R)
+        </button>
+      </>
+    )}
+  </div>
+</header>
 
       <div className="stage">
         <canvas ref={canvasRef} />
@@ -266,8 +298,9 @@ export default function ProtegradRacer() {
 
       <footer className="stage-note">
         <small>
-          Dodge <b className="danger">red flags</b> (fees, gift cards, crypto, no-interview…)
-          &nbsp;•&nbsp; Grab <b className="verify">green flags</b> to reduce your Risk meter.
+          Dodge <span className="symbol danger-symbol" /> (fees, gift cards, crypto, no-interview…)
+&nbsp;•&nbsp; Grab <span className="symbol verify-symbol" /> to reduce your Risk meter.
+
         </small>
       </footer>
 
@@ -293,7 +326,9 @@ export default function ProtegradRacer() {
                 <ul className="bullets">
                   <li>Desktop: <b>← / →</b> or <b>A / D</b> to change lanes, <b>P</b> to pause.</li>
                   <li>Mobile: <b>Tap</b> left/right to steer.</li>
-                  <li>Collect <b className="verify">green flags</b> to lower Risk.</li>
+<li>
+  Collect <span className="symbol verify-symbol" /> to lower risk, and avoid <span className="symbol danger-symbol" />.
+</li>
                 </ul>
               </div>
             </div>
@@ -310,7 +345,7 @@ export default function ProtegradRacer() {
               <div className="score-line"><span>Score: </span><b>{scoreRef.current}</b></div>
               <div className="score-line"><span>Best Score: </span><b>{best}</b>{scoreRef.current===best && <em className="newbest">New best!</em>}</div>
             </div>
-            <div className="cta"><button className="start" onClick={startGame}>Play Again</button></div>
+            <div className="cta"><button className="start" onClick={openMenu}>Play Again</button></div>
           </div>
         </div>
       )}
@@ -347,14 +382,42 @@ function drawRunner(ctx,x,y,w,h){
   ctx.fillStyle="rgba(0,60,140,.8)";
   roundRect(ctx,x+8,y+h-30,12,22,6,true); roundRect(ctx,x+w-20,y+h-28,12,20,6,true);
 }
-function drawRedTriangle(ctx,cx,top,h,label){
-  const w=48, x1=cx, y1=top, x2=cx-w/2, y2=top+h, x3=cx+w/2, y3=top+h;
-  ctx.save(); ctx.fillStyle="#ff5c5c"; ctx.strokeStyle="rgba(0,0,0,.25)"; ctx.lineWidth=3;
-  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.lineTo(x3,y3); ctx.closePath(); ctx.fill(); ctx.stroke();
-  ctx.fillStyle="#fff"; ctx.font="bold 14px system-ui"; ctx.textAlign="center"; ctx.fillText("!", cx, top + h*0.55);
-  ctx.fillStyle="rgba(0,0,0,.85)"; roundRect(ctx,cx-34,top+h+4,68,18,6,true);
-  ctx.fillStyle="#fff"; ctx.font="bold 10px system-ui"; ctx.fillText(label, cx, top+h+17); ctx.restore();
+function drawRedTriangle(ctx, cx, top, h, label) {
+  const w = 48;
+  const x1 = cx, y1 = top;
+  const x2 = cx - w / 2, y2 = top + h;
+  const x3 = cx + w / 2, y3 = top + h;
+
+  ctx.save();
+  ctx.fillStyle = "#ff5c5c";
+  ctx.strokeStyle = "rgba(0,0,0,.25)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.lineTo(x3, y3);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // 🔺 Large exclamation mark, slightly lower & perfectly centered
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 26px system-ui";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("!", cx, top + h * 0.63);
+
+  // 🏷 Label below
+  ctx.fillStyle = "rgba(0,0,0,.85)";
+  roundRect(ctx, cx - 34, top + h + 4, 68, 18, 6, true);
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 10px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText(label, cx, top + h + 13);
+  ctx.restore();
 }
+
+
 function drawGreenCheckFlag(ctx,cx,top){
   ctx.strokeStyle="rgba(0,0,0,.35)"; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(cx-10,top); ctx.lineTo(cx-10,top+40); ctx.stroke();
   const g = ctx.createLinearGradient(cx,top,cx,top+24); g.addColorStop(0,"#baf5c3"); g.addColorStop(1,"#2dbb5a");

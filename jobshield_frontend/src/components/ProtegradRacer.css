@@ -112,3 +112,99 @@
   font-weight: 700;
   font-style: normal;
 }
+
+
+/* Better contrast for hint bar (controls) */
+.racer-hints {
+  color: #fff !important;           /* white text for readability */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);  /* soft shadow for contrast */
+}
+
+/* Optional: give the buttons a little extra space on the hint bar */
+.racer-hints .r-btn {
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+/* Stage note: make the “caution symbols” phrasing pop slightly */
+.stage-note .danger {
+  color: #d92c2c;
+  font-weight: 800;
+}
+
+
+.r-btn:first-of-type {
+  background: #f39c12;
+}
+.r-btn:first-of-type:hover {
+  filter: brightness(1.1);
+}
+
+/* Space out title text and buttons horizontally */
+.racer-hints {
+  margin: 0 8px;
+}
+
+.racer-hints .r-btn {
+  margin: 0 6px;
+}
+
+
+.symbol {
+  display: inline-block;
+  vertical-align: middle;
+  width: 22px;
+  height: 22px;
+  margin: 0 4px;
+}
+
+/* ✅ red caution symbol (triangle with exclamation) */
+.danger-symbol {
+  background: #ff5c5c;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+.danger-symbol::after {
+  content: "!";
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* ✅ green flag icon that matches the in-game flag */
+.verify-symbol {
+  position: relative;
+  width: 24px;
+  height: 20px;
+}
+.verify-symbol::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  width: 3px;
+  height: 16px;
+  background: #2a7f41;              /* pole */
+}
+.verify-symbol::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 14px;
+  height: 10px;
+  background: linear-gradient(180deg, #baf5c3, #2dbb5a);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Add left margin to the title text */
+.racer-brand {
+  margin-left: 12px;   
+}

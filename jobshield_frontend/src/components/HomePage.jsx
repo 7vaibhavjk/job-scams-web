@@ -125,7 +125,7 @@ function HomePage({ onNavigate }) {
 
         {/* Support Center */}
         <section className="third-card-section">
-          <div className="third-card-container">
+          <div className="third-card-container ">
             <div className="third-card-content">
               <h2 className="third-card-title">Support Center</h2>
               <p className="third-card-description">

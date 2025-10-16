@@ -73,7 +73,7 @@ function Header({ currentPage, onNavigate, isFullAccess }) {
                     className={currentPage === 'education' ? 'active' : ''}
                     onClick={(e) => { e.preventDefault(); handleNavClick('education'); }}
                   >
-                    Educational Cognition
+                    Education and Awareness
                   </a>
                 </li>
                 <li>

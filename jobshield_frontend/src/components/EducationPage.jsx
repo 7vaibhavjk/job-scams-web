@@ -2,45 +2,47 @@ import React, { useEffect, useState } from 'react';
 import ProtegradRacer from "../components/Racer";
 
 function EducationPage({ onNavigate }) {
-  const [activeTab, setActiveTab] = useState('maze');
+  const [activeTab, setActiveTab] = useState('racer');
 
   return (
     <div className="maze-game-scale">
       <div id="education-page" className="page active magical-theme">
         <div className="page-content-wrapper">
           <div className="container">
-            <div className="back-btn magical-btn" onClick={() => onNavigate('home')}>
-              <i className="fas fa-arrow-left"></i> Back to Home
-            </div>
 
-            <h2 className="section-title magical-title">Job Hunting Adventure</h2>
-            <p className="section-subtitle magical-subtitle">
-              Learn to identify and avoid job scams through an adventure
-            </p>
+            <h2 className="section-title magical-title"
+                style={{
+                  color: '#007BFF',
+                  marginTop: '40px'
+                }}
+              >
+                Education and Awareness
+              </h2>
+              <p
+                className="section-subtitle magical-subtitle"
+                style={{ marginTop: '8px', color: '#007BFF' }}
+              >
+                Learn to identify and avoid job scams through interactive games
+              </p>
+
 
             {/* ✅ All three tabs grouped together */}
             <div className="tab-container magical-tabs">
-              <div
-                className={`tab ${activeTab === 'maze' ? 'active' : ''} magical-tab`}
-                onClick={() => setActiveTab('maze')}
-              >
-                <i className="fas fa-dragon"></i> Adventure Game
-              </div>
-
-              <div
-                className={`tab ${activeTab === 'flashcards' ? 'active' : ''} magical-tab`}
-                onClick={() => setActiveTab('flashcards')}
-              >
-                <i className="fas fa-scroll"></i> Knowledge Scrolls
-              </div>
-
               <div
                 className={`tab ${activeTab === 'racer' ? 'active' : ''} magical-tab`}
                 onClick={() => setActiveTab('racer')}
               >
                 <i className="fas fa-flag-checkered"></i> Protegrad Racer
               </div>
+
+              <div
+                className={`tab ${activeTab === 'flashcards' ? 'active' : ''} magical-tab`}
+                onClick={() => setActiveTab('flashcards')}
+              >
+                <i className="fas fa-scroll"></i> Flashcard Quiz
+              </div>
             </div>
+
 
             {/* ✅ Tab panes */}
             {activeTab === 'maze' && (
@@ -58,16 +60,26 @@ function EducationPage({ onNavigate }) {
               </div>
             )}
 
-            <div className="card magical-card" style={{ marginTop: '40px' }}>
-              <h3 className="card-title magical-card-title">
-                <i className="fas fa-info-circle"></i> Guide
+            <div className="card magical-card" style={{ marginTop: '40px', borderColor: '#007BFF' }}>
+              <h3
+                className="card-title magical-card-title"
+                style={{
+                  color: '#007BFF',
+                  borderBottom: '2px solid #007BFF',
+                  paddingBottom: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                <i className="fas fa-info-circle" style={{ color: '#007BFF' }}></i>
+                Disclaimer
               </h3>
+
+
               <p>
                 <strong>Warning:</strong> These educational games are based on common scam patterns but may not cover all situations.
                 Always exercise caution when sharing personal information online.
-              </p>
-              <p>
-                <strong>Privacy:</strong> We do not collect any personal data from these games. Your progress is stored only on your device.
               </p>
               <p>
                 <strong>Knowledge Sources:</strong> Information is based on reports from the Australian Cyber Security Centre, Scamwatch, and other cybersecurity organizations.
@@ -939,48 +951,114 @@ const FlashCardGame = () => {
         </div>
       </div>
 
-      <div className="knowledge-center card magical-card">
-        <h4>
-          <i className="fas fa-lightbulb"></i> Scam Prevention Guide
-        </h4>
-        <div className="tips-grid magical-tips-grid">
-          <div className="tip-item magical-tip-item">
-            <div className="tip-icon">
-              <i className="fas fa-gem"></i>
-            </div>
-            <div className="tip-content">
-              <h5>No Advance Payment</h5>
-              <p>Legitimate employers will never ask you to pay before starting work</p>
-            </div>
-          </div>
-          <div className="tip-item magical-tip-item">
-            <div className="tip-icon">
-              <i className="fas fa-shield-alt"></i>
-            </div>
-            <div className="tip-content">
-              <h5>Verify Contacts</h5>
-              <p>Always verify company contact information through official Ministry of Magic</p>
-            </div>
-          </div>
-          <div className="tip-item magical-tip-item">
-            <div className="tip-icon">
-              <i className="fas fa-search"></i>
-            </div>
-            <div className="tip-content">
-              <h5>Research Companies</h5>
-              <p>Thoroughly research company background before sharing personal information</p>
-            </div>
-          </div>
-          <div className="tip-item magical-tip-item">
-            <div className="tip-icon">
-              <i className="fas fa-exclamation-triangle"></i>
-            </div>
-            <div className="tip-content">
-              <h5>Watch for Red Flags</h5>
-              <p>Be cautious of interviews conducted only through owls or messengers</p>
-            </div>
-          </div>
-        </div>
+      <div
+  className="knowledge-center card magical-card"
+  style={{
+    borderColor: '#007BFF',
+    boxShadow: '0 0 10px rgba(0, 123, 255, 0.3)'
+  }}
+>
+  <h4
+    style={{
+      color: '#007BFF',
+      paddingBottom: '6px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    }}
+  >
+    <i className="fas fa-lightbulb" style={{ color: '#007BFF' }}></i>
+    Scam Prevention Guide
+  </h4>
+
+<div
+  className="tips-grid magical-tips-grid"
+  style={{
+    borderTop: '2px solid #007BFF',
+    paddingTop: '16px',
+    marginTop: '16px'
+  }}
+>
+  {/* 💎 Tip 1: No Advance Payment */}
+  <div
+    className="tip-item magical-tip-item"
+    style={{
+      border: '1px solid #007BFF',
+      borderRadius: '10px',
+      padding: '12px',
+      boxShadow: '0 0 8px rgba(0, 123, 255, 0.15)',
+    }}
+  >
+    <div className="tip-icon" style={{ color: '#17a2b8' /* teal */ }}>
+      <i className="fas fa-gem"></i>
+    </div>
+    <div className="tip-content">
+      <h5 style={{ color: '#17a2b8' }}>No Advance Payment</h5>
+      <p>Legitimate employers will never ask you to pay before starting work</p>
+    </div>
+  </div>
+
+  {/* 🛡️ Tip 2: Verify Contacts */}
+  <div
+    className="tip-item magical-tip-item"
+    style={{
+      border: '1px solid #007BFF',
+      borderRadius: '10px',
+      padding: '12px',
+      boxShadow: '0 0 8px rgba(0, 123, 255, 0.15)',
+    }}
+  >
+    <div className="tip-icon" style={{ color: '#28a745' /* green */ }}>
+      <i className="fas fa-shield-alt"></i>
+    </div>
+    <div className="tip-content">
+      <h5 style={{ color: '#28a745' }}>Verify Contacts</h5>
+      <p>Always verify company contact information through official channels</p>
+    </div>
+  </div>
+
+  {/* 🔍 Tip 3: Research Companies */}
+  <div
+    className="tip-item magical-tip-item"
+    style={{
+      border: '1px solid #007BFF',
+      borderRadius: '10px',
+      padding: '12px',
+      boxShadow: '0 0 8px rgba(0, 123, 255, 0.15)',
+    }}
+  >
+    <div className="tip-icon" style={{ color: '#0056b3' /* dark blue */ }}>
+      <i className="fas fa-search"></i>
+    </div>
+    <div className="tip-content">
+      <h5 style={{ color: '#0056b3' }}>Research Companies</h5>
+      <p>Thoroughly research company background before sharing personal information</p>
+    </div>
+  </div>
+
+  {/* ⚠️ Tip 4: Watch for Red Flags */}
+  <div
+    className="tip-item magical-tip-item"
+    style={{
+      border: '1px solid #007BFF',
+      borderRadius: '10px',
+      padding: '12px',
+      boxShadow: '0 0 8px rgba(0, 123, 255, 0.15)',
+    }}
+  >
+    <div className="tip-icon" style={{ color: '#dc3545' /* red */ }}>
+      <i className="fas fa-exclamation-triangle"></i>
+    </div>
+    <div className="tip-content">
+      <h5 style={{ color: '#dc3545' }}>Watch for Red Flags</h5>
+      <p>Be cautious of interviews conducted only through chat or messaging apps</p>
+    </div>
+  </div>
+</div>
+
+
+
+
       </div>
     </div>
   );
