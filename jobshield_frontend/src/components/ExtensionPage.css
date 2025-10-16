@@ -1,0 +1,383 @@
+.extension-page {
+  background: #f8fbff;
+  color: #0d1b2a;
+  font-family: "Inter", sans-serif;
+}
+
+/* HERO */
+.extension-hero {
+  background: radial-gradient(circle at 50% 40%, #0066ff 0%, #0033a0 80%);
+  color: #fff;
+  text-align: center;
+  padding: 80px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.extension-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 80%, rgba(255,255,255,0.12), transparent 70%);
+  pointer-events: none;
+}
+
+
+.hero-inner {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.hero-inner h1 {
+  font-size: 2.6rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.hero-inner p {
+  font-size: 1.1rem;
+  color: #e8eeff;
+  margin-bottom: 30px;
+}
+
+.chrome-store-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #0043ce;
+  background: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.chrome-store-btn:hover {
+  background: #e6f0ff;
+  transform: translateY(-2px);
+}
+
+.badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.badge.darkblue { background: #002d9c; }
+.badge.teal { background: #00a3a3; }
+.badge.violet { background: #7c4dff; }
+.badge.gray { background: #62748a; }
+
+/* BODY */
+.extension-body {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 60px;
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 0 20px;
+  align-items: start;
+}
+
+/* FEATURES */
+.features-section h2 {
+  text-align: center;
+  color: #002a5c;
+  margin-bottom: 32px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.feature {
+  display: flex;
+  gap: 14px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #dbe4ff;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(0, 67, 206, 0.05);
+}
+
+.feature-icon {
+  font-size: 2rem;
+}
+
+.feature-icon.blue { color: #0052cc; }
+.feature-icon.teal { color: #00a3a3; }
+.feature-icon.red { color: #e63946; }
+.feature-icon.yellow { color: #f4c430; }
+
+/* INSTALL CHECKLIST */
+.install-section h2 {
+  text-align: center;
+  color: #002a5c;
+  margin-bottom: 28px;
+}
+
+.install-section {
+    margin-left: 100px;
+}
+
+.install-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.install-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.step-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.step-icon.chrome {
+  background: conic-gradient(from 45deg, #ea4335, #fbbc05, #34a853, #4285f4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.step-icon.darkblue { color: #002d9c; }
+.step-icon.green { color: #34a853; }
+
+.install-list strong {
+  color: #002a5c;
+  display: block;
+  font-size: 1rem;
+}
+
+/* CAROUSEL */
+.carousel-section {
+  margin: 130px 0 130px;
+  text-align: center;
+}
+
+.carousel-wrapper {
+  position: relative;
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: visible;
+  height: 320px;
+}
+
+.carousel-track {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+}
+
+.carousel-item {
+  position: absolute;
+  transition: all 0.6s ease;
+  width: 38%;          /* ↓ reduced from 55% */
+  max-width: 520px;    /* keeps it contained */
+  opacity: 0.4;
+  transform: scale(0.8);
+  z-index: 1;
+}
+
+.carousel-item.center {
+  transform: scale(0.95);   /* smaller than before */
+  opacity: 1;
+  z-index: 3;
+}
+
+.carousel-item.left {
+  transform: translateX(-60%) scale(0.8);
+  opacity: 0.7;
+  z-index: 2;
+}
+
+.carousel-item.right {
+  transform: translateX(60%) scale(0.8);
+  opacity: 0.7;
+  z-index: 2;
+}
+
+.carousel-item img {
+  width: 100%;
+  border-radius: 12px;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+
+.carousel-btn {
+  position: absolute;
+  top: 40%;  /* slightly above center */
+  transform: translateY(-50%);
+  background: rgba(0, 67, 206, 0.9);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  background: #0033a0;
+}
+
+.carousel-btn.left { left: 18px; }
+.carousel-btn.right { right: 18px; }
+
+
+.carousel-btn:hover {
+  background: #0033a0;
+}
+
+.carousel-btn.left { left: 15px; }
+.carousel-btn.right { right: 15px; }
+
+
+/* RESPONSIVE */
+@media (max-width: 960px) {
+  .extension-body {
+    grid-template-columns: 1fr;
+  }
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Chrome logo true colors */
+.chrome-colored,
+.step-icon.chrome {
+  font-size: 1.6rem;
+  position: relative;
+  display: inline-block;
+}
+
+/* Apply a real gradient mask so SVGs show Chrome colors */
+.chrome-colored svg,
+.step-icon.chrome svg {
+  width: 1em;
+  height: 1em;
+  fill: url(#chromeGradient) !important;
+}
+
+/* Inject a gradient definition that the SVG can use */
+.chrome-colored::before,
+.step-icon.chrome::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 45deg,
+    #ea4335,
+    #fbbc05,
+    #34a853,
+    #4285f4,
+    #ea4335
+  );
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='black' d='M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 96a152 152 0 01144.3 200.7L305 167c-19.6-31.5-62.4-42.2-94-22.6-31.6 19.6-42.3 62.4-22.7 94L242.5 362A152 152 0 01256 104z'/%3E%3C/svg%3E") no-repeat center/contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='black' d='M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 96a152 152 0 01144.3 200.7L305 167c-19.6-31.5-62.4-42.2-94-22.6-31.6 19.6-42.3 62.4-22.7 94L242.5 362A152 152 0 01256 104z'/%3E%3C/svg%3E") no-repeat center/contain;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  pointer-events: none;
+}
+
+
+.install-section {
+  display: flex;
+  justify-content: center;
+}
+
+.install-card {
+  background: linear-gradient(180deg, #e9f1ff  0%, #f5f9ff 100%);
+  border: 1px solid #d0e2ff;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 50, 160, 0.08);
+  padding: 40px 32px;
+  max-width: 550px;
+  width: 100%;
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+
+.install-card h2 {
+  text-align: center;
+  color: #002a5c;
+  margin-bottom: 24px;
+}
+
+.install-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 18px;
+}
+
+.install-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.step-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.step-icon.darkblue { color: #002d9c; }
+.step-icon.green { color: #34a853; }
+
+.install-list strong {
+  color: #002a5c;
+  font-size: 1rem;
+}
+
+.install-list p {
+  margin: 4px 0 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* kill underline in all states + keep a11y focus */
+.chrome-store-btn,
+.chrome-store-btn:visited,
+.chrome-store-btn:hover,
+.chrome-store-btn:active {
+  text-decoration: none;
+}
+
+.chrome-store-btn:focus-visible {
+  outline: 3px solid #90b2ff; /* accessible focus ring */
+  outline-offset: 2px;
+}

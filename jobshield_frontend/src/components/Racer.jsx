@@ -308,7 +308,7 @@ const openMenu = () => {
         <div className="menu-overlay">
           <div className="menu-card">
             <h4>Protegrad Racer</h4>
-            <p className="tag">Race a candidate to safety by spotting scams.</p>
+            <p className="tag">Race to safety by spotting scams.</p>
             <div className="menu-grid">
               <div className="box">
                 <div className="label">Difficulty</div>

@@ -208,3 +208,105 @@
 .racer-brand {
   margin-left: 12px;   
 }
+
+/* 🧠 Make the Game Over modal smaller and centered nicely */
+.menu-card {
+  width: min(400px, 90vw) !important;   /* much smaller width */
+  padding: 14px 18px !important;        /* tighter inner padding */
+  border-radius: 14px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  transform: scale(0.96);               /* subtle scale for compact look */
+}
+
+/* 🧾 Compact score lines */
+.menu-card .score-wrap {
+  margin: 6px 0 14px !important;        /* less vertical spacing overall */
+}
+
+.menu-card .score-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px !important;                  /* minimal gap between label and number */
+  padding: 3px 0 !important;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+  font-size: 14px !important;           /* smaller text */
+}
+
+/* 🧮 Label + value alignment and tone */
+.menu-card .score-line .label {
+  font-weight: 600 !important;
+  color: #222 !important;
+}
+
+.menu-card .score-line .value {
+  font-weight: 700 !important;
+  color: #007bff !important;
+  font-size: 15px !important;
+}
+
+/* ✨ Optional — shrink heading and buttons slightly too */
+.menu-card h4 {
+  font-size: 18px !important;
+  margin-bottom: 6px !important;
+}
+
+.menu-card .start,
+.menu-card .cta button {
+  font-size: 14px !important;
+  padding: 8px 18px !important;
+  border-radius: 8px !important;
+}
+
+/* 🎯 Small, centered Game Over popup */
+.menu-card {
+  width: min(420px, 90vw) !important;       /* still compact */
+  padding: 16px 20px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  transform: scale(0.96);
+}
+
+/* 🧾 Score lines – tight layout but larger text */
+.menu-card .score-wrap {
+  margin: 8px 0 18px !important;
+}
+
+.menu-card .score-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px !important;          /* small space between label & value */
+  padding: 5px 0 !important;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+  font-size: 17px !important;   /* larger readable text */
+  line-height: 1.4;
+}
+
+.menu-card .score-line .label {
+  font-weight: 600 !important;
+  color: #222 !important;
+}
+
+.menu-card .score-line .value {
+  font-weight: 800 !important;
+  color: #007bff !important;
+  font-size: 18px !important;
+}
+
+/* 🏁 Title + buttons also slightly larger */
+.menu-card h4 {
+  font-size: 20px !important;
+  margin-bottom: 8px !important;
+  color: #007BFF !important;
+  text-align: center;
+}
+
+.menu-card .start,
+.menu-card .cta button {
+  font-size: 16px !important;
+  padding: 10px 22px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+}
